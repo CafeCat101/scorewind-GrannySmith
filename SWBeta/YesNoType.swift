@@ -13,3 +13,4 @@ enum YesNoType {
 	case songChoiceYes
 	case songChoiceNo
 }
+
