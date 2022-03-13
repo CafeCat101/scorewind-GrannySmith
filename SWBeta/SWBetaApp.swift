@@ -13,7 +13,7 @@ struct SWBetaApp: App {
 	
 	var body: some Scene {
 		WindowGroup {
-			WelceomView().environmentObject(scorewindData)
+			WelcomeView().environmentObject(scorewindData)
 		}
 	}
 }

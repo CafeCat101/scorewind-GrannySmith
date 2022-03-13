@@ -12,10 +12,15 @@
 		C87F6B0027CA04420009DCA0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C87F6AFF27CA04420009DCA0 /* Assets.xcassets */; };
 		C87F6B0327CA04420009DCA0 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C87F6B0227CA04420009DCA0 /* Preview Assets.xcassets */; };
 		C87F6B6127CCE7600009DCA0 /* ScorewindData.swift in Sources */ = {isa = PBXBuildFile; fileRef = C87F6B6027CCE7600009DCA0 /* ScorewindData.swift */; };
-		C87F6B6327CCE82C0009DCA0 /* WelceomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C87F6B6227CCE82C0009DCA0 /* WelceomView.swift */; };
+		C87F6B6327CCE82C0009DCA0 /* WelcomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C87F6B6227CCE82C0009DCA0 /* WelcomeView.swift */; };
 		C87F6B6527CCE9B60009DCA0 /* Page.swift in Sources */ = {isa = PBXBuildFile; fileRef = C87F6B6427CCE9B60009DCA0 /* Page.swift */; };
 		C87F6B6727CCE9E50009DCA0 /* CourseType.swift in Sources */ = {isa = PBXBuildFile; fileRef = C87F6B6627CCE9E50009DCA0 /* CourseType.swift */; };
 		C87F6B6927CCEA800009DCA0 /* YesNoType.swift in Sources */ = {isa = PBXBuildFile; fileRef = C87F6B6827CCEA800009DCA0 /* YesNoType.swift */; };
+		C87F6B6D27D1BDB30009DCA0 /* CourseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C87F6B6C27D1BDB30009DCA0 /* CourseView.swift */; };
+		C87F6B6F27D1BDCA0009DCA0 /* LessonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C87F6B6E27D1BDCA0009DCA0 /* LessonView.swift */; };
+		C87F6B7127D1BDE30009DCA0 /* WizardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C87F6B7027D1BDE30009DCA0 /* WizardView.swift */; };
+		C87F6B7527D1BF780009DCA0 /* MyCoursesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C87F6B7427D1BF780009DCA0 /* MyCoursesView.swift */; };
+		C87F6B7727D1C25A0009DCA0 /* ScorewindCourse.swift in Sources */ = {isa = PBXBuildFile; fileRef = C87F6B7627D1C25A0009DCA0 /* ScorewindCourse.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -25,10 +30,15 @@
 		C87F6AFF27CA04420009DCA0 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		C87F6B0227CA04420009DCA0 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		C87F6B6027CCE7600009DCA0 /* ScorewindData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScorewindData.swift; sourceTree = "<group>"; };
-		C87F6B6227CCE82C0009DCA0 /* WelceomView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelceomView.swift; sourceTree = "<group>"; };
+		C87F6B6227CCE82C0009DCA0 /* WelcomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeView.swift; sourceTree = "<group>"; };
 		C87F6B6427CCE9B60009DCA0 /* Page.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Page.swift; sourceTree = "<group>"; };
 		C87F6B6627CCE9E50009DCA0 /* CourseType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseType.swift; sourceTree = "<group>"; };
 		C87F6B6827CCEA800009DCA0 /* YesNoType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YesNoType.swift; sourceTree = "<group>"; };
+		C87F6B6C27D1BDB30009DCA0 /* CourseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseView.swift; sourceTree = "<group>"; };
+		C87F6B6E27D1BDCA0009DCA0 /* LessonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LessonView.swift; sourceTree = "<group>"; };
+		C87F6B7027D1BDE30009DCA0 /* WizardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WizardView.swift; sourceTree = "<group>"; };
+		C87F6B7427D1BF780009DCA0 /* MyCoursesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyCoursesView.swift; sourceTree = "<group>"; };
+		C87F6B7627D1C25A0009DCA0 /* ScorewindCourse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScorewindCourse.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -65,11 +75,16 @@
 				C87F6AFD27CA04420009DCA0 /* ContentView.swift */,
 				C87F6AFF27CA04420009DCA0 /* Assets.xcassets */,
 				C87F6B0127CA04420009DCA0 /* Preview Content */,
-				C87F6B6027CCE7600009DCA0 /* ScorewindData.swift */,
-				C87F6B6227CCE82C0009DCA0 /* WelceomView.swift */,
+				C87F6B6227CCE82C0009DCA0 /* WelcomeView.swift */,
+				C87F6B7427D1BF780009DCA0 /* MyCoursesView.swift */,
+				C87F6B7027D1BDE30009DCA0 /* WizardView.swift */,
+				C87F6B6C27D1BDB30009DCA0 /* CourseView.swift */,
+				C87F6B6E27D1BDCA0009DCA0 /* LessonView.swift */,
 				C87F6B6427CCE9B60009DCA0 /* Page.swift */,
 				C87F6B6627CCE9E50009DCA0 /* CourseType.swift */,
 				C87F6B6827CCEA800009DCA0 /* YesNoType.swift */,
+				C87F6B6027CCE7600009DCA0 /* ScorewindData.swift */,
+				C87F6B7627D1C25A0009DCA0 /* ScorewindCourse.swift */,
 			);
 			path = SWBeta;
 			sourceTree = "<group>";
@@ -152,11 +167,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C87F6B7527D1BF780009DCA0 /* MyCoursesView.swift in Sources */,
 				C87F6AFE27CA04420009DCA0 /* ContentView.swift in Sources */,
+				C87F6B6F27D1BDCA0009DCA0 /* LessonView.swift in Sources */,
+				C87F6B7727D1C25A0009DCA0 /* ScorewindCourse.swift in Sources */,
+				C87F6B6D27D1BDB30009DCA0 /* CourseView.swift in Sources */,
 				C87F6B6927CCEA800009DCA0 /* YesNoType.swift in Sources */,
+				C87F6B7127D1BDE30009DCA0 /* WizardView.swift in Sources */,
 				C87F6AFC27CA04420009DCA0 /* SWBetaApp.swift in Sources */,
 				C87F6B6127CCE7600009DCA0 /* ScorewindData.swift in Sources */,
-				C87F6B6327CCE82C0009DCA0 /* WelceomView.swift in Sources */,
+				C87F6B6327CCE82C0009DCA0 /* WelcomeView.swift in Sources */,
 				C87F6B6727CCE9E50009DCA0 /* CourseType.swift in Sources */,
 				C87F6B6527CCE9B60009DCA0 /* Page.swift in Sources */,
 			);

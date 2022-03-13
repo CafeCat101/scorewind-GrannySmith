@@ -6,9 +6,11 @@
 //
 
 import Foundation
-
 import SwiftUI
 
 class ScorewindData: ObservableObject {
-	
+	@Published var currentCourse = Course()
+	@Published var currentLesson = Lesson()
+	@Published var previousCourse:Course = Course()
+	@Published var nextCourse:Course = Course()
 }
