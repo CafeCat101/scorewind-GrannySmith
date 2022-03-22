@@ -9,7 +9,7 @@ import Foundation
 
 enum Page {
 	case wizard
-	case learn //CoursesForYou
+	case myCourses //CoursesForYou
 	case course
 	case lesson
 	case courseType

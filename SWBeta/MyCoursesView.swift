@@ -8,13 +8,21 @@
 import SwiftUI
 
 struct MyCoursesView: View {
-    var body: some View {
-        Text("My courses")
-    }
+	@EnvironmentObject var scorewindData:ScorewindData
+	var body: some View {
+		VStack {
+			ForEach(scorewindData.allCourses, id: \.id) { course in
+				Text(scorewindData.replaceCommonHTMLNumber(htmlString: course.title))
+			}
+		}
+		Text("Course page")
+	}
+	
+	
 }
 
 struct MyCoursesView_Previews: PreviewProvider {
-    static var previews: some View {
-        MyCoursesView()
-    }
+	static var previews: some View {
+		CourseView().environmentObject(ScorewindData())
+	}
 }

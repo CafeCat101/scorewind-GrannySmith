@@ -21,6 +21,8 @@
 		C87F6B7127D1BDE30009DCA0 /* WizardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C87F6B7027D1BDE30009DCA0 /* WizardView.swift */; };
 		C87F6B7527D1BF780009DCA0 /* MyCoursesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C87F6B7427D1BF780009DCA0 /* MyCoursesView.swift */; };
 		C87F6B7727D1C25A0009DCA0 /* ScorewindCourse.swift in Sources */ = {isa = PBXBuildFile; fileRef = C87F6B7627D1C25A0009DCA0 /* ScorewindCourse.swift */; };
+		C87F6B8127DD9FE20009DCA0 /* ScorewindTimestamp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C87F6B8027DD9FE20009DCA0 /* ScorewindTimestamp.swift */; };
+		C87F6B8327DE05BF0009DCA0 /* FileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C87F6B8227DE05BF0009DCA0 /* FileManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -39,6 +41,8 @@
 		C87F6B7027D1BDE30009DCA0 /* WizardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WizardView.swift; sourceTree = "<group>"; };
 		C87F6B7427D1BF780009DCA0 /* MyCoursesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyCoursesView.swift; sourceTree = "<group>"; };
 		C87F6B7627D1C25A0009DCA0 /* ScorewindCourse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScorewindCourse.swift; sourceTree = "<group>"; };
+		C87F6B8027DD9FE20009DCA0 /* ScorewindTimestamp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScorewindTimestamp.swift; sourceTree = "<group>"; };
+		C87F6B8227DE05BF0009DCA0 /* FileManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -85,6 +89,8 @@
 				C87F6B6827CCEA800009DCA0 /* YesNoType.swift */,
 				C87F6B6027CCE7600009DCA0 /* ScorewindData.swift */,
 				C87F6B7627D1C25A0009DCA0 /* ScorewindCourse.swift */,
+				C87F6B8027DD9FE20009DCA0 /* ScorewindTimestamp.swift */,
+				C87F6B8227DE05BF0009DCA0 /* FileManager.swift */,
 			);
 			path = SWBeta;
 			sourceTree = "<group>";
@@ -167,8 +173,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C87F6B8127DD9FE20009DCA0 /* ScorewindTimestamp.swift in Sources */,
 				C87F6B7527D1BF780009DCA0 /* MyCoursesView.swift in Sources */,
 				C87F6AFE27CA04420009DCA0 /* ContentView.swift in Sources */,
+				C87F6B8327DE05BF0009DCA0 /* FileManager.swift in Sources */,
 				C87F6B6F27D1BDCA0009DCA0 /* LessonView.swift in Sources */,
 				C87F6B7727D1C25A0009DCA0 /* ScorewindCourse.swift in Sources */,
 				C87F6B6D27D1BDB30009DCA0 /* CourseView.swift in Sources */,
@@ -306,6 +314,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"SWBeta/Preview Content\"";
@@ -322,8 +331,9 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = tw.elosoft.SWBeta;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.elosoft.scorewind-SWBeta";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -335,6 +345,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"SWBeta/Preview Content\"";
@@ -351,8 +362,9 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = tw.elosoft.SWBeta;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.elosoft.scorewind-SWBeta";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";

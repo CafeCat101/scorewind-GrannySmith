@@ -18,12 +18,12 @@ struct WelcomeView: View {
 					DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
 						withAnimation{
 							self.showWelcome = false
-							self.currentPage = .wizard
+							self.currentPage = .myCourses
 						}
 					}
 				}
 		}else{
-			if currentPage == .learn {
+			if currentPage == .myCourses {
 				MyCoursesView()
 					.transition(.scale)
 			}else{

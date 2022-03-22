@@ -8,13 +8,13 @@
 import SwiftUI
 
 struct CourseView: View {
-    var body: some View {
-        Text("Course page")
-    }
+	var body: some View {
+		Text("course page")
+	}
 }
 
 struct CourseView_Previews: PreviewProvider {
-    static var previews: some View {
-        CourseView()
-    }
+	static var previews: some View {
+		CourseView()
+	}
 }
