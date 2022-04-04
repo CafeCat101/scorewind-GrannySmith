@@ -22,39 +22,21 @@ class ScorewindData: ObservableObject {
 	
 	init() {
 		print(courseURL.path)
-		initiateCoursesData()
 	}
 	
-	func initiateCoursesData() {
-		if FileManager.default.fileExists(atPath: courseURL.path) {
-			print("data_scorewind_courses.json is already in the documentory.")
-			loadLocalFile(forName: "data_scorewind_courses")
-		} else {
-			downloadJson(fromURLString: courseWPURL) { (result) in
-				switch result {
-				case .success(let data):
-					do {
-						try data.write(to: self.courseURL, options: .atomicWrite)
-						self.loadLocalFile(forName: "data_scorewind_courses")
-					} catch let error {
-						print(error)
-					}
-				case .failure(let error):
-					print(error)
-				}
-			}
-		}
-		
+	public func initiateTimestampData() {
 		if FileManager.default.fileExists(atPath: timestampURL.path) {
 			print("data_scorewind_timestamp.json is already in the documentory.")
-			loadLocalFile(forName: "data_scorewind_courses")
+			self.loadLocalFile(filePath: self.timestampURL.path)
+			
 		} else {
 			downloadJson(fromURLString: timestampWPURL) { (result) in
 				switch result {
 				case .success(let data):
 					do {
+						print("->downloadJson: downloaded, timestamps")
 						try data.write(to: self.timestampURL, options: .atomicWrite)
-						self.loadLocalFile(forName: "data_scorewind_timestamp")
+						self.loadLocalFile(filePath: self.timestampURL.path)
 					} catch let error {
 						print(error)
 					}
@@ -65,37 +47,34 @@ class ScorewindData: ObservableObject {
 		}
 	}
 	
-	private func loadLocalFile(forName name: String) {
+	public func loadLocalFile(filePath: String) -> Bool{
+		var taskCompleted = false
+		
 		do {
-			if name == "data_scorewind_courses" {
-				if let jsonData = try String(contentsOfFile: courseURL.path).data(using: .utf8) {
+			if let jsonData = try String(contentsOfFile: filePath).data(using: .utf8) {
+				if(filePath.contains("data_scorewind_courses.json")){
 					let decodedData = try JSONDecoder().decode([Course].self, from: jsonData)
 					allCourses = decodedData
+					print("->loadLocalFile(): decoded, courses")
+					taskCompleted = true
 				}
-			}
-			
-			if name == "data_scorewind_timestamp" {
-				if let jsonData = try String(contentsOfFile: timestampURL.path).data(using: .utf8) {
+				
+				if(filePath.contains("data_scorewind_timestamp.json")){
 					let decodedData = try JSONDecoder().decode([Timestamp].self, from: jsonData)
 					allTimestamps = decodedData
+					print("->loadLocalFile(): decoded, timestamps")
+					taskCompleted = true
 				}
 			}
 			
 		} catch {
 			print(error)
 		}
+		
+		return taskCompleted
 	}
 	
-	/*private func parse(jsonData: Data){
-		do {
-			let decodedData = try JSONDecoder().decode(Course.self, from: jsonData)
-			
-		} catch {
-			print(error)
-		}
-	}*/
-	
-	private func downloadJson(fromURLString urlString: String, completion: @escaping(Result<Data, Error>) -> Void) {
+	public func downloadJson(fromURLString urlString: String, completion: @escaping(Result<Data, Error>) -> Void) {
 		if let url = URL(string: urlString) {
 			let urlSession = URLSession(configuration: .default).dataTask(with: url) { (data, response, error) in
 				if let error = error {

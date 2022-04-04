@@ -15,7 +15,7 @@ struct MyCoursesView: View {
 				Text(scorewindData.replaceCommonHTMLNumber(htmlString: course.title))
 			}
 		}
-		Text("Course page")
+		Text("My Courses")
 	}
 	
 	

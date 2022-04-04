@@ -23,6 +23,7 @@
 		C87F6B7727D1C25A0009DCA0 /* ScorewindCourse.swift in Sources */ = {isa = PBXBuildFile; fileRef = C87F6B7627D1C25A0009DCA0 /* ScorewindCourse.swift */; };
 		C87F6B8127DD9FE20009DCA0 /* ScorewindTimestamp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C87F6B8027DD9FE20009DCA0 /* ScorewindTimestamp.swift */; };
 		C87F6B8327DE05BF0009DCA0 /* FileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C87F6B8227DE05BF0009DCA0 /* FileManager.swift */; };
+		C87F6BDB27E97FFA0009DCA0 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C87F6BDA27E97FFA0009DCA0 /* CloudKit.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -43,6 +44,8 @@
 		C87F6B7627D1C25A0009DCA0 /* ScorewindCourse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScorewindCourse.swift; sourceTree = "<group>"; };
 		C87F6B8027DD9FE20009DCA0 /* ScorewindTimestamp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScorewindTimestamp.swift; sourceTree = "<group>"; };
 		C87F6B8227DE05BF0009DCA0 /* FileManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileManager.swift; sourceTree = "<group>"; };
+		C87F6BD827E97F100009DCA0 /* SWBeta.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = SWBeta.entitlements; sourceTree = "<group>"; };
+		C87F6BDA27E97FFA0009DCA0 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -50,6 +53,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C87F6BDB27E97FFA0009DCA0 /* CloudKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -61,6 +65,7 @@
 			children = (
 				C87F6AFA27CA04420009DCA0 /* SWBeta */,
 				C87F6AF927CA04420009DCA0 /* Products */,
+				C87F6BD927E97FFA0009DCA0 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -75,6 +80,7 @@
 		C87F6AFA27CA04420009DCA0 /* SWBeta */ = {
 			isa = PBXGroup;
 			children = (
+				C87F6BD827E97F100009DCA0 /* SWBeta.entitlements */,
 				C87F6AFB27CA04420009DCA0 /* SWBetaApp.swift */,
 				C87F6AFD27CA04420009DCA0 /* ContentView.swift */,
 				C87F6AFF27CA04420009DCA0 /* Assets.xcassets */,
@@ -101,6 +107,14 @@
 				C87F6B0227CA04420009DCA0 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		C87F6BD927E97FFA0009DCA0 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				C87F6BDA27E97FFA0009DCA0 /* CloudKit.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -314,6 +328,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = SWBeta/SWBeta.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -345,6 +360,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = SWBeta/SWBeta.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
