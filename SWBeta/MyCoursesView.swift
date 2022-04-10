@@ -11,11 +11,17 @@ struct MyCoursesView: View {
 	@EnvironmentObject var scorewindData:ScorewindData
 	var body: some View {
 		VStack {
-			ForEach(scorewindData.allCourses, id: \.id) { course in
+			/*ForEach(scorewindData.allCourses, id: \.id) { course in
 				Text(scorewindData.replaceCommonHTMLNumber(htmlString: course.title))
+			}*/
+			Text("My Courses")
+			if scorewindData.studentData.getInstrumentChoice() == "" {
+				Text("== no instrument choice ==")
+			}else{
+				Text(scorewindData.studentData.getInstrumentChoice())
 			}
 		}
-		Text("My Courses")
+		
 	}
 	
 	

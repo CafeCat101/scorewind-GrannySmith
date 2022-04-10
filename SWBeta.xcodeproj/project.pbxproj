@@ -24,7 +24,21 @@
 		C87F6B8127DD9FE20009DCA0 /* ScorewindTimestamp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C87F6B8027DD9FE20009DCA0 /* ScorewindTimestamp.swift */; };
 		C87F6B8327DE05BF0009DCA0 /* FileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C87F6B8227DE05BF0009DCA0 /* FileManager.swift */; };
 		C87F6BDB27E97FFA0009DCA0 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C87F6BDA27E97FFA0009DCA0 /* CloudKit.framework */; };
+		C8E786C527FAC023007817BB /* StudentData.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8E786C427FAC023007817BB /* StudentData.swift */; };
+		C8E786D027FAFB70007817BB /* SWBetaTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8E786CF27FAFB70007817BB /* SWBetaTests.swift */; };
+		C8E786D827FF405A007817BB /* iCloudKeyValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8E786D627FF405A007817BB /* iCloudKeyValue.swift */; };
+		C8E786DA280008B1007817BB /* InstrumentType.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8E786D9280008B1007817BB /* InstrumentType.swift */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		C8E786D127FAFB70007817BB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C87F6AF027CA04420009DCA0 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = C87F6AF727CA04420009DCA0;
+			remoteInfo = SWBeta;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		C87F6AF827CA04420009DCA0 /* SWBeta.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SWBeta.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -46,6 +60,11 @@
 		C87F6B8227DE05BF0009DCA0 /* FileManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileManager.swift; sourceTree = "<group>"; };
 		C87F6BD827E97F100009DCA0 /* SWBeta.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = SWBeta.entitlements; sourceTree = "<group>"; };
 		C87F6BDA27E97FFA0009DCA0 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
+		C8E786C427FAC023007817BB /* StudentData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudentData.swift; sourceTree = "<group>"; };
+		C8E786CD27FAFB70007817BB /* SWBetaTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SWBetaTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		C8E786CF27FAFB70007817BB /* SWBetaTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SWBetaTests.swift; sourceTree = "<group>"; };
+		C8E786D627FF405A007817BB /* iCloudKeyValue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iCloudKeyValue.swift; sourceTree = "<group>"; };
+		C8E786D9280008B1007817BB /* InstrumentType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstrumentType.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -57,6 +76,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		C8E786CA27FAFB70007817BB /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -64,6 +90,7 @@
 			isa = PBXGroup;
 			children = (
 				C87F6AFA27CA04420009DCA0 /* SWBeta */,
+				C8E786CE27FAFB70007817BB /* SWBetaTests */,
 				C87F6AF927CA04420009DCA0 /* Products */,
 				C87F6BD927E97FFA0009DCA0 /* Frameworks */,
 			);
@@ -73,6 +100,7 @@
 			isa = PBXGroup;
 			children = (
 				C87F6AF827CA04420009DCA0 /* SWBeta.app */,
+				C8E786CD27FAFB70007817BB /* SWBetaTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -93,10 +121,12 @@
 				C87F6B6427CCE9B60009DCA0 /* Page.swift */,
 				C87F6B6627CCE9E50009DCA0 /* CourseType.swift */,
 				C87F6B6827CCEA800009DCA0 /* YesNoType.swift */,
+				C8E786D9280008B1007817BB /* InstrumentType.swift */,
 				C87F6B6027CCE7600009DCA0 /* ScorewindData.swift */,
 				C87F6B7627D1C25A0009DCA0 /* ScorewindCourse.swift */,
 				C87F6B8027DD9FE20009DCA0 /* ScorewindTimestamp.swift */,
 				C87F6B8227DE05BF0009DCA0 /* FileManager.swift */,
+				C8E786C427FAC023007817BB /* StudentData.swift */,
 			);
 			path = SWBeta;
 			sourceTree = "<group>";
@@ -115,6 +145,15 @@
 				C87F6BDA27E97FFA0009DCA0 /* CloudKit.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		C8E786CE27FAFB70007817BB /* SWBetaTests */ = {
+			isa = PBXGroup;
+			children = (
+				C8E786D627FF405A007817BB /* iCloudKeyValue.swift */,
+				C8E786CF27FAFB70007817BB /* SWBetaTests.swift */,
+			);
+			path = SWBetaTests;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -137,6 +176,24 @@
 			productReference = C87F6AF827CA04420009DCA0 /* SWBeta.app */;
 			productType = "com.apple.product-type.application";
 		};
+		C8E786CC27FAFB70007817BB /* SWBetaTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C8E786D327FAFB70007817BB /* Build configuration list for PBXNativeTarget "SWBetaTests" */;
+			buildPhases = (
+				C8E786C927FAFB70007817BB /* Sources */,
+				C8E786CA27FAFB70007817BB /* Frameworks */,
+				C8E786CB27FAFB70007817BB /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				C8E786D227FAFB70007817BB /* PBXTargetDependency */,
+			);
+			name = SWBetaTests;
+			productName = SWBetaTests;
+			productReference = C8E786CD27FAFB70007817BB /* SWBetaTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -149,6 +206,10 @@
 				TargetAttributes = {
 					C87F6AF727CA04420009DCA0 = {
 						CreatedOnToolsVersion = 13.2.1;
+					};
+					C8E786CC27FAFB70007817BB = {
+						CreatedOnToolsVersion = 13.2.1;
+						TestTargetID = C87F6AF727CA04420009DCA0;
 					};
 				};
 			};
@@ -166,6 +227,7 @@
 			projectRoot = "";
 			targets = (
 				C87F6AF727CA04420009DCA0 /* SWBeta */,
+				C8E786CC27FAFB70007817BB /* SWBetaTests */,
 			);
 		};
 /* End PBXProject section */
@@ -177,6 +239,13 @@
 			files = (
 				C87F6B0327CA04420009DCA0 /* Preview Assets.xcassets in Resources */,
 				C87F6B0027CA04420009DCA0 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C8E786CB27FAFB70007817BB /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -197,14 +266,33 @@
 				C87F6B6927CCEA800009DCA0 /* YesNoType.swift in Sources */,
 				C87F6B7127D1BDE30009DCA0 /* WizardView.swift in Sources */,
 				C87F6AFC27CA04420009DCA0 /* SWBetaApp.swift in Sources */,
+				C8E786DA280008B1007817BB /* InstrumentType.swift in Sources */,
 				C87F6B6127CCE7600009DCA0 /* ScorewindData.swift in Sources */,
 				C87F6B6327CCE82C0009DCA0 /* WelcomeView.swift in Sources */,
 				C87F6B6727CCE9E50009DCA0 /* CourseType.swift in Sources */,
 				C87F6B6527CCE9B60009DCA0 /* Page.swift in Sources */,
+				C8E786C527FAC023007817BB /* StudentData.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C8E786C927FAFB70007817BB /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C8E786D027FAFB70007817BB /* SWBetaTests.swift in Sources */,
+				C8E786D827FF405A007817BB /* iCloudKeyValue.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		C8E786D227FAFB70007817BB /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = C87F6AF727CA04420009DCA0 /* SWBeta */;
+			targetProxy = C8E786D127FAFB70007817BB /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		C87F6B0427CA04420009DCA0 /* Debug */ = {
@@ -387,6 +475,42 @@
 			};
 			name = Release;
 		};
+		C8E786D427FAFB70007817BB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 23BXR5AUUB;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.elosoft.scorewind.SWBetaTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SWBeta.app/SWBeta";
+			};
+			name = Debug;
+		};
+		C8E786D527FAFB70007817BB /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 23BXR5AUUB;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.elosoft.scorewind.SWBetaTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SWBeta.app/SWBeta";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -404,6 +528,15 @@
 			buildConfigurations = (
 				C87F6B0727CA04420009DCA0 /* Debug */,
 				C87F6B0827CA04420009DCA0 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		C8E786D327FAFB70007817BB /* Build configuration list for PBXNativeTarget "SWBetaTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C8E786D427FAFB70007817BB /* Debug */,
+				C8E786D527FAFB70007817BB /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

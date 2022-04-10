@@ -20,6 +20,9 @@ struct WelcomeView: View {
 					print("->WelcomeView: onAppear")
 					loadScorewindCourses()
 					scorewindData.initiateTimestampData()
+					/*if scorewindData.studentData.getInstrumentChoice() == "" {
+						scorewindData.studentData.setInstrumentChoice(instrument: "guitar")
+					}*/
 				}
 		}else{
 			if currentPage == .myCourses {

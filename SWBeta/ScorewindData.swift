@@ -19,9 +19,11 @@ class ScorewindData: ObservableObject {
 	let timestampURL = URL(fileURLWithPath: "data_scorewind_timestamp", relativeTo: FileManager.documentoryDirecotryURL).appendingPathExtension("json")
 	let courseWPURL = "https://scorewind.com/courses_ios.json"
 	let timestampWPURL = "https://scorewind.com/timestamps_ios.json"
+	@Published var studentData: StudentData
 	
 	init() {
 		print(courseURL.path)
+		studentData = StudentData()
 	}
 	
 	public func initiateTimestampData() {
