@@ -18,7 +18,7 @@ struct Course: Codable, Identifiable{
 	var instrument: String
 	var level: String
 	var sortValue: String
-	var duration: String
+	var duration: String?
 	var lessons: [Lesson]
 	
 	enum CodingKeys: String, CodingKey{

@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C8448A212818F70400597A6F /* data_version.json in Resources */ = {isa = PBXBuildFile; fileRef = C8448A202818F70400597A6F /* data_version.json */; };
+		C8448A232819731E00597A6F /* DataVersion.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8448A222819731E00597A6F /* DataVersion.swift */; };
+		C8448A27281BA3CD00597A6F /* timestamps_ios.json in Resources */ = {isa = PBXBuildFile; fileRef = C8448A26281BA3CD00597A6F /* timestamps_ios.json */; };
+		C8448A29281BA3DF00597A6F /* courses_ios.json in Resources */ = {isa = PBXBuildFile; fileRef = C8448A28281BA3DF00597A6F /* courses_ios.json */; };
 		C87F6AFC27CA04420009DCA0 /* SWBetaApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C87F6AFB27CA04420009DCA0 /* SWBetaApp.swift */; };
 		C87F6AFE27CA04420009DCA0 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C87F6AFD27CA04420009DCA0 /* ContentView.swift */; };
 		C87F6B0027CA04420009DCA0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C87F6AFF27CA04420009DCA0 /* Assets.xcassets */; };
@@ -41,6 +45,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		C8448A202818F70400597A6F /* data_version.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = data_version.json; sourceTree = "<group>"; };
+		C8448A222819731E00597A6F /* DataVersion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataVersion.swift; sourceTree = "<group>"; };
+		C8448A26281BA3CD00597A6F /* timestamps_ios.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = timestamps_ios.json; sourceTree = "<group>"; };
+		C8448A28281BA3DF00597A6F /* courses_ios.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = courses_ios.json; sourceTree = "<group>"; };
 		C87F6AF827CA04420009DCA0 /* SWBeta.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SWBeta.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C87F6AFB27CA04420009DCA0 /* SWBetaApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SWBetaApp.swift; sourceTree = "<group>"; };
 		C87F6AFD27CA04420009DCA0 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -108,6 +116,9 @@
 		C87F6AFA27CA04420009DCA0 /* SWBeta */ = {
 			isa = PBXGroup;
 			children = (
+				C8448A28281BA3DF00597A6F /* courses_ios.json */,
+				C8448A26281BA3CD00597A6F /* timestamps_ios.json */,
+				C8448A202818F70400597A6F /* data_version.json */,
 				C87F6BD827E97F100009DCA0 /* SWBeta.entitlements */,
 				C87F6AFB27CA04420009DCA0 /* SWBetaApp.swift */,
 				C87F6AFD27CA04420009DCA0 /* ContentView.swift */,
@@ -127,6 +138,7 @@
 				C87F6B8027DD9FE20009DCA0 /* ScorewindTimestamp.swift */,
 				C87F6B8227DE05BF0009DCA0 /* FileManager.swift */,
 				C8E786C427FAC023007817BB /* StudentData.swift */,
+				C8448A222819731E00597A6F /* DataVersion.swift */,
 			);
 			path = SWBeta;
 			sourceTree = "<group>";
@@ -237,8 +249,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C8448A27281BA3CD00597A6F /* timestamps_ios.json in Resources */,
 				C87F6B0327CA04420009DCA0 /* Preview Assets.xcassets in Resources */,
 				C87F6B0027CA04420009DCA0 /* Assets.xcassets in Resources */,
+				C8448A212818F70400597A6F /* data_version.json in Resources */,
+				C8448A29281BA3DF00597A6F /* courses_ios.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -264,6 +279,7 @@
 				C87F6B7727D1C25A0009DCA0 /* ScorewindCourse.swift in Sources */,
 				C87F6B6D27D1BDB30009DCA0 /* CourseView.swift in Sources */,
 				C87F6B6927CCEA800009DCA0 /* YesNoType.swift in Sources */,
+				C8448A232819731E00597A6F /* DataVersion.swift in Sources */,
 				C87F6B7127D1BDE30009DCA0 /* WizardView.swift in Sources */,
 				C87F6AFC27CA04420009DCA0 /* SWBetaApp.swift in Sources */,
 				C8E786DA280008B1007817BB /* InstrumentType.swift in Sources */,

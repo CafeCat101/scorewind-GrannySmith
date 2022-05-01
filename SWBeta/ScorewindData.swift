@@ -15,10 +15,11 @@ class ScorewindData: ObservableObject {
 	@Published var nextCourse:Course = Course()
 	var allCourses:[Course] = []
 	var allTimestamps:[Timestamp] = []
-	let courseURL = URL(fileURLWithPath: "data_scorewind_courses", relativeTo: FileManager.documentoryDirecotryURL).appendingPathExtension("json")
-	let timestampURL = URL(fileURLWithPath: "data_scorewind_timestamp", relativeTo: FileManager.documentoryDirecotryURL).appendingPathExtension("json")
+	let courseURL = URL(fileURLWithPath: "courses_ios", relativeTo: FileManager.documentoryDirecotryURL).appendingPathExtension("json")
+	let timestampURL = URL(fileURLWithPath: "timestamps_ios", relativeTo: FileManager.documentoryDirecotryURL).appendingPathExtension("json")
 	let courseWPURL = "https://scorewind.com/courses_ios.json"
 	let timestampWPURL = "https://scorewind.com/timestamps_ios.json"
+	let dataVersionWPURL = "https://scorewind.com/data_version.json"
 	@Published var studentData: StudentData
 	
 	init() {
@@ -26,54 +27,31 @@ class ScorewindData: ObservableObject {
 		studentData = StudentData()
 	}
 	
-	public func initiateTimestampData() {
-		if FileManager.default.fileExists(atPath: timestampURL.path) {
-			print("data_scorewind_timestamp.json is already in the documentory.")
-			self.loadLocalFile(filePath: self.timestampURL.path)
-			
-		} else {
-			downloadJson(fromURLString: timestampWPURL) { (result) in
-				switch result {
-				case .success(let data):
-					do {
-						print("->downloadJson: downloaded, timestamps")
-						try data.write(to: self.timestampURL, options: .atomicWrite)
-						self.loadLocalFile(filePath: self.timestampURL.path)
-					} catch let error {
-						print(error)
-					}
-				case .failure(let error):
-					print(error)
-				}
-			}
-		}
-	}
-	
-	public func loadLocalFile(filePath: String) -> Bool{
+	public func initiateCoursesFromLocal() -> Bool{
 		var taskCompleted = false
-		
 		do {
-			if let jsonData = try String(contentsOfFile: filePath).data(using: .utf8) {
-				if(filePath.contains("data_scorewind_courses.json")){
-					let decodedData = try JSONDecoder().decode([Course].self, from: jsonData)
-					allCourses = decodedData
-					print("->loadLocalFile(): decoded, courses")
-					taskCompleted = true
-				}
-				
-				if(filePath.contains("data_scorewind_timestamp.json")){
-					let decodedData = try JSONDecoder().decode([Timestamp].self, from: jsonData)
-					allTimestamps = decodedData
-					print("->loadLocalFile(): decoded, timestamps")
-					taskCompleted = true
-				}
+			if let jsonData = try String(contentsOfFile: courseURL.path).data(using: .utf8) {
+				let decodedData = try JSONDecoder().decode([Course].self, from: jsonData)
+				allCourses = decodedData
+				print("->initiateCoursesFromLocal(): decoded, courses")
+				taskCompleted = true
 			}
-			
 		} catch {
 			print(error)
 		}
-		
 		return taskCompleted
+	}
+	
+	public func initiateTimestampsFromLocal(){
+		do {
+			if let jsonData = try String(contentsOfFile: timestampURL.path).data(using: .utf8) {
+				let decodedData = try JSONDecoder().decode([Timestamp].self, from: jsonData)
+				allTimestamps = decodedData
+				print("->initiateTimestampsFromLocal(): decoded, timestamps")
+			}
+		} catch {
+			print(error)
+		}
 	}
 	
 	public func downloadJson(fromURLString urlString: String, completion: @escaping(Result<Data, Error>) -> Void) {
@@ -117,5 +95,82 @@ class ScorewindData: ObservableObject {
 		}else{
 			return Text
 		}
+	}
+	
+	
+	func needToCheckVersion() -> Int{
+		//check version from web is last check is a week old.
+		var needToCheckVersion = 0
+		let dataVersionURL = URL(fileURLWithPath: "data_version", relativeTo: FileManager.documentoryDirecotryURL).appendingPathExtension("json")
+		
+		do {
+			let jsonData = try String(contentsOfFile: dataVersionURL.path).data(using: .utf8)
+			let dataVersionDic = try JSONSerialization.jsonObject(with: jsonData!, options: .mutableContainers) as? [String:Any]
+			let today = Date()
+			let dateInFileFormatter = DateFormatter()
+			dateInFileFormatter.dateFormat = "YYYY-MM-dd"
+			let dateInFileString = "\(dataVersionDic!["updated"] ?? "")"
+			print("\(dataVersionDic!["updated"] ?? "")")
+			
+			let numberOfDays = Calendar.current.dateComponents([.day], from: dateInFileFormatter.date(from:dateInFileString)!, to: today).day!
+			if numberOfDays > 30 {
+				needToCheckVersion = dataVersionDic!["version"] as? Int ?? 0
+			}
+		} catch {
+			print(error.localizedDescription)
+		}
+		
+		return needToCheckVersion
+	}
+	
+	func firstLaunch() -> String {
+		let dataVersionURL = URL(fileURLWithPath: "data_version", relativeTo: FileManager.documentoryDirecotryURL).appendingPathExtension("json")
+		let courseURL = URL(fileURLWithPath: "courses_ios", relativeTo: FileManager.documentoryDirecotryURL).appendingPathExtension("json")
+		let timestampURL = URL(fileURLWithPath: "timestamps_ios", relativeTo: FileManager.documentoryDirecotryURL).appendingPathExtension("json")
+		var errorMessage = "";
+		print(dataVersionURL.path)
+		
+		if FileManager.default.fileExists(atPath: dataVersionURL.path) == false {
+			do {
+				try FileManager.default.copyItem(atPath: Bundle.main.path(forResource: "data_version", ofType: "json")!, toPath: dataVersionURL.path)
+				if let jsonData = try String(contentsOfFile: dataVersionURL.path).data(using: .utf8) {
+					do {
+						var dataVersionJson = try JSONSerialization.jsonObject(with: jsonData, options: .mutableContainers) as? [String:Any]
+						let today = Date()
+						let todayFormatter = DateFormatter()
+						todayFormatter.dateFormat = "YYYY-MM-dd"
+						dataVersionJson!["updated"] = todayFormatter.string(from:today) as AnyObject
+						for (key, value) in dataVersionJson! {
+							print("\(key):\(value)")
+						}
+						
+						let backToJSONData = try JSONSerialization.data(withJSONObject: dataVersionJson as Any)
+						let jsonString = NSString(data:backToJSONData, encoding: String.Encoding.utf8.rawValue) as Any
+						try backToJSONData.write(to: dataVersionURL,options: .atomicWrite)
+						print(jsonString)
+					} catch {
+						print(error.localizedDescription)
+					}
+				}
+			} catch {
+				errorMessage = errorMessage + ", " + error.localizedDescription
+			}
+
+			do {
+				try FileManager.default.copyItem(atPath: Bundle.main.path(forResource: "courses_ios", ofType: "json")!, toPath: courseURL.path)
+			} catch {
+				errorMessage = errorMessage + ", " + error.localizedDescription
+			}
+			
+			do {
+				try FileManager.default.copyItem(atPath: Bundle.main.path(forResource: "timestamps_ios", ofType: "json")!, toPath: timestampURL.path)
+			} catch {
+				errorMessage = errorMessage + ", " + error.localizedDescription
+			}
+		}else{
+			errorMessage = "0"
+		}
+		
+		return errorMessage
 	}
 }

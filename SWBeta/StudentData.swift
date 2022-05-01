@@ -53,7 +53,7 @@ class StudentData {
 			}
 		}else{
 			if getAllCompletedLessons.contains(lessonID) == true{
-				getAllCompletedLessons.remove(lessonID)
+				//getAllCompletedLessons.remove(lessonID)
 			}
 		}
 

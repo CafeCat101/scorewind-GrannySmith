@@ -44,7 +44,7 @@ class iCloudKeyValue: XCTestCase {
 	func testUpdateEnrolledCourses() throws {
 		let testCourseID = 22222
 		let testCourseIsCompelted = false
-		XCTAssertNoThrow(studentDataModel.updateEnrolledCourses(courseID: testCourseID, isCompleted: testCourseIsCompelted))
+		XCTAssertNoThrow(studentDataModel.updateEnrolledCourse(courseID: testCourseID, isCompleted: testCourseIsCompelted))
 		studentDataModel.backendReadAllKeys()
 	}
 	
