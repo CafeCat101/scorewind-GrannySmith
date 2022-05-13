@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct WelcomeView: View {
-	@State var currentPage: Page = .wizard
+	//@State var currentPage: Page = .wizard
 	@State private var showWelcome = true
 	@EnvironmentObject var scorewindData:ScorewindData
 	@State var screenMessage = "Welcome!"
@@ -26,13 +26,14 @@ struct WelcomeView: View {
 					}*/
 				}
 		}else{
-			if currentPage == .myCourses {
+			/*if currentPage == .myCourses {
 				MyCoursesView()
 					.transition(.scale)
 			}else{
 				WizardView()
 					.transition(.scale)
-			}
+			}*/
+			HomeView()
 		}
 	}
 }
@@ -150,7 +151,8 @@ extension WelcomeView {
 	func setupDataObjects(){
 		scorewindData.initiateTimestampsFromLocal()
 		if scorewindData.initiateCoursesFromLocal() {
-			currentPage = .myCourses
+			//currentPage = .myCourses
+			scorewindData.currentView = .myCourses
 			showWelcome = false
 		}
 	}

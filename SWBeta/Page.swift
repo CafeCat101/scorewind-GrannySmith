@@ -16,4 +16,5 @@ enum Page {
 	case readScoreAbility
 	case yesNoResult
 	case songChoice
+	case lessonFullScreen
 }

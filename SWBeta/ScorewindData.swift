@@ -21,6 +21,7 @@ class ScorewindData: ObservableObject {
 	let timestampWPURL = "https://scorewind.com/timestamps_ios.json"
 	let dataVersionWPURL = "https://scorewind.com/data_version.json"
 	@Published var studentData: StudentData
+	@Published var currentView = Page.myCourses
 	
 	init() {
 		print(courseURL.path)

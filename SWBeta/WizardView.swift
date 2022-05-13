@@ -8,13 +8,20 @@
 import SwiftUI
 
 struct WizardView: View {
-    var body: some View {
-        Text("Wizard")
-    }
+	var body: some View {
+		VStack {
+			Label("Scorewind", systemImage: "music.note")
+					.labelStyle(.titleAndIcon)
+			Spacer()
+			Text("Wizard View")
+			Spacer()
+		}
+		
+	}
 }
 
 struct WizardView_Previews: PreviewProvider {
-    static var previews: some View {
-        WizardView()
-    }
+	static var previews: some View {
+		WizardView()
+	}
 }
