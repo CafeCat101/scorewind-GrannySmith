@@ -32,8 +32,14 @@ struct MyCoursesView: View {
 							scorewindData.currentLesson = Lesson()
 							self.selectedTab = "TCourse"
 						}) {
-							Text(scorewindData.replaceCommonHTMLNumber(htmlString: course.title))
-								.foregroundColor(Color.black)
+							if course.id == scorewindData.currentCourse.id {
+								Text(scorewindData.replaceCommonHTMLNumber(htmlString: course.title))
+									.foregroundColor(Color.blue)
+							} else {
+								Text(scorewindData.replaceCommonHTMLNumber(htmlString: course.title))
+									.foregroundColor(Color.black)
+							}
+							
 						}
 					}
 				}

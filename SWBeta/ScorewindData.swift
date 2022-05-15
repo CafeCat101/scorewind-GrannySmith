@@ -13,6 +13,7 @@ class ScorewindData: ObservableObject {
 	@Published var currentLesson = Lesson()
 	@Published var previousCourse:Course = Course()
 	@Published var nextCourse:Course = Course()
+	@Published var currentTimestampRecs:[TimestampRec] = []
 	var allCourses:[Course] = []
 	var allTimestamps:[Timestamp] = []
 	let courseURL = URL(fileURLWithPath: "courses_ios", relativeTo: FileManager.documentoryDirecotryURL).appendingPathExtension("json")
@@ -173,5 +174,42 @@ class ScorewindData: ObservableObject {
 		}
 		
 		return errorMessage
+	}
+	
+	func setCurrentTimestampRecs() {
+		if allTimestamps.count > 0 {
+			for course in allTimestamps {
+				if course.id == currentCourse.id {
+					for lesson in course.lessons {
+						if lesson.id == currentLesson.id {
+							currentTimestampRecs = lesson.timestamps
+						}
+					}
+				}
+			}
+		}
+	}
+	
+	func timestampToJson()->String {
+		print("call ScoreWindData timestampToJson fun")
+		let encoder = JSONEncoder()
+		do{
+			let data = try encoder.encode(currentTimestampRecs)
+			print(String(data: data, encoding: .utf8)!)
+			print("========")
+			return String(data: data, encoding: .utf8)!
+		}catch let error{
+			print(error)
+			return ""
+		}
+		
+	}
+	
+	func findPreviousCourse(){
+		
+	}
+	
+	func findNextCourse(){
+	
 	}
 }

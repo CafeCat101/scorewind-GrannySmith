@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import WebKit
 
 struct CourseView: View {
 	@EnvironmentObject var scorewindData:ScorewindData
@@ -13,7 +14,9 @@ struct CourseView: View {
 	let screenSize: CGRect = UIScreen.main.bounds
 	@State private var OverviewLabelColor = Color.black
 	@State private var LessonsLabelColor = Color.gray
+	@State private var ContinueLabelColor = Color.gray
 	@Binding var selectedTab:String
+	@State private var selectedSection = courseSection.overview
 	
 	var body: some View {
 		VStack {
@@ -29,42 +32,51 @@ struct CourseView: View {
 			}*/
 			HStack {
 				Button(action: {
-					showOverview = true
-					OverviewLabelColor = Color.black
-					LessonsLabelColor = Color.gray
+					selectedSection = courseSection.overview
+					setSelectionLabelColor()
 				}) {
 					Text("Overview")
 						.font(.headline)
 						.fontWeight(.semibold)
 						.foregroundColor(OverviewLabelColor)
 				}
-				.frame(width: screenSize.width/2)
+				.frame(width: screenSize.width/3)
 				
 				Spacer()
 					.frame(width:5)
 				
 				Button(action: {
-					showOverview = false
-					OverviewLabelColor = Color.gray
-					LessonsLabelColor = Color.black
+					selectedSection = courseSection.lessons
+					setSelectionLabelColor()
 				}) {
 					Text("Lessons")
 						.font(.headline)
 						.fontWeight(.semibold)
 						.foregroundColor(LessonsLabelColor)
 				}
-				.frame(width: screenSize.width/2)
+				.frame(width: screenSize.width/3)
+				
+				Button(action: {
+					selectedSection = courseSection.continue
+					setSelectionLabelColor()
+				}) {
+					Text("Continue")
+						.font(.headline)
+						.fontWeight(.semibold)
+						.foregroundColor(ContinueLabelColor)
+				}
+				.frame(width: screenSize.width/3)
+				
 			}
 			.frame(height: screenSize.width/10)
 			
-			if showOverview {
+			if selectedSection == courseSection.overview {
 				HTMLString(htmlContent: scorewindData.removeWhatsNext(Text: scorewindData.currentCourse.content))
-			} else {
+			} else if selectedSection == courseSection.lessons{
 				List {
 					Section(header: Text("In this course...")) {
 						ForEach(scorewindData.currentCourse.lessons){ lesson in
 							Button(action: {
-								//self.isPresented = false
 								scorewindData.currentLesson = lesson
 								scorewindData.currentView = Page.lesson
 								self.selectedTab = "TLesson"
@@ -80,69 +92,54 @@ struct CourseView: View {
 						}
 					}
 				}
-			}
-			Spacer()
-		}
-		
-		/*
-		if goToView == Page.course {
-			TabView(selection: $selectedTab) {
-				VStack {
-					Text("\(scorewindData.replaceCommonHTMLNumber(htmlString: scorewindData.currentCourse.title))")
-						.font(.title2)
-						.foregroundColor(Color.black)
-					/*Button(action: {
-						//showNavigationGuide = true
-					}) {
-						Text("\(scorewindData.replaceCommonHTMLNumber(htmlString: scorewindData.currentCourse.title))")
-							.font(.title2)
-							.foregroundColor(Color.black)
-					}*/
-					HTMLString(htmlContent: scorewindData.removeWhatsNext(Text: scorewindData.currentCourse.content))
-					Spacer()
-				}
-				.tabItem {
-					Image(systemName: "note.text")
-					Text("Overview")
-				}.tag(1)
-				
-				VStack {
-					Button(action: {
-						//showNavigationGuide = true
-					}) {
-						Text("\(scorewindData.replaceCommonHTMLNumber(htmlString: scorewindData.currentCourse.title))")
-							.font(.title2)
-							.foregroundColor(Color.black)
+			} else if selectedSection == courseSection.continue {
+				List {
+					Section(header: Text("Next course")) {
+						Button(action: {
+							
+						}) {
+							Text("Next course's title")
+								.foregroundColor(Color.black)
+						}
 					}
-					List {
-						Section(header: Text("Content")) {
-							ForEach(scorewindData.currentCourse.lessons){ lesson in
-								Button(action: {
-									//self.isPresented = false
-									scorewindData.currentLesson = lesson
-									goToView = Page.lesson
-								}) {
-									if scorewindData.currentLesson.title == lesson.title {
-										Text(scorewindData.replaceCommonHTMLNumber(htmlString: lesson.title))
-											.foregroundColor(Color.green)
-									}else{
-										Text(scorewindData.replaceCommonHTMLNumber(htmlString: lesson.title))
-											.foregroundColor(Color.black)
-									}
-								}
-							}
+					
+					Section(header: Text("previous course")) {
+						Button(action: {
+							
+						}) {
+							Text("Previous course's title")
+								.foregroundColor(Color.black)
 						}
 					}
 				}
-				.tabItem {
-					Image(systemName: "music.note.list")
-					Text("Lessons") }.tag(2)
 			}
 			
-			//.edgesIgnoringSafeArea(.bottom)
-			
+			Spacer()
 		}
-		*/
+		.onAppear(perform: {
+			scorewindData.findPreviousCourse()
+			scorewindData.findNextCourse()
+		})
+	}
+	
+	private func setSelectionLabelColor() {
+		if selectedSection == courseSection.overview {
+			OverviewLabelColor = .black
+			LessonsLabelColor = .gray
+			ContinueLabelColor = .gray
+		}
+		
+		if selectedSection == courseSection.lessons {
+			OverviewLabelColor = .gray
+			LessonsLabelColor = .black
+			ContinueLabelColor = .gray
+		}
+		
+		if selectedSection == courseSection.continue {
+			OverviewLabelColor = .gray
+			LessonsLabelColor = .gray
+			ContinueLabelColor = .black
+		}
 	}
 }
 
@@ -151,4 +148,10 @@ struct CourseView_Previews: PreviewProvider {
 	static var previews: some View {
 		CourseView(selectedTab: $tab).environmentObject(ScorewindData())
 	}
+}
+
+enum courseSection {
+	case overview
+	case lessons
+	case `continue`
 }
