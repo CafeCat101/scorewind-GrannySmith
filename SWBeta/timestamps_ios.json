@@ -11901,64 +11901,7 @@
 								"id": 94453,
 								"scorewind_id": 13652,
 								"lesson_title": "G102.4.6 &#8211; Playing p i m a (arpeggio) with non-fixed position with one bar rest in between (Exercise)",
-								"time_stamps": [
-										{
-												"measure": 1,
-												"timestamp": 0,
-												"repeat": 0,
-												"notes": "",
-												"time_type": "piano"
-										},
-										{
-												"measure": 3,
-												"timestamp": 9.867,
-												"repeat": 0,
-												"notes": "",
-												"time_type": "piano"
-										},
-										{
-												"measure": 5,
-												"timestamp": 15.472,
-												"repeat": 0,
-												"notes": "",
-												"time_type": "piano"
-										},
-										{
-												"measure": 7,
-												"timestamp": 20.824,
-												"repeat": 0,
-												"notes": "",
-												"time_type": "piano"
-										},
-										{
-												"measure": 9,
-												"timestamp": 26.686,
-												"repeat": 0,
-												"notes": "",
-												"time_type": "piano"
-										},
-										{
-												"measure": 11,
-												"timestamp": 32.336,
-												"repeat": 0,
-												"notes": "",
-												"time_type": "piano"
-										},
-										{
-												"measure": 13,
-												"timestamp": 38.1,
-												"repeat": 0,
-												"notes": "",
-												"time_type": "piano"
-										},
-										{
-												"measure": 15,
-												"timestamp": 43.724,
-												"repeat": 0,
-												"notes": "",
-												"time_type": "piano"
-										}
-								],
+								"time_stamps": [],
 								"lesson_step": 6
 						}
 				]
