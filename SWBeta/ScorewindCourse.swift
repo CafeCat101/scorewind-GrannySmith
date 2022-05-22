@@ -76,6 +76,7 @@ struct Lesson: Codable, Identifiable{
 	var content: String
 	var composer: String
 	var video: String
+	var videoMP4: String
 	var scoreViewer: String
 	var image: String
 	var step: Int
@@ -86,7 +87,8 @@ struct Lesson: Codable, Identifiable{
 		case title = "lesson_title"
 		case content = "lesson_content"
 		case composer = "lesson_composer"
-		case video = "lesson_video"
+		case video = "lesson_mp3u8"
+		case videoMP4 = "lesson_video"
 		case scoreViewer = "lesson_score_viewer"
 		case image = "lesson_image"
 		case step = "lesson_step"
@@ -99,6 +101,7 @@ struct Lesson: Codable, Identifiable{
 		content = "Self study music is a joyful journey. It fills your soul, challenges your mind and gives you a path to share your passions. Self study is one of many ways to learn to play music. It’s affordable, and offers flexible studying hours. You can learn at your own pace, and develop your learning path based on your own interests. So, why wait, let’s start playing music!"
 		composer = "Scorewind Teacher"
 		video = "lesson/video"
+		videoMP4 = "lesson/videoMP4"
 		scoreViewer = "lesson/scoreViewer"
 		image = "lesson/image"
 		step = 1
