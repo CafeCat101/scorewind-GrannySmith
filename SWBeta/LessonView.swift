@@ -39,6 +39,11 @@ struct LessonView: View {
 				.onAppear(perform: {
 					setupPlayer()
 				})
+				.onDisappear(perform: {
+					print("debug- VideoPlayer onDisappear")
+					player.pause()
+					player.replaceCurrentItem(with: nil)
+				})
 				.background(.black)
 			
 			VStack {
