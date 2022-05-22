@@ -100,9 +100,11 @@ struct LessonView: View {
 		}
 		.onAppear(perform: {
 			viewModel.score = scorewindData.currentLesson.scoreViewer
+			scorewindData.setCurrentTimestampRecs()
 		})
 		.sheet(isPresented: $showLessonSheet, onDismiss: {
 			viewModel.score = scorewindData.currentLesson.scoreViewer
+			scorewindData.setCurrentTimestampRecs()
 			viewModel.highlightBar = 1
 			magnifyStep = 1
 			

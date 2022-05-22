@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C82DD60F283A03F700EF74E2 /* www in Resources */ = {isa = PBXBuildFile; fileRef = C82DD60E283A03F700EF74E2 /* www */; };
 		C8448A212818F70400597A6F /* data_version.json in Resources */ = {isa = PBXBuildFile; fileRef = C8448A202818F70400597A6F /* data_version.json */; };
 		C8448A27281BA3CD00597A6F /* timestamps_ios.json in Resources */ = {isa = PBXBuildFile; fileRef = C8448A26281BA3CD00597A6F /* timestamps_ios.json */; };
 		C8448A29281BA3DF00597A6F /* courses_ios.json in Resources */ = {isa = PBXBuildFile; fileRef = C8448A28281BA3DF00597A6F /* courses_ios.json */; };
@@ -51,6 +52,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		C82DD60E283A03F700EF74E2 /* www */ = {isa = PBXFileReference; lastKnownFileType = folder; path = www; sourceTree = "<group>"; };
 		C8448A202818F70400597A6F /* data_version.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = data_version.json; sourceTree = "<group>"; };
 		C8448A26281BA3CD00597A6F /* timestamps_ios.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = timestamps_ios.json; sourceTree = "<group>"; };
 		C8448A28281BA3DF00597A6F /* courses_ios.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = courses_ios.json; sourceTree = "<group>"; };
@@ -128,6 +130,7 @@
 		C87F6AFA27CA04420009DCA0 /* SWBeta */ = {
 			isa = PBXGroup;
 			children = (
+				C82DD60E283A03F700EF74E2 /* www */,
 				C8448A28281BA3DF00597A6F /* courses_ios.json */,
 				C8448A26281BA3CD00597A6F /* timestamps_ios.json */,
 				C8448A202818F70400597A6F /* data_version.json */,
@@ -267,6 +270,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C82DD60F283A03F700EF74E2 /* www in Resources */,
 				C8448A27281BA3CD00597A6F /* timestamps_ios.json in Resources */,
 				C87F6B0327CA04420009DCA0 /* Preview Assets.xcassets in Resources */,
 				C87F6B0027CA04420009DCA0 /* Assets.xcassets in Resources */,

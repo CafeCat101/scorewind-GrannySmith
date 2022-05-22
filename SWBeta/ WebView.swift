@@ -121,7 +121,7 @@ struct WebView: UIViewRepresentable, WebViewHandlerDelegate {
 				self.parent.viewModel.showWebTitle.send(title)
 			}*/
 			
-			print("didFinish")
+			print("[debug] didFinish")
 			
 			let encoder = JSONEncoder()
 			do{
@@ -129,35 +129,35 @@ struct WebView: UIViewRepresentable, WebViewHandlerDelegate {
 					let data = try encoder.encode(parent.scorewindData.currentTimestampRecs)
 					let dataJson = String(data: data, encoding: .utf8)!
 					let replacedString = dataJson.replacingOccurrences(of: "\"", with: #"\""#)
-					let javascriptFunction2 = "loadTimestamps(\"\(replacedString)\");"
+					let javascriptFunction2 = "[debug]loadTimestamps(\"\(replacedString)\");"
 					print(javascriptFunction2)
 					webView.evaluateJavaScript(javascriptFunction2) { (response, error) in
 						if let error = error {
-							print("Error calling javascript:loadTimestamps()")
+							print("[debug] Error calling javascript:loadTimestamps(\(replacedString)")
 							print(error.localizedDescription)
 						} else {
 							print("Called javascript:loadTimestamps()[webView]")
 						}
 					}
 				} else {
-					print("timestamps count 0")
+					print("[debug] timestamps count 0")
 				}
 				
 			}catch let error{
 				print(error)
 			}
 			
-			print("parent.viewModel.score: "+parent.viewModel.score)
+			print("[debug] parent.viewModel.score: "+parent.viewModel.score)
 			//print("parent.score:" + parent.score)
-			print("parent scorewindData scoreViewer:" + parent.scorewindData.currentLesson.scoreViewer)
+			print("[debug] parent scorewindData scoreViewer:" + parent.scorewindData.currentLesson.scoreViewer)
 			let javascriptFunction = "load_score_view(\"\(parent.scorewindData.currentLesson.scoreViewer)\");"
 			print(javascriptFunction)
 			webView.evaluateJavaScript(javascriptFunction) { (response, error) in
 				if let error = error {
-					print("Error calling javascript:load_score_view()")
+					print("[debug] Error calling javascript:load_score_view()")
 					print(error.localizedDescription)
 				} else {
-					print("Called javascript:load_score_view()")
+					print("[debug] Called javascript:load_score_view()")
 				}
 			}
 			
@@ -168,14 +168,14 @@ struct WebView: UIViewRepresentable, WebViewHandlerDelegate {
 			/* An observer that observes 'viewModel.valuePublisher' to get value from TextField and
 			 pass that value to web app by calling JavaScript function */
 			valueSubscriber = parent.viewModel.valuePublisher.receive(on: RunLoop.main).sink(receiveValue: { value in
-				let javascriptFunction = "valueGotFromIOS(\"\(value)\");"
+				let javascriptFunction = "[debug] valueGotFromIOS(\"\(value)\");"
 				print(javascriptFunction)
 				webView.evaluateJavaScript(javascriptFunction) { (response, error) in
 					if let error = error {
-						print("Error calling javascript:valueGotFromIOS()")
+						print("[debug] Error calling javascript:valueGotFromIOS()")
 						print(error.localizedDescription)
 					} else {
-						print("Called javascript:valueGotFromIOS()")
+						print("[debug] Called javascript:valueGotFromIOS()")
 					}
 				}
 			})
@@ -194,17 +194,17 @@ struct WebView: UIViewRepresentable, WebViewHandlerDelegate {
 			})
 			
 			loadSubscriber = parent.viewModel.loadPublisher.receive(on: RunLoop.main).sink(receiveValue: { value in
-				print("loadSuscriber")
-				let javascriptFunction = "load_score_view(\"\(value)\");"
+				print("[debug] loadSuscriber")
+				let javascriptFunction = "[debug] load_score_view(\"\(value)\");"
 				print(javascriptFunction)
 				webView.evaluateJavaScript(javascriptFunction) { (response, error) in
 					if let error = error {
-						print("Error calling javascript:load_score_view()")
+						print("[debug] Error calling javascript:load_score_view()")
 						print(error.localizedDescription)
 					} else {
-						print("Called javascript:load_score_view()")
+						print("[debug] Called javascript:load_score_view()")
 						//print("parent.score: "+self.parent.score)
-						print("parent.score: "+self.parent.scorewindData.currentLesson.scoreViewer)
+						print("[debug] parent.score: "+self.parent.scorewindData.currentLesson.scoreViewer)
 					}
 				}
 			})

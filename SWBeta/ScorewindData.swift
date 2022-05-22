@@ -183,6 +183,7 @@ class ScorewindData: ObservableObject {
 					for lesson in course.lessons {
 						if lesson.id == currentLesson.id {
 							currentTimestampRecs = lesson.timestamps
+							break
 						}
 					}
 				}

@@ -35,18 +35,29 @@ struct TimestampLesson: Codable, Identifiable {
 	}
 }
 
-struct TimestampRec: Codable, Identifiable {
-	var id = UUID()
+struct TimestampRec: Codable{
+	//var id = UUID()
 	var measure: Int
 	var timestamp: Double
-	var repeatCount: Int
+	//var `repeat`: Int
+	//var notes: String
+	//var type: String
 	
-	enum CodingKeys: String, CodingKey {
+	/*enum CodingKeys: String, CodingKey {
 		//case id = UUID()
 		case measure = "measure"
 		case timestamp = "timestamp"
 		case repeatCount = "repeat"
-	}
+		//case notes = "notes"
+		//case type = "time_type"
+	}*/
+	
+	/*init() {
+		id = UUID()
+		measure = 0
+		timestamp = 0.0
+		`repeat` = 0
+	}*/
 }
 
 
