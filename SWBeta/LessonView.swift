@@ -123,6 +123,19 @@ struct LessonView: View {
 		return decodedURL
 	}
 	
+	private func createTimeString(time: Float) -> String {
+		let timeRemainingFormatter: DateComponentsFormatter = {
+			let formatter = DateComponentsFormatter()
+			formatter.zeroFormattingBehavior = .pad
+			formatter.allowedUnits = [.minute, .second]
+			return formatter
+		}()
+		
+		let components = NSDateComponents()
+		components.second = Int(max(0.0, time))
+		return timeRemainingFormatter.string(from: components as DateComponents)!
+	}
+	
 	private func findMesaureByTimestamp(videoTime: Double)->Int{
 		var getMeasure = 0
 		for(index, theTime) in scorewindData.currentTimestampRecs.enumerated(){

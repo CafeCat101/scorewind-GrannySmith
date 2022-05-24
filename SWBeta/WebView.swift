@@ -1,8 +1,8 @@
 //
-//   WebView.swift
+//  WebView.swift
 //  SWBeta
 //
-//  Created by Leonore Yardimli on 2022/5/14.
+//  Created by Leonore Yardimli on 2022/5/24.
 //
 
 import Foundation
@@ -122,11 +122,10 @@ struct WebView: UIViewRepresentable, WebViewHandlerDelegate {
 			}*/
 			
 			print("[debug] didFinish")
-			
 			let encoder = JSONEncoder()
 			do{
-				if parent.scorewindData.currentTimestampRecs.count > 0 {
-					let data = try encoder.encode(parent.scorewindData.currentTimestampRecs)
+				if self.parent.scorewindData.currentTimestampRecs.count > 0 {
+					let data = try encoder.encode(self.parent.scorewindData.currentTimestampRecs)
 					let dataJson = String(data: data, encoding: .utf8)!
 					let replacedString = dataJson.replacingOccurrences(of: "\"", with: #"\""#)
 					let javascriptFunction2 = "[debug]loadTimestamps(\"\(replacedString)\");"
@@ -134,7 +133,7 @@ struct WebView: UIViewRepresentable, WebViewHandlerDelegate {
 					webView.evaluateJavaScript(javascriptFunction2) { (response, error) in
 						if let error = error {
 							print("[debug] Error calling javascript:loadTimestamps(\(replacedString)")
-							print(error.localizedDescription)
+							print(error)
 						} else {
 							print("Called javascript:loadTimestamps()[webView]")
 						}
@@ -146,6 +145,7 @@ struct WebView: UIViewRepresentable, WebViewHandlerDelegate {
 			}catch let error{
 				print(error)
 			}
+			
 			
 			print("[debug] parent.viewModel.score: "+parent.viewModel.score)
 			//print("parent.score:" + parent.score)

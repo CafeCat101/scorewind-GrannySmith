@@ -60,4 +60,10 @@ struct TimestampRec: Codable{
 	}*/
 }
 
+struct TestTimestamp:Codable{
+	//var id = UUID()
+	var measure: Int
+	var timestamp: Double
+}
+
 
