@@ -15,6 +15,9 @@ struct MyCoursesView: View {
 		VStack {
 			Label("Scorewind", systemImage: "music.note")
 					.labelStyle(.titleAndIcon)
+			Spacer()
+			Text("My Courses View")
+			Spacer()
 			/*if scorewindData.studentData.getInstrumentChoice() == "" {
 			 Text("== no instrument choice ==")
 			 }else{
@@ -23,30 +26,8 @@ struct MyCoursesView: View {
 			/*ForEach(scorewindData.allCourses, id: \.id) { course in
 			 Text(scorewindData.replaceCommonHTMLNumber(htmlString: course.title))
 			 }*/
-			List {
-				Section(header: Text("All")) {
-					ForEach(scorewindData.allCourses) { course in
-						Button(action: {
-							scorewindData.currentCourse = course
-							scorewindData.currentView = Page.course
-							scorewindData.currentLesson = Lesson()
-							self.selectedTab = "TCourse"
-						}) {
-							if course.id == scorewindData.currentCourse.id {
-								Text(scorewindData.replaceCommonHTMLNumber(htmlString: course.title))
-									.foregroundColor(Color.blue)
-							} else {
-								Text(scorewindData.replaceCommonHTMLNumber(htmlString: course.title))
-									.foregroundColor(Color.black)
-							}
-							
-						}
-					}
-				}
-			}
-			.listStyle(GroupedListStyle())
+			
 		}
-		
 		
 	}
 }

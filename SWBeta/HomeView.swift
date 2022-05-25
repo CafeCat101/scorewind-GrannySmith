@@ -9,12 +9,12 @@ import SwiftUI
 
 struct HomeView: View {
 	@EnvironmentObject var scorewindData:ScorewindData
-	@State private var selectedTab = "TMyCourses"
+	@State private var selectedTab = "TWizard"
 	
 	var body: some View {
 		if scorewindData.currentView != Page.lessonFullScreen {
 			TabView(selection: $selectedTab) {
-				WizardView()
+				WizardView(selectedTab: $selectedTab)
 					.tabItem {
 						Image(systemName: "eyes")
 						Text("Wizard")
