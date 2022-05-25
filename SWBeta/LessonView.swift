@@ -23,8 +23,6 @@ struct LessonView: View {
 	
 	var body: some View {
 		VStack {
-			/*Text("\(scorewindData.replaceCommonHTMLNumber(htmlString: scorewindData.currentLesson.title))")
-			 .font(.title2)*/
 			Button(action:{
 				showLessonSheet = true
 			}) {
@@ -90,29 +88,11 @@ struct LessonView: View {
 			.simultaneousGesture(
 				MagnificationGesture()
 					.updating($magnifyBy) { currentState, gestureState, transaction in
-						//maginificationSensitivity += 1
 						gestureState = currentState
 						print("step \(magnifyStep)")
 						print("magnifyBy \(magnifyBy)")
-						/*if maginificationStep == 50 {
-						 if magnifyBy > viewModel.magnification {
-						 viewModel.zoomInPublisher.send("Zoom In")
-						 print("zoom in")
-						 }
-						 
-						 if magnifyBy < viewModel.magnification {
-						 viewModel.zoomInPublisher.send("Zoom Out")
-						 print("zoom out")
-						 }
-						 
-						 viewModel.magnification = magnifyBy
-						 }*/
 					}
 					.onChanged() { _ in
-						/*maginificationStep += 1
-						 if maginificationStep > 50 {
-						 maginificationStep = 1
-						 }*/
 						magnifyStep += 1
 						if magnifyStep > 50 {
 							if magnifyBy >= 1 {
@@ -210,18 +190,7 @@ struct LessonView: View {
 	
 	private func setupPlayer(){
 		watchTime = ""
-		
-		/*player = AVPlayer(url: URL(string: decodeVideoURL(videoURL: scorewindData.currentLesson.video))!)
-		
-		player.addPeriodicTimeObserver(forInterval: CMTime(value: 1, timescale: 3), queue: .main, using: { time in
-			let catchTime = time.seconds
-			let atMeasure = findMesaureByTimestamp(videoTime: catchTime)
-			self.viewModel.valuePublisher.send(String(atMeasure))
-			self.viewModel.highlightBar = atMeasure
-			watchTime = String(format: "%.3f", Float(catchTime))//createTimeString(time: Float(time.seconds))
-			print("find measure:"+String(atMeasure))
-		})
-		viewModel.videoPlayer = player*/
+
 		viewModel.videoPlayer = AVPlayer(url: URL(string: decodeVideoURL(videoURL: scorewindData.currentLesson.video))!)
 		viewModel.videoPlayer!.addPeriodicTimeObserver(forInterval: CMTime(value: 1, timescale: 3), queue: .main, using: { time in
 			let catchTime = time.seconds

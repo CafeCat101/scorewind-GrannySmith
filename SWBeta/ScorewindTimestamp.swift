@@ -39,18 +39,27 @@ struct TimestampRec: Codable{
 	//var id = UUID()
 	var measure: Int
 	var timestamp: Double
-	//var `repeat`: Int
-	//var notes: String
-	//var type: String
+	var repeatCount: Int
+	var notes: String?
+	var type: String?
 	
-	/*enum CodingKeys: String, CodingKey {
+	/*requiredinit(from decoder: Decoder) throws {
+		let container = try decoder.container(keyedBy: CodingKey.self)
+		if let notes = try container.decodeIfPresent(String.self, forkey: .notes) {
+			self.notes = notes
+		} else {
+			self.notes = nil
+		}
+	}*/
+	
+	enum CodingKeys: String, CodingKey {
 		//case id = UUID()
 		case measure = "measure"
 		case timestamp = "timestamp"
 		case repeatCount = "repeat"
-		//case notes = "notes"
-		//case type = "time_type"
-	}*/
+		case notes = "notes"
+		case type = "time_type"
+	}
 	
 	/*init() {
 		id = UUID()
