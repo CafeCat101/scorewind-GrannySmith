@@ -78,6 +78,7 @@ struct CourseView: View {
 						ForEach(scorewindData.currentCourse.lessons){ lesson in
 							Button(action: {
 								scorewindData.currentLesson = lesson
+								scorewindData.setCurrentTimestampRecs()
 								scorewindData.currentView = Page.lesson
 								self.selectedTab = "TLesson"
 							}) {

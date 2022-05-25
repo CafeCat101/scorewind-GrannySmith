@@ -11,10 +11,10 @@ import AVKit
 struct LessonView: View {
 	@EnvironmentObject var scorewindData:ScorewindData
 	@State private var showLessonSheet = false
-	@State private var player = AVPlayer()
+	//@State private var player = AVPlayer()
 	let screenSize: CGRect = UIScreen.main.bounds
 	@State private var watchTime = ""
-	@ObservedObject var viewModel = ViewModel()
+	@StateObject var viewModel = ViewModel()
 	@State private var showScore = false
 	@State private var startPos:CGPoint = .zero
 	@State private var isSwipping = true
@@ -34,15 +34,16 @@ struct LessonView: View {
 					.foregroundColor(.black)
 			}
 			
-			VideoPlayer(player: player)
+			VideoPlayer(player: viewModel.videoPlayer)
 				.frame(height: screenSize.height*0.35)
 				.onAppear(perform: {
+					print("VideoPlayer onAppear")
 					setupPlayer()
 				})
 				.onDisappear(perform: {
 					print("debug- VideoPlayer onDisappear")
-					player.pause()
-					player.replaceCurrentItem(with: nil)
+					viewModel.videoPlayer!.pause()
+					viewModel.videoPlayer!.replaceCurrentItem(with: nil)
 				})
 				.background(.black)
 			
@@ -50,7 +51,7 @@ struct LessonView: View {
 				if showScore == false {
 					LessonTextView()
 				}else {
-					LessonScoreView(viewModel: viewModel,player: $player)
+					LessonScoreView(viewModel: viewModel)
 				}
 			}
 			.simultaneousGesture(
@@ -80,36 +81,85 @@ struct LessonView: View {
 							//right
 							withAnimation{
 								showScore = false
+								viewModel.videoPlayer?.pause()
 							}
 						}
 						self.isSwipping.toggle()
 					}
 			)
-			
-			/*Spacer()
-			 
-			 Text("lesson content")
-			 Button("Test full screen mode") {
-			 scorewindData.currentView = Page.lessonFullScreen
-			 }
-			 Button("Test tab view mode") {
-			 scorewindData.currentView = Page.lesson
-			 }
-			 */
+			.simultaneousGesture(
+				MagnificationGesture()
+					.updating($magnifyBy) { currentState, gestureState, transaction in
+						//maginificationSensitivity += 1
+						gestureState = currentState
+						print("step \(magnifyStep)")
+						print("magnifyBy \(magnifyBy)")
+						/*if maginificationStep == 50 {
+						 if magnifyBy > viewModel.magnification {
+						 viewModel.zoomInPublisher.send("Zoom In")
+						 print("zoom in")
+						 }
+						 
+						 if magnifyBy < viewModel.magnification {
+						 viewModel.zoomInPublisher.send("Zoom Out")
+						 print("zoom out")
+						 }
+						 
+						 viewModel.magnification = magnifyBy
+						 }*/
+					}
+					.onChanged() { _ in
+						/*maginificationStep += 1
+						 if maginificationStep > 50 {
+						 maginificationStep = 1
+						 }*/
+						magnifyStep += 1
+						if magnifyStep > 50 {
+							if magnifyBy >= 1 {
+								viewModel.zoomInPublisher.send("Zoom In")
+							}
+							
+							if magnifyBy < 1 {
+								viewModel.zoomInPublisher.send("Zoom Out")
+							}
+							
+							magnifyStep = 1
+						}
+					}
+					.onEnded { value in
+						//showScoreMenu.toggle()
+						print("maginification \(value)")
+						//maginificationStep = 1
+						/*if value>magnifyBy {
+						 viewModel.zoomInPublisher.send("Zoom In")
+						 }
+						 
+						 if value<magnifyBy {
+						 viewModel.zoomInPublisher.send("Zoom Out")
+						 }*/
+						if value >= 1 {
+							viewModel.zoomInPublisher.send("Zoom In")
+						}
+						
+						if value < 1 {
+							viewModel.zoomInPublisher.send("Zoom Out")
+						}
+					}
+			)
 			Spacer()
 		}
 		.onAppear(perform: {
 			viewModel.score = scorewindData.currentLesson.scoreViewer
-			scorewindData.setCurrentTimestampRecs()
 		})
 		.sheet(isPresented: $showLessonSheet, onDismiss: {
 			viewModel.score = scorewindData.currentLesson.scoreViewer
-			scorewindData.setCurrentTimestampRecs()
 			viewModel.highlightBar = 1
 			magnifyStep = 1
 			
-			player.pause()
-			player.replaceCurrentItem(with: nil)
+			//player.pause()
+			//player.replaceCurrentItem(with: nil)
+			viewModel.videoPlayer?.pause()
+			viewModel.videoPlayer?.replaceCurrentItem(with: nil)
 			setupPlayer()
 		}){
 			LessonSheetView(isPresented: self.$showLessonSheet)
@@ -161,7 +211,7 @@ struct LessonView: View {
 	private func setupPlayer(){
 		watchTime = ""
 		
-		player = AVPlayer(url: URL(string: decodeVideoURL(videoURL: scorewindData.currentLesson.video))!)
+		/*player = AVPlayer(url: URL(string: decodeVideoURL(videoURL: scorewindData.currentLesson.video))!)
 		
 		player.addPeriodicTimeObserver(forInterval: CMTime(value: 1, timescale: 3), queue: .main, using: { time in
 			let catchTime = time.seconds
@@ -171,7 +221,16 @@ struct LessonView: View {
 			watchTime = String(format: "%.3f", Float(catchTime))//createTimeString(time: Float(time.seconds))
 			print("find measure:"+String(atMeasure))
 		})
-		viewModel.videoPlayer = player
+		viewModel.videoPlayer = player*/
+		viewModel.videoPlayer = AVPlayer(url: URL(string: decodeVideoURL(videoURL: scorewindData.currentLesson.video))!)
+		viewModel.videoPlayer!.addPeriodicTimeObserver(forInterval: CMTime(value: 1, timescale: 3), queue: .main, using: { time in
+			let catchTime = time.seconds
+			let atMeasure = findMesaureByTimestamp(videoTime: catchTime)
+			self.viewModel.valuePublisher.send(String(atMeasure))
+			self.viewModel.highlightBar = atMeasure
+			watchTime = String(format: "%.3f", Float(catchTime))//createTimeString(time: Float(time.seconds))
+			print("find measure:"+String(atMeasure))
+		})
 	}
 }
 

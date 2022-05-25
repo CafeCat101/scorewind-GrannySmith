@@ -19,6 +19,7 @@ struct LessonSheetView: View {
 						Button(action: {
 							self.isPresented = false
 							scorewindData.currentLesson = lesson
+							scorewindData.setCurrentTimestampRecs()
 						}) {
 							if scorewindData.currentLesson.title == lesson.title {
 								Text(scorewindData.replaceCommonHTMLNumber(htmlString: lesson.title))

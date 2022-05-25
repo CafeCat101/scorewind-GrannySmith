@@ -19,7 +19,7 @@ class ViewModel: ObservableObject {
 	var timestampPublisher = PassthroughSubject<String, Never>()
 	var score:String = ""
 	var highlightBar = 1
-	var videoPlayer: AVPlayer?
+	@Published var videoPlayer: AVPlayer?
 	
 	func playerGoTo(timestamp:Double){
 		print("playerGoTo()[ViewModel]")
@@ -40,3 +40,4 @@ enum WebViewNavigation {
 enum WebUrlType {
 	case localUrl, publicUrl
 }
+

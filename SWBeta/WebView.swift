@@ -121,43 +121,38 @@ struct WebView: UIViewRepresentable, WebViewHandlerDelegate {
 				self.parent.viewModel.showWebTitle.send(title)
 			}*/
 			
-			print("[debug] didFinish")
+			print("didFinish")
+			
 			let encoder = JSONEncoder()
 			do{
-				if self.parent.scorewindData.currentTimestampRecs.count > 0 {
-					let data = try encoder.encode(self.parent.scorewindData.currentTimestampRecs)
-					let dataJson = String(data: data, encoding: .utf8)!
-					let replacedString = dataJson.replacingOccurrences(of: "\"", with: #"\""#)
-					let javascriptFunction2 = "[debug]loadTimestamps(\"\(replacedString)\");"
-					print(javascriptFunction2)
-					webView.evaluateJavaScript(javascriptFunction2) { (response, error) in
-						if let error = error {
-							print("[debug] Error calling javascript:loadTimestamps(\(replacedString)")
-							print(error)
-						} else {
-							print("Called javascript:loadTimestamps()[webView]")
-						}
+				let data = try encoder.encode(parent.scorewindData.currentTimestampRecs)
+				let dataJson = String(data: data, encoding: .utf8)!
+				let replacedString = dataJson.replacingOccurrences(of: "\"", with: #"\""#)
+				let javascriptFunction2 = "loadTimestamps(\"\(replacedString)\");"
+				print(javascriptFunction2)
+				webView.evaluateJavaScript(javascriptFunction2) { (response, error) in
+					if let error = error {
+						print("Error calling javascript:loadTimestamps()")
+						print(error.localizedDescription)
+					} else {
+						print("Called javascript:loadTimestamps()[webView]")
 					}
-				} else {
-					print("[debug] timestamps count 0")
 				}
-				
 			}catch let error{
 				print(error)
 			}
 			
-			
-			print("[debug] parent.viewModel.score: "+parent.viewModel.score)
+			print("parent.viewModel.score: "+parent.viewModel.score)
 			//print("parent.score:" + parent.score)
-			print("[debug] parent scorewindData scoreViewer:" + parent.scorewindData.currentLesson.scoreViewer)
+			print("parent scorewindData scoreViewer:" + parent.scorewindData.currentLesson.scoreViewer)
 			let javascriptFunction = "load_score_view(\"\(parent.scorewindData.currentLesson.scoreViewer)\");"
 			print(javascriptFunction)
 			webView.evaluateJavaScript(javascriptFunction) { (response, error) in
 				if let error = error {
-					print("[debug] Error calling javascript:load_score_view()")
+					print("Error calling javascript:load_score_view()")
 					print(error.localizedDescription)
 				} else {
-					print("[debug] Called javascript:load_score_view()")
+					print("Called javascript:load_score_view()")
 				}
 			}
 			
@@ -168,14 +163,14 @@ struct WebView: UIViewRepresentable, WebViewHandlerDelegate {
 			/* An observer that observes 'viewModel.valuePublisher' to get value from TextField and
 			 pass that value to web app by calling JavaScript function */
 			valueSubscriber = parent.viewModel.valuePublisher.receive(on: RunLoop.main).sink(receiveValue: { value in
-				let javascriptFunction = "[debug] valueGotFromIOS(\"\(value)\");"
+				let javascriptFunction = "valueGotFromIOS(\"\(value)\");"
 				print(javascriptFunction)
 				webView.evaluateJavaScript(javascriptFunction) { (response, error) in
 					if let error = error {
-						print("[debug] Error calling javascript:valueGotFromIOS()")
+						print("Error calling javascript:valueGotFromIOS()")
 						print(error.localizedDescription)
 					} else {
-						print("[debug] Called javascript:valueGotFromIOS()")
+						print("Called javascript:valueGotFromIOS()")
 					}
 				}
 			})
@@ -194,17 +189,17 @@ struct WebView: UIViewRepresentable, WebViewHandlerDelegate {
 			})
 			
 			loadSubscriber = parent.viewModel.loadPublisher.receive(on: RunLoop.main).sink(receiveValue: { value in
-				print("[debug] loadSuscriber")
-				let javascriptFunction = "[debug] load_score_view(\"\(value)\");"
+				print("loadSuscriber")
+				let javascriptFunction = "load_score_view(\"\(value)\");"
 				print(javascriptFunction)
 				webView.evaluateJavaScript(javascriptFunction) { (response, error) in
 					if let error = error {
-						print("[debug] Error calling javascript:load_score_view()")
+						print("Error calling javascript:load_score_view()")
 						print(error.localizedDescription)
 					} else {
-						print("[debug] Called javascript:load_score_view()")
+						print("Called javascript:load_score_view()")
 						//print("parent.score: "+self.parent.score)
-						print("[debug] parent.score: "+self.parent.scorewindData.currentLesson.scoreViewer)
+						print("parent.score: "+self.parent.scorewindData.currentLesson.scoreViewer)
 					}
 				}
 			})
