@@ -37,10 +37,12 @@ struct LessonView: View {
 			VideoPlayer(player: viewModel.videoPlayer)
 				.frame(height: screenSize.height*0.35)
 				.onAppear(perform: {
+					//VideoPlayer onAppear when comeing from anohter tab view, not when the sheet disappears
 					print("[debug] VideoPlayer onAppear")
-					setupPlayer()
+					//setupPlayer()
 				})
 				.onDisappear(perform: {
+					//VideoPlayer disappears when go to another tab view, not when sheet appears
 					print("[debug] VideoPlayer onDisappear")
 					viewModel.videoPlayer!.pause()
 					viewModel.videoPlayer!.replaceCurrentItem(with: nil)
@@ -75,15 +77,15 @@ struct LessonView: View {
 							//left
 							withAnimation{
 								showScore = true
-								scorewindData.currentView = Page.lessonFullScreen
+								//scorewindData.currentView = Page.lessonFullScreen
 							}
 						}
 						else if self.startPos.x < gesture.location.x && yDist < xDist {
 							//right
-							viewModel.videoPlayer?.pause()
+							//viewModel.videoPlayer?.pause()
 							withAnimation{
 								showScore = false
-								scorewindData.currentView = Page.lesson
+								//scorewindData.currentView = Page.lesson
 							}
 						}
 						self.isSwipping.toggle()
@@ -135,6 +137,7 @@ struct LessonView: View {
 		.onAppear(perform: {
 			print("[debug] LessonView onAppear")
 			viewModel.score = scorewindData.currentLesson.scoreViewer
+			setupPlayer()
 		})
 		.sheet(isPresented: $showLessonSheet, onDismiss: {
 			viewModel.score = scorewindData.currentLesson.scoreViewer
