@@ -23,23 +23,25 @@ struct LessonView: View {
 	
 	var body: some View {
 		VStack {
-			Button(action:{
-				showLessonSheet = true
-			}) {
-				Label("\(scorewindData.replaceCommonHTMLNumber(htmlString: scorewindData.currentLesson.title))", systemImage: "list.bullet.circle")
-					.labelStyle(.titleAndIcon)
-					.font(.title2)
-					.foregroundColor(.black)
+			if scorewindData.currentView == Page.lesson {
+				Button(action:{
+					showLessonSheet = true
+				}) {
+					Label("\(scorewindData.replaceCommonHTMLNumber(htmlString: scorewindData.currentLesson.title))", systemImage: "list.bullet.circle")
+						.labelStyle(.titleAndIcon)
+						.font(.title2)
+						.foregroundColor(.black)
+				}
 			}
 			
 			VideoPlayer(player: viewModel.videoPlayer)
 				.frame(height: screenSize.height*0.35)
 				.onAppear(perform: {
-					print("VideoPlayer onAppear")
+					print("[debug] VideoPlayer onAppear")
 					setupPlayer()
 				})
 				.onDisappear(perform: {
-					print("debug- VideoPlayer onDisappear")
+					print("[debug] VideoPlayer onDisappear")
 					viewModel.videoPlayer!.pause()
 					viewModel.videoPlayer!.replaceCurrentItem(with: nil)
 				})
@@ -73,13 +75,15 @@ struct LessonView: View {
 							//left
 							withAnimation{
 								showScore = true
+								scorewindData.currentView = Page.lessonFullScreen
 							}
 						}
 						else if self.startPos.x < gesture.location.x && yDist < xDist {
 							//right
+							viewModel.videoPlayer?.pause()
 							withAnimation{
 								showScore = false
-								viewModel.videoPlayer?.pause()
+								scorewindData.currentView = Page.lesson
 							}
 						}
 						self.isSwipping.toggle()
@@ -129,6 +133,7 @@ struct LessonView: View {
 			Spacer()
 		}
 		.onAppear(perform: {
+			print("[debug] LessonView onAppear")
 			viewModel.score = scorewindData.currentLesson.scoreViewer
 		})
 		.sheet(isPresented: $showLessonSheet, onDismiss: {
@@ -190,7 +195,7 @@ struct LessonView: View {
 	
 	private func setupPlayer(){
 		watchTime = ""
-
+		
 		viewModel.videoPlayer = AVPlayer(url: URL(string: decodeVideoURL(videoURL: scorewindData.currentLesson.video))!)
 		viewModel.videoPlayer!.addPeriodicTimeObserver(forInterval: CMTime(value: 1, timescale: 3), queue: .main, using: { time in
 			let catchTime = time.seconds
