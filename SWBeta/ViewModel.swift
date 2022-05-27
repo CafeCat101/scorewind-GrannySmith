@@ -18,7 +18,7 @@ class ViewModel: ObservableObject {
 	var zoomInPublisher = PassthroughSubject<String, Never>()
 	var timestampPublisher = PassthroughSubject<String, Never>()
 	var score:String = ""
-	var highlightBar = 1
+	//var highlightBar = 1 //doesn't need this now. measure is found by playback time. keep it incase we'll track it as well.
 	@Published var videoPlayer: AVPlayer?
 	
 	func playerGoTo(timestamp:Double){

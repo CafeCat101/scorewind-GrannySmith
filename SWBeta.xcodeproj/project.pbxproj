@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		C82DD60F283A03F700EF74E2 /* www in Resources */ = {isa = PBXBuildFile; fileRef = C82DD60E283A03F700EF74E2 /* www */; };
 		C82DD611283BF55000EF74E2 /* WebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C82DD610283BF55000EF74E2 /* WebView.swift */; };
+		C82DD6132840919900EF74E2 /* MyTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = C82DD6122840919900EF74E2 /* MyTheme.swift */; };
 		C8448A212818F70400597A6F /* data_version.json in Resources */ = {isa = PBXBuildFile; fileRef = C8448A202818F70400597A6F /* data_version.json */; };
 		C8448A27281BA3CD00597A6F /* timestamps_ios.json in Resources */ = {isa = PBXBuildFile; fileRef = C8448A26281BA3CD00597A6F /* timestamps_ios.json */; };
 		C8448A29281BA3DF00597A6F /* courses_ios.json in Resources */ = {isa = PBXBuildFile; fileRef = C8448A28281BA3DF00597A6F /* courses_ios.json */; };
@@ -54,6 +55,7 @@
 /* Begin PBXFileReference section */
 		C82DD60E283A03F700EF74E2 /* www */ = {isa = PBXFileReference; lastKnownFileType = folder; path = www; sourceTree = "<group>"; };
 		C82DD610283BF55000EF74E2 /* WebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebView.swift; sourceTree = "<group>"; };
+		C82DD6122840919900EF74E2 /* MyTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyTheme.swift; sourceTree = "<group>"; };
 		C8448A202818F70400597A6F /* data_version.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = data_version.json; sourceTree = "<group>"; };
 		C8448A26281BA3CD00597A6F /* timestamps_ios.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = timestamps_ios.json; sourceTree = "<group>"; };
 		C8448A28281BA3DF00597A6F /* courses_ios.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = courses_ios.json; sourceTree = "<group>"; };
@@ -160,6 +162,7 @@
 				C87F6B8227DE05BF0009DCA0 /* FileManager.swift */,
 				C87F6B7627D1C25A0009DCA0 /* ScorewindCourse.swift */,
 				C87F6B8027DD9FE20009DCA0 /* ScorewindTimestamp.swift */,
+				C82DD6122840919900EF74E2 /* MyTheme.swift */,
 			);
 			path = SWBeta;
 			sourceTree = "<group>";
@@ -302,6 +305,7 @@
 				C87F6B7727D1C25A0009DCA0 /* ScorewindCourse.swift in Sources */,
 				C87F6B6D27D1BDB30009DCA0 /* CourseView.swift in Sources */,
 				C87F6B6927CCEA800009DCA0 /* YesNoType.swift in Sources */,
+				C82DD6132840919900EF74E2 /* MyTheme.swift in Sources */,
 				C82DD611283BF55000EF74E2 /* WebView.swift in Sources */,
 				C8448A67282BFA7F00597A6F /* HTMLString.swift in Sources */,
 				C8448A69282E111400597A6F /* HomeView.swift in Sources */,

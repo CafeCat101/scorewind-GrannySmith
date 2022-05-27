@@ -80,6 +80,7 @@ struct CourseView: View {
 								scorewindData.currentLesson = lesson
 								scorewindData.setCurrentTimestampRecs()
 								scorewindData.currentView = Page.lesson
+								scorewindData.lastPlaybackTime = 0.0
 								self.selectedTab = "TLesson"
 							}) {
 								if scorewindData.currentLesson.title == lesson.title {

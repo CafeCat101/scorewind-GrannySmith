@@ -34,20 +34,38 @@ struct LessonView: View {
 				}
 			}
 			
-			VideoPlayer(player: viewModel.videoPlayer)
-				.frame(height: screenSize.height*0.35)
-				.onAppear(perform: {
-					//VideoPlayer onAppear when comeing from anohter tab view, not when the sheet disappears
-					print("[debug] VideoPlayer onAppear")
-					//setupPlayer()
-				})
-				.onDisappear(perform: {
-					//VideoPlayer disappears when go to another tab view, not when sheet appears
-					print("[debug] VideoPlayer onDisappear")
-					viewModel.videoPlayer!.pause()
-					viewModel.videoPlayer!.replaceCurrentItem(with: nil)
-				})
-				.background(.black)
+			if scorewindData.currentView == Page.lesson {
+				VideoPlayer(player: viewModel.videoPlayer)
+					.frame(height: screenSize.height*0.35)
+					.onAppear(perform: {
+						//VideoPlayer onAppear when comeing from anohter tab view, not when the sheet disappears
+						print("[debug] VideoPlayer onAppear")
+						//setupPlayer()
+					})
+					.onDisappear(perform: {
+						//VideoPlayer disappears when go to another tab view, not when sheet appears
+						print("[debug] VideoPlayer onDisappear")
+						viewModel.videoPlayer!.pause()
+						viewModel.videoPlayer!.replaceCurrentItem(with: nil)
+					})
+					.background(.black)
+			} else {
+				VideoPlayer(player: viewModel.videoPlayer)
+					.frame(height: screenSize.height*0.35)
+					.onAppear(perform: {
+						//VideoPlayer onAppear when comeing from anohter tab view, not when the sheet disappears
+						print("[debug] VideoPlayer onAppear")
+						//setupPlayer()
+					})
+					.onDisappear(perform: {
+						//VideoPlayer disappears when go to another tab view, not when sheet appears
+						print("[debug] VideoPlayer onDisappear")
+						viewModel.videoPlayer!.pause()
+						viewModel.videoPlayer!.replaceCurrentItem(with: nil)
+					})
+					.background(.black)
+					.overlay(titleOverlay, alignment: .topLeading)
+			}
 			
 			VStack {
 				if showScore == false {
@@ -138,17 +156,46 @@ struct LessonView: View {
 			print("[debug] LessonView onAppear")
 			viewModel.score = scorewindData.currentLesson.scoreViewer
 			setupPlayer()
+			if scorewindData.lastViewAtScore == true {
+				if scorewindData.currentLesson.scoreViewer.isEmpty {
+					showScore = false
+					scorewindData.lastViewAtScore = false
+				} else {
+					showScore = true
+				}
+			}
+			if scorewindData.lastPlaybackTime > 0.0 {
+				print("[debug] LessonView, call viewModel.playerGoTo")
+				viewModel.playerGoTo(timestamp: scorewindData.lastPlaybackTime)
+			}
+		})
+		.onDisappear(perform: {
+			//scorewindData.lastViewAtScore = showScore
 		})
 		.sheet(isPresented: $showLessonSheet, onDismiss: {
-			viewModel.score = scorewindData.currentLesson.scoreViewer
-			viewModel.highlightBar = 1
-			magnifyStep = 1
+			//viewModel.score = scorewindData.currentLesson.scoreViewer
+			//viewModel.highlightBar = 1
+			//magnifyStep = 1
 			
 			//player.pause()
 			//player.replaceCurrentItem(with: nil)
-			viewModel.videoPlayer?.pause()
-			viewModel.videoPlayer?.replaceCurrentItem(with: nil)
-			setupPlayer()
+			print("[debug] lastPlaybackTime\(scorewindData.lastPlaybackTime)")
+			if scorewindData.lastPlaybackTime == 0.0 {
+				viewModel.score = scorewindData.currentLesson.scoreViewer
+				//viewModel.highlightBar = 1
+				magnifyStep = 1
+				viewModel.videoPlayer?.pause()
+				viewModel.videoPlayer?.replaceCurrentItem(with: nil)
+				
+				if scorewindData.currentLesson.scoreViewer.isEmpty {
+					showScore = false
+					scorewindData.lastViewAtScore = false
+				} else {
+					showScore = true
+				}
+				
+				setupPlayer()
+			}
 		}){
 			LessonSheetView(isPresented: self.$showLessonSheet)
 		}
@@ -202,12 +249,30 @@ struct LessonView: View {
 		viewModel.videoPlayer = AVPlayer(url: URL(string: decodeVideoURL(videoURL: scorewindData.currentLesson.video))!)
 		viewModel.videoPlayer!.addPeriodicTimeObserver(forInterval: CMTime(value: 1, timescale: 3), queue: .main, using: { time in
 			let catchTime = time.seconds
-			let atMeasure = findMesaureByTimestamp(videoTime: catchTime)
-			self.viewModel.valuePublisher.send(String(atMeasure))
-			self.viewModel.highlightBar = atMeasure
+			scorewindData.lastPlaybackTime = catchTime
+			
+			if scorewindData.currentTimestampRecs.count > 0 {
+				let atMeasure = findMesaureByTimestamp(videoTime: catchTime)
+				self.viewModel.valuePublisher.send(String(atMeasure))
+				print("find measure:"+String(atMeasure))
+			}
+			//self.viewModel.highlightBar = atMeasure
 			watchTime = String(format: "%.3f", Float(catchTime))//createTimeString(time: Float(time.seconds))
-			print("find measure:"+String(atMeasure))
+			
 		})
+	}
+	
+	private var titleOverlay: some View {
+		HStack {
+			Button(action:{
+				showLessonSheet = true
+			}) {
+				Label("\(scorewindData.replaceCommonHTMLNumber(htmlString: scorewindData.currentLesson.title))", systemImage: "list.bullet.circle")
+					.labelStyle(.iconOnly)
+					.font(.title2)
+					.foregroundColor(.white)
+			}
+		}
 	}
 }
 

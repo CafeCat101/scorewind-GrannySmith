@@ -16,7 +16,10 @@ struct LessonScoreView: View {
 	//@GestureState var press = false
 	
 	var body: some View {
-		ZStack() {
+		VStack() {
+			if scorewindData.currentLesson.scoreViewer.isEmpty {
+				Text("no score in this course")
+			} else {
 			WebView(url: .localUrl, viewModel: viewModel, scorewindData: scorewindData)
 				.padding(.leading, 0)
 				.padding(.trailing, 0)
@@ -24,6 +27,7 @@ struct LessonScoreView: View {
 				.onAppear(perform: {
 					print(scorewindData.timestampToJson())
 				})
+			}
 				//.border(.black, width: 1)
 			/*ZStack(alignment: .bottom){
 				WebView(url: .localUrl, viewModel: viewModel, scorewindData: scorewindData)
@@ -95,16 +99,9 @@ struct LessonScoreView: View {
 			.background(.gray)*/
 			
 		}
-		//.edgesIgnoringSafeArea(.bottom)
-		/*.gesture(
-			LongPressGesture(minimumDuration: 0.5)
-				.updating($press) { currentState, gestureState, transaction in
-					gestureState = currentState
-				}
-				.onEnded { value in
-					showScoreMenu.toggle()
-				}
-		)*/
+		.onAppear(perform: {
+			scorewindData.lastViewAtScore = true
+		})
 	}
 }
 
