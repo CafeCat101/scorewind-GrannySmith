@@ -14,7 +14,7 @@ struct LessonSheetView: View {
 	var body: some View {
 		VStack {
 			/*HStack {
-				/*Button(action:{
+				Button(action:{
 					withAnimation{
 						scorewindData.currentView = Page.lessonFullScreen
 					}
@@ -29,7 +29,7 @@ struct LessonSheetView: View {
 							Text("Focus mode")
 								.foregroundColor(Color.white)
 						)
-				}.buttonStyle(PlainButtonStyle())*/
+				}.buttonStyle(PlainButtonStyle())
 				Spacer()
 			}
 			.padding(SwiftUI.EdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 10))*/
@@ -71,8 +71,9 @@ struct LessonSheetView: View {
 						}
 					}
 				}
-			}.opacity(1)
+			}
 		}
+		//.background(Color("LessonSheet"))
 	}
 }
 
