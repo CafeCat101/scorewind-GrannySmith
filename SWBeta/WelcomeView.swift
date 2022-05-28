@@ -15,16 +15,33 @@ struct WelcomeView: View {
 	
 	var body: some View {
 		if showWelcome == true {
-			Text(screenMessage)
-				.onAppear{
-					print("->WelcomeView: onAppear")
-					checkDataVersion()
-					//loadScorewindCourses()
-					//scorewindData.initiateTimestampData()
-					/*if scorewindData.studentData.getInstrumentChoice() == "" {
-						scorewindData.studentData.setInstrumentChoice(instrument: "guitar")
-					}*/
+			VStack {
+				Spacer()
+				Image("logo")
+				HStack {
+					Spacer()
+					Text(screenMessage)
+						.font(.title)
+					Spacer()
 				}
+				Spacer()
+			}
+			.background(
+				Image("WelcomeViewBg")
+					.resizable()
+					.scaledToFill()
+					.ignoresSafeArea()
+			)
+			.onAppear{
+				print("->WelcomeView: onAppear")
+				checkDataVersion()
+				//loadScorewindCourses()
+				//scorewindData.initiateTimestampData()
+				/*if scorewindData.studentData.getInstrumentChoice() == "" {
+					scorewindData.studentData.setInstrumentChoice(instrument: "guitar")
+				}*/
+			}
+				
 		}else{
 			/*if currentPage == .myCourses {
 				MyCoursesView()
@@ -152,8 +169,12 @@ extension WelcomeView {
 		scorewindData.initiateTimestampsFromLocal()
 		if scorewindData.initiateCoursesFromLocal() {
 			//currentPage = .myCourses
-			scorewindData.currentView = .myCourses
-			showWelcome = false
+			scorewindData.currentView = .wizard
+			DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+				withAnimation{
+					showWelcome = false
+				}
+			}
 		}
 	}
 }

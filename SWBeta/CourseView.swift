@@ -73,22 +73,24 @@ struct CourseView: View {
 			if selectedSection == courseSection.overview {
 				HTMLString(htmlContent: scorewindData.removeWhatsNext(Text: scorewindData.currentCourse.content))
 			} else if selectedSection == courseSection.lessons{
-				List {
-					Section(header: Text("In this course...")) {
-						ForEach(scorewindData.currentCourse.lessons){ lesson in
-							Button(action: {
-								scorewindData.currentLesson = lesson
-								scorewindData.setCurrentTimestampRecs()
-								scorewindData.currentView = Page.lesson
-								scorewindData.lastPlaybackTime = 0.0
-								self.selectedTab = "TLesson"
-							}) {
-								if scorewindData.currentLesson.title == lesson.title {
-									Text(scorewindData.replaceCommonHTMLNumber(htmlString: lesson.title))
-										.foregroundColor(Color.green)
-								}else{
-									Text(scorewindData.replaceCommonHTMLNumber(htmlString: lesson.title))
-										.foregroundColor(Color.black)
+				VStack {
+					List {
+						Section(header: Text("In this course...")) {
+							ForEach(scorewindData.currentCourse.lessons){ lesson in
+								Button(action: {
+									scorewindData.currentLesson = lesson
+									scorewindData.setCurrentTimestampRecs()
+									scorewindData.currentView = Page.lesson
+									scorewindData.lastPlaybackTime = 0.0
+									self.selectedTab = "TLesson"
+								}) {
+									if scorewindData.currentLesson.title == lesson.title {
+										Text(scorewindData.replaceCommonHTMLNumber(htmlString: lesson.title))
+											.foregroundColor(Color.green)
+									}else{
+										Text(scorewindData.replaceCommonHTMLNumber(htmlString: lesson.title))
+											.foregroundColor(Color.black)
+									}
 								}
 							}
 						}
