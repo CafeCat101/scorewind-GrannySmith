@@ -24,7 +24,7 @@ class ScorewindData: ObservableObject {
 	@Published var studentData: StudentData
 	@Published var currentView = Page.wizard
 	var lastPlaybackTime = 0.0
-	var lastViewAtScore = false
+	@Published var lastViewAtScore = false
 	
 	init() {
 		print(courseURL.path)

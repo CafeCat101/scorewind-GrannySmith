@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 
 
-class StudentData {
+class StudentData: ObservableObject {
 	private let useriCloudKeyValueStore = NSUbiquitousKeyValueStore.default
 	
 	func getInstrumentChoice()->String{

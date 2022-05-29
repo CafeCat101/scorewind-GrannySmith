@@ -11,11 +11,9 @@ import AVKit
 struct LessonView: View {
 	@EnvironmentObject var scorewindData:ScorewindData
 	@State private var showLessonSheet = false
-	//@State private var player = AVPlayer()
 	let screenSize: CGRect = UIScreen.main.bounds
 	@State private var watchTime = ""
 	@StateObject var viewModel = ViewModel()
-	@State private var showScore = false
 	@State private var startPos:CGPoint = .zero
 	@State private var isSwipping = true
 	@GestureState var magnifyBy = 1.0
@@ -40,7 +38,6 @@ struct LessonView: View {
 					.onAppear(perform: {
 						//VideoPlayer onAppear when comeing from anohter tab view, not when the sheet disappears
 						print("[debug] VideoPlayer onAppear")
-						//setupPlayer()
 					})
 					.onDisappear(perform: {
 						//VideoPlayer disappears when go to another tab view, not when sheet appears
@@ -55,7 +52,6 @@ struct LessonView: View {
 					.onAppear(perform: {
 						//VideoPlayer onAppear when comeing from anohter tab view, not when the sheet disappears
 						print("[debug] VideoPlayer onAppear")
-						//setupPlayer()
 					})
 					.onDisappear(perform: {
 						//VideoPlayer disappears when go to another tab view, not when sheet appears
@@ -68,7 +64,7 @@ struct LessonView: View {
 			}
 			
 			VStack {
-				if showScore == false {
+				if scorewindData.lastViewAtScore == false {
 					LessonTextView()
 				}else {
 					LessonScoreView(viewModel: viewModel)
@@ -94,16 +90,14 @@ struct LessonView: View {
 						else if self.startPos.x > gesture.location.x && yDist < xDist {
 							//left
 							withAnimation{
-								showScore = true
-								//scorewindData.currentView = Page.lessonFullScreen
+								scorewindData.lastViewAtScore = true
 							}
 						}
 						else if self.startPos.x < gesture.location.x && yDist < xDist {
 							//right
 							//viewModel.videoPlayer?.pause()
 							withAnimation{
-								showScore = false
-								//scorewindData.currentView = Page.lesson
+								scorewindData.lastViewAtScore = false
 							}
 						}
 						self.isSwipping.toggle()
@@ -158,10 +152,7 @@ struct LessonView: View {
 			setupPlayer()
 			if scorewindData.lastViewAtScore == true {
 				if scorewindData.currentLesson.scoreViewer.isEmpty {
-					showScore = false
 					scorewindData.lastViewAtScore = false
-				} else {
-					showScore = true
 				}
 			}
 			if scorewindData.lastPlaybackTime > 0.0 {
@@ -169,16 +160,7 @@ struct LessonView: View {
 				viewModel.playerGoTo(timestamp: scorewindData.lastPlaybackTime)
 			}
 		})
-		.onDisappear(perform: {
-			//scorewindData.lastViewAtScore = showScore
-		})
 		.sheet(isPresented: $showLessonSheet, onDismiss: {
-			//viewModel.score = scorewindData.currentLesson.scoreViewer
-			//viewModel.highlightBar = 1
-			//magnifyStep = 1
-			
-			//player.pause()
-			//player.replaceCurrentItem(with: nil)
 			print("[debug] lastPlaybackTime\(scorewindData.lastPlaybackTime)")
 			if scorewindData.lastPlaybackTime == 0.0 {
 				viewModel.score = scorewindData.currentLesson.scoreViewer
@@ -187,11 +169,10 @@ struct LessonView: View {
 				viewModel.videoPlayer?.pause()
 				viewModel.videoPlayer?.replaceCurrentItem(with: nil)
 				
-				if scorewindData.currentLesson.scoreViewer.isEmpty {
-					showScore = false
-					scorewindData.lastViewAtScore = false
-				} else {
-					showScore = true
+				if scorewindData.lastViewAtScore == true {
+					if scorewindData.currentLesson.scoreViewer.isEmpty {
+						scorewindData.lastViewAtScore = false
+					}
 				}
 				
 				setupPlayer()

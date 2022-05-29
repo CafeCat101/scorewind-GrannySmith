@@ -12,9 +12,6 @@ struct LessonTextView: View {
 	
 	var body: some View {
 		HTMLString(htmlContent: scorewindData.currentLesson.content)
-			.onAppear(perform: {
-				scorewindData.lastViewAtScore = false
-			})
 	}
 }
 
