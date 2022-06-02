@@ -25,6 +25,7 @@ class ScorewindData: ObservableObject {
 	@Published var currentView = Page.wizard
 	var lastPlaybackTime = 0.0
 	@Published var lastViewAtScore = false
+	@Published var downloadList:[DownloadItem] = []
 	
 	init() {
 		print(courseURL.path)
@@ -214,5 +215,20 @@ class ScorewindData: ObservableObject {
 	
 	func findNextCourse(){
 	
+	}
+	
+	func checkDownloadList(courseID:Int){
+		let downloadListURL = URL(fileURLWithPath: "downloadList", relativeTo: FileManager.documentoryDirecotryURL).appendingPathExtension("json")
+		if FileManager.default.fileExists(atPath: downloadListURL.path) {
+			
+		}
+	}
+	
+	func downloadCourse(courseID:Int){
+		
+	}
+	
+	func cancelDonwloadCourse(courseID:Int){
+		
 	}
 }

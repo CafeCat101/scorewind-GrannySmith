@@ -74,6 +74,14 @@ struct CourseView: View {
 				HTMLString(htmlContent: scorewindData.removeWhatsNext(Text: scorewindData.currentCourse.content))
 			} else if selectedSection == courseSection.lessons{
 				VStack {
+					HStack {
+						Button(action:{
+							
+						}){
+							Label("Download for offline", systemImage: "square.and.arrow.down")
+								.labelStyle(.titleAndIcon)
+						}
+					}
 					List {
 						Section(header: Text("In this course...")) {
 							ForEach(scorewindData.currentCourse.lessons){ lesson in
@@ -144,6 +152,24 @@ struct CourseView: View {
 			LessonsLabelColor = .gray
 			ContinueLabelColor = .black
 		}
+	}
+	
+	private func checkDownloadStatus(lessonID:Int) -> Int {
+		var finalDownloadStatus = 0
+		var getVideoDownloadStatus = 0
+		var getXMLDownloadStatus = 0
+		
+		if let findIndex = scorewindData.downloadList.firstIndex(where: {$0.lessonID == lessonID}) {
+			getVideoDownloadStatus = scorewindData.downloadList[findIndex].videoDownloadStatus
+			getXMLDownloadStatus = scorewindData.downloadList[findIndex].xmlDownloadStatus
+		}
+		
+		if getVideoDownloadStatus+getXMLDownloadStatus == 0 {
+			finalDownloadStatus = 0
+		} else if getVideoDownloadStatus == 3 && getXMLDownloadStatus == 3 {
+			finalDownloadStatus = DownloadStatus.downloaded.rawValue
+		}
+		return finalDownloadStatus
 	}
 }
 
