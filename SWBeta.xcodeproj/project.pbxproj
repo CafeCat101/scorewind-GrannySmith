@@ -12,6 +12,7 @@
 		C82DD6132840919900EF74E2 /* MyTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = C82DD6122840919900EF74E2 /* MyTheme.swift */; };
 		C82DD6172847330F00EF74E2 /* DownloadItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = C82DD6162847330F00EF74E2 /* DownloadItem.swift */; };
 		C82DD61B2847337B00EF74E2 /* DownloadStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = C82DD61A2847337B00EF74E2 /* DownloadStatus.swift */; };
+		C82DD61E284B5E8600EF74E2 /* DownloadManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C82DD61D284B5E8600EF74E2 /* DownloadManager.swift */; };
 		C8448A212818F70400597A6F /* data_version.json in Resources */ = {isa = PBXBuildFile; fileRef = C8448A202818F70400597A6F /* data_version.json */; };
 		C8448A27281BA3CD00597A6F /* timestamps_ios.json in Resources */ = {isa = PBXBuildFile; fileRef = C8448A26281BA3CD00597A6F /* timestamps_ios.json */; };
 		C8448A29281BA3DF00597A6F /* courses_ios.json in Resources */ = {isa = PBXBuildFile; fileRef = C8448A28281BA3DF00597A6F /* courses_ios.json */; };
@@ -60,6 +61,7 @@
 		C82DD6122840919900EF74E2 /* MyTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyTheme.swift; sourceTree = "<group>"; };
 		C82DD6162847330F00EF74E2 /* DownloadItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadItem.swift; sourceTree = "<group>"; };
 		C82DD61A2847337B00EF74E2 /* DownloadStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadStatus.swift; sourceTree = "<group>"; };
+		C82DD61D284B5E8600EF74E2 /* DownloadManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadManager.swift; sourceTree = "<group>"; };
 		C8448A202818F70400597A6F /* data_version.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = data_version.json; sourceTree = "<group>"; };
 		C8448A26281BA3CD00597A6F /* timestamps_ios.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = timestamps_ios.json; sourceTree = "<group>"; };
 		C8448A28281BA3DF00597A6F /* courses_ios.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = courses_ios.json; sourceTree = "<group>"; };
@@ -177,6 +179,7 @@
 				C87F6B8027DD9FE20009DCA0 /* ScorewindTimestamp.swift */,
 				C82DD6162847330F00EF74E2 /* DownloadItem.swift */,
 				C82DD6122840919900EF74E2 /* MyTheme.swift */,
+				C82DD61D284B5E8600EF74E2 /* DownloadManager.swift */,
 			);
 			path = SWBeta;
 			sourceTree = "<group>";
@@ -326,6 +329,7 @@
 				C8448A69282E111400597A6F /* HomeView.swift in Sources */,
 				C87F6B7127D1BDE30009DCA0 /* WizardView.swift in Sources */,
 				C87F6AFC27CA04420009DCA0 /* SWBetaApp.swift in Sources */,
+				C82DD61E284B5E8600EF74E2 /* DownloadManager.swift in Sources */,
 				C8448A71282F799D00597A6F /* ViewModel.swift in Sources */,
 				C8E786DA280008B1007817BB /* InstrumentType.swift in Sources */,
 				C8448A75283003EE00597A6F /* LessonScoreView.swift in Sources */,

@@ -25,7 +25,6 @@ class ScorewindData: ObservableObject {
 	@Published var currentView = Page.wizard
 	var lastPlaybackTime = 0.0
 	@Published var lastViewAtScore = false
-	@Published var downloadList:[DownloadItem] = []
 	
 	init() {
 		print(courseURL.path)

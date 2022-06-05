@@ -10,6 +10,7 @@ import SwiftUI
 struct HomeView: View {
 	@EnvironmentObject var scorewindData:ScorewindData
 	@State private var selectedTab = "TWizard"
+	@ObservedObject var downloadManager: DownloadManager
 	
 	var body: some View {
 		if scorewindData.currentView != Page.lessonFullScreen {
@@ -27,7 +28,7 @@ struct HomeView: View {
 				}.tag("TMyCourses")
 				
 				if scorewindData.currentCourse.id > 0 {
-					CourseView(selectedTab: $selectedTab)
+					CourseView(selectedTab: $selectedTab, downloadManager: downloadManager)
 						.tabItem {
 							Image(systemName: "note.text")
 							Text("Course")
@@ -54,6 +55,6 @@ struct HomeView: View {
 
 struct HomeView_Previews: PreviewProvider {
 	static var previews: some View {
-		HomeView().environmentObject(ScorewindData())
+		HomeView(downloadManager: DownloadManager()).environmentObject(ScorewindData())
 	}
 }

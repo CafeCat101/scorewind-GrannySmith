@@ -12,6 +12,7 @@ struct WelcomeView: View {
 	@State private var showWelcome = true
 	@EnvironmentObject var scorewindData:ScorewindData
 	@State var screenMessage = "Welcome!"
+	@StateObject var downloadManager = DownloadManager()
 	
 	var body: some View {
 		if showWelcome == true {
@@ -50,7 +51,7 @@ struct WelcomeView: View {
 				WizardView()
 					.transition(.scale)
 			}*/
-			HomeView()
+			HomeView(downloadManager: downloadManager)
 		}
 	}
 }

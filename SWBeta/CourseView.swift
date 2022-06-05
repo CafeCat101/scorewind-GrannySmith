@@ -12,11 +12,10 @@ struct CourseView: View {
 	@EnvironmentObject var scorewindData:ScorewindData
 	@State private var showOverview = true
 	let screenSize: CGRect = UIScreen.main.bounds
-	@State private var OverviewLabelColor = Color.black
-	@State private var LessonsLabelColor = Color.gray
-	@State private var ContinueLabelColor = Color.gray
 	@Binding var selectedTab:String
 	@State private var selectedSection = courseSection.overview
+	@ObservedObject var downloadManager:DownloadManager
+	@State private var testDownloadStatus = true //remove this later
 	
 	var body: some View {
 		VStack {
@@ -33,12 +32,11 @@ struct CourseView: View {
 			HStack {
 				Button(action: {
 					selectedSection = courseSection.overview
-					setSelectionLabelColor()
 				}) {
 					Text("Overview")
 						.font(.headline)
 						.fontWeight(.semibold)
-						.foregroundColor(OverviewLabelColor)
+						.foregroundColor(selectedSection == courseSection.overview ? Color.black : Color.gray)
 				}
 				.frame(width: screenSize.width/3)
 				
@@ -47,23 +45,44 @@ struct CourseView: View {
 				
 				Button(action: {
 					selectedSection = courseSection.lessons
-					setSelectionLabelColor()
+					
+					if testDownloadStatus == true {
+						DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+							print("[deubg] CourseView, alter downloadManager.downloadList 1")
+							downloadManager.downloadList.append(DownloadItem(courseID: 0, lessonID: 90696, videoDownloadStatus: 1, xmlDownloadStatus: 0))
+						}
+						DispatchQueue.main.asyncAfter(deadline: .now() + 4) {
+							print("[deubg] CourseView, alter downloadManager.downloadList 2")
+							if let findIndex = downloadManager.downloadList.firstIndex(where: {$0.lessonID == 90696}) {
+								downloadManager.downloadList[findIndex].videoDownloadStatus = 2
+								downloadManager.downloadList[findIndex].xmlDownloadStatus = 1
+							}
+						}
+						DispatchQueue.main.asyncAfter(deadline: .now() + 6) {
+							print("[deubg] CourseView, alter downloadManager.downloadList 3")
+							if let findIndex = downloadManager.downloadList.firstIndex(where: {$0.lessonID == 90696}) {
+								downloadManager.downloadList[findIndex].videoDownloadStatus = 3
+								downloadManager.downloadList[findIndex].xmlDownloadStatus = 3
+							}
+							testDownloadStatus = false
+						}
+					}
+					
 				}) {
 					Text("Lessons")
 						.font(.headline)
 						.fontWeight(.semibold)
-						.foregroundColor(LessonsLabelColor)
+						.foregroundColor(selectedSection == courseSection.lessons ? Color.black : Color.gray)
 				}
 				.frame(width: screenSize.width/3)
 				
 				Button(action: {
 					selectedSection = courseSection.continue
-					setSelectionLabelColor()
 				}) {
 					Text("Continue")
 						.font(.headline)
 						.fontWeight(.semibold)
-						.foregroundColor(ContinueLabelColor)
+						.foregroundColor(selectedSection == courseSection.continue ? Color.black : Color.gray)
 				}
 				.frame(width: screenSize.width/3)
 				
@@ -85,19 +104,19 @@ struct CourseView: View {
 					List {
 						Section(header: Text("In this course...")) {
 							ForEach(scorewindData.currentCourse.lessons){ lesson in
-								Button(action: {
-									scorewindData.currentLesson = lesson
-									scorewindData.setCurrentTimestampRecs()
-									scorewindData.currentView = Page.lesson
-									scorewindData.lastPlaybackTime = 0.0
-									self.selectedTab = "TLesson"
-								}) {
-									if scorewindData.currentLesson.title == lesson.title {
+								HStack {
+									downloadIconView(getLessonID: lesson.id)
+										.foregroundColor(scorewindData.currentLesson.title == lesson.title ? Color.green : Color.black)
+									
+									Button(action: {
+										scorewindData.currentLesson = lesson
+										scorewindData.setCurrentTimestampRecs()
+										scorewindData.currentView = Page.lesson
+										scorewindData.lastPlaybackTime = 0.0
+										self.selectedTab = "TLesson"
+									}) {
 										Text(scorewindData.replaceCommonHTMLNumber(htmlString: lesson.title))
-											.foregroundColor(Color.green)
-									}else{
-										Text(scorewindData.replaceCommonHTMLNumber(htmlString: lesson.title))
-											.foregroundColor(Color.black)
+											.foregroundColor(scorewindData.currentLesson.title == lesson.title ? Color.green : Color.black)
 									}
 								}
 							}
@@ -134,49 +153,28 @@ struct CourseView: View {
 		})
 	}
 	
-	private func setSelectionLabelColor() {
-		if selectedSection == courseSection.overview {
-			OverviewLabelColor = .black
-			LessonsLabelColor = .gray
-			ContinueLabelColor = .gray
-		}
-		
-		if selectedSection == courseSection.lessons {
-			OverviewLabelColor = .gray
-			LessonsLabelColor = .black
-			ContinueLabelColor = .gray
-		}
-		
-		if selectedSection == courseSection.continue {
-			OverviewLabelColor = .gray
-			LessonsLabelColor = .gray
-			ContinueLabelColor = .black
+	@ViewBuilder
+	private func downloadIconView(getLessonID: Int) -> some View {
+		let getStatus =  downloadManager.checkDownloadStatus(lessonID: getLessonID)
+		if getStatus == 1 {
+			Image(systemName: "arrow.down.square")
+				.foregroundColor(Color.gray)
+		} else if getStatus == 2 {
+			Image(systemName: "square.and.arrow.down.on.square.fill")
+				.foregroundColor(.blue)
+		} else if getStatus == 3 {
+			Image(systemName: "arrow.down.square.fill")
+				.foregroundColor(Color.green)
 		}
 	}
 	
-	private func checkDownloadStatus(lessonID:Int) -> Int {
-		var finalDownloadStatus = 0
-		var getVideoDownloadStatus = 0
-		var getXMLDownloadStatus = 0
-		
-		if let findIndex = scorewindData.downloadList.firstIndex(where: {$0.lessonID == lessonID}) {
-			getVideoDownloadStatus = scorewindData.downloadList[findIndex].videoDownloadStatus
-			getXMLDownloadStatus = scorewindData.downloadList[findIndex].xmlDownloadStatus
-		}
-		
-		if getVideoDownloadStatus+getXMLDownloadStatus == 0 {
-			finalDownloadStatus = 0
-		} else if getVideoDownloadStatus == 3 && getXMLDownloadStatus == 3 {
-			finalDownloadStatus = DownloadStatus.downloaded.rawValue
-		}
-		return finalDownloadStatus
-	}
+
 }
 
 struct CourseView_Previews: PreviewProvider {
 	@State static var tab = "TCourse"
 	static var previews: some View {
-		CourseView(selectedTab: $tab).environmentObject(ScorewindData())
+		CourseView(selectedTab: $tab, downloadManager: DownloadManager()).environmentObject(ScorewindData())
 	}
 }
 
