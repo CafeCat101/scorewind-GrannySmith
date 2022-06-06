@@ -22,13 +22,6 @@ struct CourseView: View {
 			Text("\(scorewindData.replaceCommonHTMLNumber(htmlString: scorewindData.currentCourse.title))")
 				.font(.title2)
 			
-			/*Button(action: {
-				//showNavigationGuide = true
-			}) {
-				Text("\(scorewindData.replaceCommonHTMLNumber(htmlString: scorewindData.currentCourse.title))")
-					.font(.title2)
-					.foregroundColor(Color.black)
-			}*/
 			HStack {
 				Button(action: {
 					selectedSection = courseSection.overview
@@ -45,7 +38,7 @@ struct CourseView: View {
 				
 				Button(action: {
 					selectedSection = courseSection.lessons
-					
+					/*
 					if testDownloadStatus == true {
 						DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
 							print("[deubg] CourseView, alter downloadManager.downloadList 1")
@@ -66,7 +59,7 @@ struct CourseView: View {
 							}
 							testDownloadStatus = false
 						}
-					}
+					 }*/
 					
 				}) {
 					Text("Lessons")
@@ -94,12 +87,21 @@ struct CourseView: View {
 			} else if selectedSection == courseSection.lessons{
 				VStack {
 					HStack {
-						Button(action:{
-							
-						}){
-							Label("Download for offline", systemImage: "square.and.arrow.down")
-								.labelStyle(.titleAndIcon)
+						if downloadManager.checkDownloadStatus(courseID: scorewindData.currentCourse.id, lessonsCount: scorewindData.currentCourse.lessons.count) == DownloadStatus.notInQueue {
+							Button(action:{
+								downloadManager.downloadCourse(course: scorewindData.currentCourse)
+							}){
+								Label("Download for offline", systemImage: "square.and.arrow.down")
+									.labelStyle(.titleAndIcon)
+							}
+						} else if downloadManager.checkDownloadStatus(courseID: scorewindData.currentCourse.id, lessonsCount: scorewindData.currentCourse.lessons.count) == DownloadStatus.inQueue {
+							Text("In Queue")
+						} else if downloadManager.checkDownloadStatus(courseID: scorewindData.currentCourse.id, lessonsCount: scorewindData.currentCourse.lessons.count) == DownloadStatus.downloading {
+							Text("Downloading")
+						} else if downloadManager.checkDownloadStatus(courseID: scorewindData.currentCourse.id, lessonsCount: scorewindData.currentCourse.lessons.count) == DownloadStatus.downloaded {
+							Text("Downloaded")
 						}
+						
 					}
 					List {
 						Section(header: Text("In this course...")) {

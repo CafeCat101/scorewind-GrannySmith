@@ -215,19 +215,5 @@ class ScorewindData: ObservableObject {
 	func findNextCourse(){
 	
 	}
-	
-	func checkDownloadList(courseID:Int){
-		let downloadListURL = URL(fileURLWithPath: "downloadList", relativeTo: FileManager.documentoryDirecotryURL).appendingPathExtension("json")
-		if FileManager.default.fileExists(atPath: downloadListURL.path) {
-			
-		}
-	}
-	
-	func downloadCourse(courseID:Int){
-		
-	}
-	
-	func cancelDonwloadCourse(courseID:Int){
-		
-	}
+
 }
