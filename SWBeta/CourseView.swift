@@ -15,7 +15,7 @@ struct CourseView: View {
 	@Binding var selectedTab:String
 	@State private var selectedSection = courseSection.overview
 	@ObservedObject var downloadManager:DownloadManager
-	//@State private var testDownloadStatus = true //remove this later
+	@State private var testDownloadStatus = true //remove this later
 	
 	var body: some View {
 		VStack {
