@@ -12,7 +12,7 @@ struct WelcomeView: View {
 	@State private var showWelcome = true
 	@EnvironmentObject var scorewindData:ScorewindData
 	@State var screenMessage = "Welcome!"
-	@StateObject var downloadManager = DownloadManager()
+	@ObservedObject var downloadManager:DownloadManager
 	
 	var body: some View {
 		if showWelcome == true {
@@ -182,6 +182,6 @@ extension WelcomeView {
 
 struct WelcomeView_Previews: PreviewProvider {
 	static var previews: some View {
-		WelcomeView().environmentObject(ScorewindData())
+		WelcomeView(downloadManager: DownloadManager()).environmentObject(ScorewindData())
 	}
 }

@@ -10,10 +10,11 @@ import SwiftUI
 @main
 struct SWBetaApp: App {
 	@StateObject var scorewindData = ScorewindData()
+	@StateObject var downloadManager = DownloadManager()
 	
 	var body: some Scene {
 		WindowGroup {
-			WelcomeView().environmentObject(scorewindData)
+			WelcomeView(downloadManager: downloadManager).environmentObject(scorewindData)
 		}
 	}
 }

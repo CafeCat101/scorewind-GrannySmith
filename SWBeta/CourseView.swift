@@ -15,7 +15,7 @@ struct CourseView: View {
 	@Binding var selectedTab:String
 	@State private var selectedSection = courseSection.overview
 	@ObservedObject var downloadManager:DownloadManager
-	@State private var testDownloadStatus = true //remove this later
+	//@State private var testDownloadStatus = true //remove this later
 	
 	var body: some View {
 		VStack {
@@ -38,29 +38,6 @@ struct CourseView: View {
 				
 				Button(action: {
 					selectedSection = courseSection.lessons
-					/*
-					if testDownloadStatus == true {
-						DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-							print("[deubg] CourseView, alter downloadManager.downloadList 1")
-							downloadManager.downloadList.append(DownloadItem(courseID: 0, lessonID: 90696, videoDownloadStatus: 1, xmlDownloadStatus: 0))
-						}
-						DispatchQueue.main.asyncAfter(deadline: .now() + 4) {
-							print("[deubg] CourseView, alter downloadManager.downloadList 2")
-							if let findIndex = downloadManager.downloadList.firstIndex(where: {$0.lessonID == 90696}) {
-								downloadManager.downloadList[findIndex].videoDownloadStatus = 2
-								downloadManager.downloadList[findIndex].xmlDownloadStatus = 1
-							}
-						}
-						DispatchQueue.main.asyncAfter(deadline: .now() + 6) {
-							print("[deubg] CourseView, alter downloadManager.downloadList 3")
-							if let findIndex = downloadManager.downloadList.firstIndex(where: {$0.lessonID == 90696}) {
-								downloadManager.downloadList[findIndex].videoDownloadStatus = 3
-								downloadManager.downloadList[findIndex].xmlDownloadStatus = 3
-							}
-							testDownloadStatus = false
-						}
-					 }*/
-					
 				}) {
 					Text("Lessons")
 						.font(.headline)
@@ -91,11 +68,16 @@ struct CourseView: View {
 							Button(action:{
 								downloadManager.downloadCourse(course: scorewindData.currentCourse)
 							}){
-								Label("Download for offline", systemImage: "square.and.arrow.down")
+								Label("Download for offline", systemImage: "arrow.down.to.line.compact")
 									.labelStyle(.titleAndIcon)
 							}
 						} else if downloadManager.checkDownloadStatus(courseID: scorewindData.currentCourse.id, lessonsCount: scorewindData.currentCourse.lessons.count) == DownloadStatus.inQueue {
-							Text("In Queue")
+							Button(action:{
+								//testLessonDownloadStatusUpdate()
+							}){
+								Label("In queue", systemImage: "arrow.down.square")
+									.labelStyle(.titleAndIcon)
+							}
 						} else if downloadManager.checkDownloadStatus(courseID: scorewindData.currentCourse.id, lessonsCount: scorewindData.currentCourse.lessons.count) == DownloadStatus.downloading {
 							Text("Downloading")
 						} else if downloadManager.checkDownloadStatus(courseID: scorewindData.currentCourse.id, lessonsCount: scorewindData.currentCourse.lessons.count) == DownloadStatus.downloaded {
@@ -170,6 +152,29 @@ struct CourseView: View {
 		}
 	}
 	
+	private func testLessonDownloadStatusUpdate() {
+		if testDownloadStatus == true {
+			DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+				print("[deubg] CourseView, alter downloadManager.downloadList 1")
+				downloadManager.downloadList.append(DownloadItem(courseID: 0, lessonID: 90696, videoDownloadStatus: 1, xmlDownloadStatus: 0))
+			}
+			DispatchQueue.main.asyncAfter(deadline: .now() + 4) {
+				print("[deubg] CourseView, alter downloadManager.downloadList 2")
+				if let findIndex = downloadManager.downloadList.firstIndex(where: {$0.lessonID == 90696}) {
+					downloadManager.downloadList[findIndex].videoDownloadStatus = 2
+					downloadManager.downloadList[findIndex].xmlDownloadStatus = 1
+				}
+			}
+			DispatchQueue.main.asyncAfter(deadline: .now() + 6) {
+				print("[deubg] CourseView, alter downloadManager.downloadList 3")
+				if let findIndex = downloadManager.downloadList.firstIndex(where: {$0.lessonID == 90696}) {
+					downloadManager.downloadList[findIndex].videoDownloadStatus = 3
+					downloadManager.downloadList[findIndex].xmlDownloadStatus = 3
+				}
+				testDownloadStatus = false
+			}
+		 }
+	}
 
 }
 

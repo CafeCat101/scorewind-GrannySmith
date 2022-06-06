@@ -11,6 +11,21 @@ import SwiftUI
 class DownloadManager: ObservableObject {
 	@Published var downloadList:[DownloadItem] = []
 	
+	init() {
+		let downloadListURL = URL(fileURLWithPath: "downloadList", relativeTo: FileManager.documentoryDirecotryURL).appendingPathExtension("json")
+		
+		if FileManager.default.fileExists(atPath: downloadListURL.path) {
+			do {
+				if let jsonData = try String(contentsOfFile: downloadListURL.path).data(using: .utf8) {
+					let decodedData = try JSONDecoder().decode([DownloadItem].self, from: jsonData)
+					downloadList = decodedData
+				}
+			} catch {
+				print(error)
+			}
+		}
+	}
+	
 	func downloadCourse(course: Course) {
 		/**
 		 This function is called by Make Course Offline button
