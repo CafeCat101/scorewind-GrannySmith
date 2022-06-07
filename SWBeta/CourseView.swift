@@ -67,7 +67,6 @@ struct CourseView: View {
 					HStack {
 						if downloadManager.checkDownloadStatus(courseID: scorewindData.currentCourse.id, lessonsCount: scorewindData.currentCourse.lessons.count) == DownloadStatus.notInQueue {
 							Button(action:{
-								//downloadManager.downloadCourse(course: scorewindData.currentCourse)
 								showDownloadAlert = true
 							}){
 								Label("Download for offline", systemImage: "arrow.down.to.line.compact")
@@ -103,11 +102,23 @@ struct CourseView: View {
 							}
 						} else if downloadManager.checkDownloadStatus(courseID: scorewindData.currentCourse.id, lessonsCount: scorewindData.currentCourse.lessons.count) == DownloadStatus.downloaded {
 							Button(action:{
-								//remove downloaded video and xml
+								showDownloadAlert = true
 							}){
 								Label("Downloaded", systemImage: "arrow.down.square.fill")
 									.labelStyle(.titleAndIcon)
 							}
+							.alert("Remove download", isPresented: $showDownloadAlert, actions: {
+								Button("ok", action:{
+									print("[debug] CourseView, alert ok.")
+									showDownloadAlert = false
+									//remove downloaded video and xml
+								})
+								Button("Cancel", role:.cancel, action:{
+									showDownloadAlert = false
+								})
+							}, message: {
+								Text("By removing download, you can not take course offline. Continue?")
+							})
 						}
 						
 					}
