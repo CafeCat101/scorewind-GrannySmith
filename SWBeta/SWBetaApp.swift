@@ -17,4 +17,9 @@ struct SWBetaApp: App {
 			WelcomeView(downloadManager: downloadManager).environmentObject(scorewindData)
 		}
 	}
+	
+	private func setupDataObjects(){
+		scorewindData.initiateTimestampsFromLocal()
+		scorewindData.initiateCoursesFromLocal()
+	}
 }

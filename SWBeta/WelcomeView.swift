@@ -168,13 +168,10 @@ extension WelcomeView {
 	
 	func setupDataObjects(){
 		scorewindData.initiateTimestampsFromLocal()
-		if scorewindData.initiateCoursesFromLocal() {
-			//currentPage = .myCourses
-			scorewindData.currentView = .wizard
-			DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-				withAnimation{
-					showWelcome = false
-				}
+		scorewindData.initiateCoursesFromLocal()
+		DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+			withAnimation{
+				showWelcome = false
 			}
 		}
 	}

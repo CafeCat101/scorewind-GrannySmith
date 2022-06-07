@@ -31,19 +31,16 @@ class ScorewindData: ObservableObject {
 		studentData = StudentData()
 	}
 	
-	public func initiateCoursesFromLocal() -> Bool{
-		var taskCompleted = false
+	public func initiateCoursesFromLocal(){
 		do {
 			if let jsonData = try String(contentsOfFile: courseURL.path).data(using: .utf8) {
 				let decodedData = try JSONDecoder().decode([Course].self, from: jsonData)
 				allCourses = decodedData
 				print("->initiateCoursesFromLocal(): decoded, courses")
-				taskCompleted = true
 			}
 		} catch {
 			print(error)
 		}
-		return taskCompleted
 	}
 	
 	public func initiateTimestampsFromLocal(){

@@ -16,6 +16,7 @@ struct CourseView: View {
 	@State private var selectedSection = courseSection.overview
 	@ObservedObject var downloadManager:DownloadManager
 	@State private var testDownloadStatus = true //remove this later
+	@State private var showDownloadAlert = false
 	
 	var body: some View {
 		VStack {
@@ -66,22 +67,47 @@ struct CourseView: View {
 					HStack {
 						if downloadManager.checkDownloadStatus(courseID: scorewindData.currentCourse.id, lessonsCount: scorewindData.currentCourse.lessons.count) == DownloadStatus.notInQueue {
 							Button(action:{
-								downloadManager.downloadCourse(course: scorewindData.currentCourse)
+								//downloadManager.downloadCourse(course: scorewindData.currentCourse)
+								showDownloadAlert = true
 							}){
 								Label("Download for offline", systemImage: "arrow.down.to.line.compact")
 									.labelStyle(.titleAndIcon)
+									.foregroundColor(Color.black)
 							}
+							.alert("Download course contents", isPresented: $showDownloadAlert, actions: {
+								Button("ok", action:{
+									print("[debug] CourseView, alert ok.")
+									downloadManager.downloadCourse(course: scorewindData.currentCourse)
+									showDownloadAlert = false
+								})
+								Button("Cancel", role:.cancel, action:{
+									showDownloadAlert = false
+								})
+							}, message: {
+								Text("128 MB course content will be downloaded into your device. Continue?")
+							})
 						} else if downloadManager.checkDownloadStatus(courseID: scorewindData.currentCourse.id, lessonsCount: scorewindData.currentCourse.lessons.count) == DownloadStatus.inQueue {
 							Button(action:{
 								//testLessonDownloadStatusUpdate()
+								//can call cancel download
 							}){
 								Label("In queue", systemImage: "arrow.down.square")
 									.labelStyle(.titleAndIcon)
 							}
 						} else if downloadManager.checkDownloadStatus(courseID: scorewindData.currentCourse.id, lessonsCount: scorewindData.currentCourse.lessons.count) == DownloadStatus.downloading {
-							Text("Downloading")
+							Button(action:{
+								//can call cancel download
+							}){
+								Label("Downloading", systemImage: "square.and.arrow.down.on.square.fill")
+									.labelStyle(.titleAndIcon)
+							}
 						} else if downloadManager.checkDownloadStatus(courseID: scorewindData.currentCourse.id, lessonsCount: scorewindData.currentCourse.lessons.count) == DownloadStatus.downloaded {
-							Text("Downloaded")
+							Button(action:{
+								//remove downloaded video and xml
+							}){
+								Label("Downloaded", systemImage: "arrow.down.square.fill")
+									.labelStyle(.titleAndIcon)
+							}
 						}
 						
 					}
