@@ -76,7 +76,7 @@ struct CourseView: View {
 							.alert("Download course contents", isPresented: $showDownloadAlert, actions: {
 								Button("ok", action:{
 									print("[debug] CourseView, alert ok.")
-									downloadManager.downloadCourse(course: scorewindData.currentCourse)
+									//downloadManager.downloadCourse(course: scorewindData.currentCourse)
 									showDownloadAlert = false
 								})
 								Button("Cancel", role:.cancel, action:{

@@ -6,10 +6,11 @@
 //
 
 import Foundation
-import SwiftUI
+import Combine
 
 class DownloadManager: ObservableObject {
 	@Published var downloadList:[DownloadItem] = []
+	var callForDownloadPublisher = PassthroughSubject<Bool, Never>()
 	
 	init() {
 		let downloadListURL = URL(fileURLWithPath: "downloadList", relativeTo: FileManager.documentoryDirecotryURL).appendingPathExtension("json")
@@ -25,6 +26,13 @@ class DownloadManager: ObservableObject {
 			}
 		}
 	}
+	
+	/*func testPublisherTrigger(caller: String) async {
+		print("testPublisherTrigger is called from \(caller)")
+			callForDownloadPublisher.send(true)
+
+		}
+	}*/
 	
 	func downloadCourse(course: Course) {
 		/**

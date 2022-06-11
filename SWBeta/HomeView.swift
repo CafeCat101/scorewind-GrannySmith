@@ -42,7 +42,15 @@ struct HomeView: View {
 							Text("Lesson")
 						}.tag("TLesson")
 				}
-			}.ignoresSafeArea()
+			}
+			.ignoresSafeArea()
+				/*.onReceive(downloadManager.callForDownloadPublisher, perform: { value in
+					if value == true {
+						Task {
+							await downloadManager.testPublisherTrigger(caller: "HomeView, tabView")
+						}
+					}
+				})*/
 		} else {
 			if scorewindData.currentView == Page.lessonFullScreen {
 				LessonView()
