@@ -11,22 +11,8 @@ import Combine
 class DownloadManager: ObservableObject {
 	@Published var downloadList:[DownloadItem] = []
 	var callForDownloadPublisher = PassthroughSubject<Bool, Never>()
-	
-	init() {
-		let downloadListURL = URL(fileURLWithPath: "downloadList", relativeTo: FileManager.documentoryDirecotryURL).appendingPathExtension("json")
-		
-		if FileManager.default.fileExists(atPath: downloadListURL.path) {
-			do {
-				if let jsonData = try String(contentsOfFile: downloadListURL.path).data(using: .utf8) {
-					let decodedData = try JSONDecoder().decode([DownloadItem].self, from: jsonData)
-					downloadList = decodedData
-				}
-			} catch {
-				print(error)
-			}
-		}
-	}
-	
+	let courseOfflineURL = URL(fileURLWithPath: "courseOffline", relativeTo: FileManager.documentoryDirecotryURL).appendingPathExtension("json")
+
 	/*func testPublisherTrigger(caller: String) async {
 		print("testPublisherTrigger is called from \(caller)")
 			callForDownloadPublisher.send(true)
@@ -93,24 +79,7 @@ class DownloadManager: ObservableObject {
 			}
 		}
 	}
-	
-	private func downloadLesson(lessonID: Int) async {
-		
-	}
-	
-	private func downloadVideos(videoLink: String) {
-		let remoteURL = URL(string: videoLink)!
-		let documentURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
-		let targetURL = documentURL.appendingPathComponent(remoteURL.lastPathComponent)
-		print("[debug] download des:\(targetURL.path)")
 
-		let downloadTask = URLSession.shared.downloadTask(with: remoteURL) { url, response, error in
-				guard let tempURL = url else { return }
-				_ = try? FileManager.default.replaceItemAt(targetURL, withItemAt: tempURL)
-		}
-		downloadTask.resume()
-	}
-	
 	func checkDownloadStatus(lessonID:Int) -> Int {
 		var finalDownloadStatus = DownloadStatus.notInQueue.rawValue
 		var getVideoDownloadStatus = DownloadStatus.notInQueue.rawValue
@@ -179,5 +148,70 @@ class DownloadManager: ObservableObject {
 		print("[deubg] DownloadManager, checkDownloadStatus(courseID:\(courseID),lessonsCount:\(lessonsCount)) status\(finalDownloadStatus)")
 		return finalDownloadStatus
 	}
+	
+	func addOrRemoveCourseOffline(currentCourseDownloadStatus: DownloadStatus, courseID: Int, lessons:[Lesson]) {
+		var courseOfflineList:[CourseOfflineItem] = []
+		
+		if FileManager.default.fileExists(atPath: courseOfflineURL.path) {
+			do {
+				if let jsonData = try String(contentsOfFile: courseOfflineURL.path).data(using: .utf8) {
+					courseOfflineList = try JSONDecoder().decode([CourseOfflineItem].self, from: jsonData)
+				}
+			} catch {
+				print(error)
+			}
+		}
+		
+		let findExistingCourseItem = courseOfflineList.filter({$0.courseID == courseID})
+		let findExistingLessonItems = downloadList.filter({$0.courseID == courseID})
+		if currentCourseDownloadStatus == DownloadStatus.notInQueue {
+			if findExistingCourseItem.isEmpty == true {
+				print("[deubg] add course(id:\(courseID) to courseOffline.json")
+				courseOfflineList.append(CourseOfflineItem(courseID: courseID))
+			} else {
+				print("[debug] courseOffline.json has this courseID item.")
+			}
+			if findExistingLessonItems.isEmpty == true {
+				for lesson in lessons {
+					downloadList.append(DownloadItem(courseID: courseID, lessonID: lesson.id, videoDownloadStatus: DownloadStatus.inQueue.rawValue, xmlDownloadStatus: DownloadStatus.inQueue.rawValue))
+				}
+			}
+			
+		} else {
+			if !findExistingCourseItem.isEmpty {
+				print("[deubg] remove course(id:\(courseID) from courseOffline.json")
+				courseOfflineList.removeAll(where: {$0.courseID == courseID})
+			} else {
+				print("[debug] courseOffline.json has this courseID item.")
+			}
+			if !findExistingLessonItems.isEmpty{
+				for lesson in lessons {
+					downloadList.removeAll(where: {$0.lessonID == lesson.id})
+				}
+			}
+		}
+		
+		if !courseOfflineList.isEmpty {
+			let encoder = JSONEncoder()
+			encoder.outputFormatting = .prettyPrinted
+			do {
+				let coursesOfflineData = try encoder.encode(courseOfflineList)
+				try coursesOfflineData.write(to: courseOfflineURL, options: .atomicWrite)
+			} catch let error {
+				print(error)
+			}
+		} else {
+			if FileManager.default.fileExists(atPath: courseOfflineURL.path) {
+				do {
+					try FileManager.default.removeItem(atPath: courseOfflineURL.path)
+				} catch {
+					print(error)
+				}
+			}
+		}
+		
+		
+	}
+	
 	
 }

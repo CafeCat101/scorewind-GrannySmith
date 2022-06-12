@@ -15,7 +15,6 @@ struct CourseView: View {
 	@Binding var selectedTab:String
 	@State private var selectedSection = courseSection.overview
 	@ObservedObject var downloadManager:DownloadManager
-	@State private var testDownloadStatus = true //remove this later
 	@State private var showDownloadAlert = false
 	
 	var body: some View {
@@ -64,64 +63,7 @@ struct CourseView: View {
 				HTMLString(htmlContent: scorewindData.removeWhatsNext(Text: scorewindData.currentCourse.content))
 			} else if selectedSection == courseSection.lessons{
 				VStack {
-					HStack {
-						if downloadManager.checkDownloadStatus(courseID: scorewindData.currentCourse.id, lessonsCount: scorewindData.currentCourse.lessons.count) == DownloadStatus.notInQueue {
-							Button(action:{
-								showDownloadAlert = true
-							}){
-								Label("Download for offline", systemImage: "arrow.down.to.line.compact")
-									.labelStyle(.titleAndIcon)
-									.foregroundColor(Color.black)
-							}
-							.alert("Download course contents", isPresented: $showDownloadAlert, actions: {
-								Button("ok", action:{
-									print("[debug] CourseView, alert ok.")
-									//downloadManager.downloadCourse(course: scorewindData.currentCourse)
-									showDownloadAlert = false
-								})
-								Button("Cancel", role:.cancel, action:{
-									showDownloadAlert = false
-								})
-							}, message: {
-								Text("128 MB course content will be downloaded into your device. Continue?")
-							})
-						} else if downloadManager.checkDownloadStatus(courseID: scorewindData.currentCourse.id, lessonsCount: scorewindData.currentCourse.lessons.count) == DownloadStatus.inQueue {
-							Button(action:{
-								//testLessonDownloadStatusUpdate()
-								//can call cancel download
-							}){
-								Label("In queue", systemImage: "arrow.down.square")
-									.labelStyle(.titleAndIcon)
-							}
-						} else if downloadManager.checkDownloadStatus(courseID: scorewindData.currentCourse.id, lessonsCount: scorewindData.currentCourse.lessons.count) == DownloadStatus.downloading {
-							Button(action:{
-								//can call cancel download
-							}){
-								Label("Downloading", systemImage: "square.and.arrow.down.on.square.fill")
-									.labelStyle(.titleAndIcon)
-							}
-						} else if downloadManager.checkDownloadStatus(courseID: scorewindData.currentCourse.id, lessonsCount: scorewindData.currentCourse.lessons.count) == DownloadStatus.downloaded {
-							Button(action:{
-								showDownloadAlert = true
-							}){
-								Label("Downloaded", systemImage: "arrow.down.square.fill")
-									.labelStyle(.titleAndIcon)
-							}
-							.alert("Remove download", isPresented: $showDownloadAlert, actions: {
-								Button("ok", action:{
-									print("[debug] CourseView, alert ok.")
-									showDownloadAlert = false
-									//remove downloaded video and xml
-								})
-								Button("Cancel", role:.cancel, action:{
-									showDownloadAlert = false
-								})
-							}, message: {
-								Text("By removing download, you can not take course offline. Continue?")
-							})
-						}
-						
-					}
+					courseDownloadButtonView()
 					List {
 						Section(header: Text("In this course...")) {
 							ForEach(scorewindData.currentCourse.lessons){ lesson in
@@ -177,42 +119,75 @@ struct CourseView: View {
 	@ViewBuilder
 	private func downloadIconView(getLessonID: Int) -> some View {
 		let getStatus =  downloadManager.checkDownloadStatus(lessonID: getLessonID)
-		if getStatus == 1 {
+		if getStatus == DownloadStatus.inQueue.rawValue {
 			Image(systemName: "arrow.down.square")
 				.foregroundColor(Color.gray)
-		} else if getStatus == 2 {
+		} else if getStatus == DownloadStatus.downloading.rawValue {
 			Image(systemName: "square.and.arrow.down.on.square.fill")
 				.foregroundColor(.blue)
-		} else if getStatus == 3 {
+		} else if getStatus == DownloadStatus.downloaded.rawValue {
 			Image(systemName: "arrow.down.square.fill")
 				.foregroundColor(Color.green)
 		}
 	}
 	
-	private func testLessonDownloadStatusUpdate() {
-		if testDownloadStatus == true {
-			DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-				print("[deubg] CourseView, alter downloadManager.downloadList 1")
-				downloadManager.downloadList.append(DownloadItem(courseID: 0, lessonID: 90696, videoDownloadStatus: 1, xmlDownloadStatus: 0))
+	@ViewBuilder
+	private func courseDownloadButtonView() -> some View {
+		let getStatus =  downloadManager.checkDownloadStatus(courseID: scorewindData.currentCourse.id, lessonsCount: scorewindData.currentCourse.lessons.count)
+		
+		HStack {
+			if getStatus == DownloadStatus.notInQueue {
+				Image(systemName: "arrow.down.to.line")
+					.foregroundColor(Color.black)
+			} else if getStatus == DownloadStatus.inQueue {
+				Image(systemName: "arrow.down.square")
+					.foregroundColor(Color.gray)
+			} else if getStatus == DownloadStatus.downloading {
+				Image(systemName: "square.and.arrow.down.on.square.fill")
+					.foregroundColor(.blue)
+			} else if getStatus == DownloadStatus.downloaded {
+				Image(systemName: "arrow.down.square.fill")
+					.foregroundColor(Color.green)
 			}
-			DispatchQueue.main.asyncAfter(deadline: .now() + 4) {
-				print("[deubg] CourseView, alter downloadManager.downloadList 2")
-				if let findIndex = downloadManager.downloadList.firstIndex(where: {$0.lessonID == 90696}) {
-					downloadManager.downloadList[findIndex].videoDownloadStatus = 2
-					downloadManager.downloadList[findIndex].xmlDownloadStatus = 1
+			
+			Button(action: {
+				showDownloadAlert = true
+			}) {
+				if getStatus == DownloadStatus.notInQueue {
+					Text("Download course for offline")
+						.foregroundColor(Color.black)
+				} else {
+					Text("Remove downloads")
+						.foregroundColor(Color.black)
 				}
 			}
-			DispatchQueue.main.asyncAfter(deadline: .now() + 6) {
-				print("[deubg] CourseView, alter downloadManager.downloadList 3")
-				if let findIndex = downloadManager.downloadList.firstIndex(where: {$0.lessonID == 90696}) {
-					downloadManager.downloadList[findIndex].videoDownloadStatus = 3
-					downloadManager.downloadList[findIndex].xmlDownloadStatus = 3
+			.alert("\(getAlertDialogTitle(downloadStatus:getStatus))", isPresented: $showDownloadAlert, actions: {
+				Button("ok", action:{
+					print("[debug] CourseView, alert ok.")
+					showDownloadAlert = false
+					downloadManager.addOrRemoveCourseOffline(currentCourseDownloadStatus: getStatus, courseID: scorewindData.currentCourse.id, lessons: scorewindData.currentCourse.lessons)
+				})
+				Button("Cancel", role:.cancel, action:{
+					showDownloadAlert = false
+				})
+			}, message: {
+				if getStatus == DownloadStatus.notInQueue {
+					Text("128 MB course content will be downloaded into your device. Continue?")
+				} else {
+					Text("After removing downloads, you can not take course offline. Continue?")
 				}
-				testDownloadStatus = false
-			}
-		 }
+			})
+		}
 	}
-
+	
+	private func getAlertDialogTitle(downloadStatus: DownloadStatus) -> String {
+		if downloadStatus == DownloadStatus.notInQueue {
+			return "Download course"
+		} else {
+			return "Remove download"
+		}
+	}
+	
 }
 
 struct CourseView_Previews: PreviewProvider {
