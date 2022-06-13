@@ -42,65 +42,6 @@ class DownloadManager: ObservableObject {
 		}
 	}*/
 	
-	func downloadCourse(course: Course) {
-		/**
-		 This function is called by Make Course Offline button
-		 */
-		let downloadListURL = URL(fileURLWithPath: "downloadList", relativeTo: FileManager.documentoryDirecotryURL).appendingPathExtension("json")
-		print("[debug] DownloadManager, downloadCourse \(downloadListURL.path)")
-		if FileManager.default.fileExists(atPath: downloadListURL.path) {
-			//read content to downloadList property
-			//append new DownloadItem if the Down
-			do {
-				if let jsonData = try String(contentsOfFile: downloadListURL.path).data(using: .utf8) {
-					let decodedData = try JSONDecoder().decode([DownloadItem].self, from: jsonData)
-					downloadList = decodedData
-					print("[debug] DownloadManager, downloadCourse: has downloadList.json, downloadList.count\(downloadList.count)")
-					
-					let checkExistingCourse = downloadList.filter {
-						$0.courseID == course.id
-					}
-					
-					if checkExistingCourse.isEmpty {
-						for lesson in course.lessons {
-							downloadList.append(DownloadItem(courseID: course.id, lessonID: lesson.id, videoDownloadStatus: DownloadStatus.notInQueue.rawValue, xmlDownloadStatus: DownloadStatus.inQueue.rawValue))
-						}
-						
-						let encoder = JSONEncoder()
-						encoder.outputFormatting = .prettyPrinted
-						do {
-							let downloadListData = try encoder.encode(downloadList)
-							try downloadListData.write(to: downloadListURL, options: .atomicWrite)
-							print("[debug] DownloadManager, downloadCourse, downloadList.count\(downloadList.count)")
-						} catch let error {
-							print(error)
-						}
-					}
-					
-				}
-			} catch {
-				print(error)
-			}
-		} else {
-			//make temp downloadList object, right it to disk and assign it to downloadList property.
-			var tempDownloadList:[DownloadItem] = []
-			for lesson in course.lessons {
-				tempDownloadList.append(DownloadItem(courseID: course.id, lessonID: lesson.id, videoDownloadStatus: DownloadStatus.notInQueue.rawValue, xmlDownloadStatus: DownloadStatus.inQueue.rawValue))
-			}
-			if !tempDownloadList.isEmpty {
-				let encoder = JSONEncoder()
-				encoder.outputFormatting = .prettyPrinted
-				do {
-					let tempDownloadListData = try encoder.encode(tempDownloadList)
-					try tempDownloadListData.write(to: downloadListURL, options: .atomicWrite)
-					downloadList = tempDownloadList
-					print("[debug] DownloadManager, downloadCourse, downloadList.count\(downloadList.count)")
-				} catch let error {
-					print(error)
-				}
-			}
-		}
-	}
 
 	func checkDownloadStatus(lessonID:Int) -> Int {
 		var finalDownloadStatus = DownloadStatus.notInQueue.rawValue
@@ -269,8 +210,45 @@ class DownloadManager: ObservableObject {
 					}
 				}
 			}
-			
 			downloadList = newDownloadList
+		}
+	}
+	
+	func newDownloadVideos() async throws {
+		for (index, item) in newDownloadList.enumerated() {
+			if canceled == true {
+				break
+			}
+			if item.downloadStatus == 1 {
+				let findLesson = testVideos.first(where:{$0.id == item.lessonID})
+				if findLesson != nil {
+					print("newDownloadVideos, lesson.videoMP4 = \(findLesson!.videoMP4)")
+					let url = URL(string: decodeVideoURL(videoURL: findLesson!.videoMP4))!
+					
+					newDownloadList[index].downloadStatus = 2
+					print("newDownloadVideos, newDownloadList[\(index)].downloadStatus \(newDownloadList[index].downloadStatus)")
+					
+					do {
+						DispatchQueue.main.async {
+							self.newDownloadList[index].downloadStatus = 2
+							print("newDownloadVideos, newDownloadList[\(index)].downloadStatus \(self.newDownloadList[index].downloadStatus)")
+						}
+						let newStatus = try await newDownload(url, lessonID: item.lessonID)
+						if canceled == true {
+							DispatchQueue.main.async {
+								self.newDownloadList[index].downloadStatus = 1
+							}
+							break
+						}
+						DispatchQueue.main.async {
+							self.newDownloadList[index].downloadStatus = newStatus
+							print("newDownloadVideos, newDownloadList[\(index)].downloadStatus \(self.newDownloadList[index].downloadStatus)")
+						}
+					} catch {
+						print("newDownloadVideos, catch,\(error)")
+					}
+				}
+			}
 		}
 	}
 	

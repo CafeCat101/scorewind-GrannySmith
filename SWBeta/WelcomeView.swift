@@ -36,13 +36,6 @@ struct WelcomeView: View {
 			.onAppear{
 				print("->WelcomeView: onAppear")
 				checkDataVersion()
-				DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-					withAnimation{
-						showWelcome = false
-					}
-				}
-				
-				
 			}
 				
 		}else{
