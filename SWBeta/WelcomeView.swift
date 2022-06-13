@@ -36,11 +36,13 @@ struct WelcomeView: View {
 			.onAppear{
 				print("->WelcomeView: onAppear")
 				checkDataVersion()
-				//loadScorewindCourses()
-				//scorewindData.initiateTimestampData()
-				/*if scorewindData.studentData.getInstrumentChoice() == "" {
-					scorewindData.studentData.setInstrumentChoice(instrument: "guitar")
-				}*/
+				DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+					withAnimation{
+						showWelcome = false
+					}
+				}
+				
+				
 			}
 				
 		}else{
@@ -174,6 +176,7 @@ extension WelcomeView {
 				showWelcome = false
 			}
 		}
+		downloadManager.buildDownloadListFromJSON(allCourses: scorewindData.allCourses)
 	}
 }
 

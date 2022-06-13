@@ -11,7 +11,29 @@ import Combine
 class DownloadManager: ObservableObject {
 	@Published var downloadList:[DownloadItem] = []
 	var callForDownloadPublisher = PassthroughSubject<Bool, Never>()
+	let docsUrl = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first
 	let courseOfflineURL = URL(fileURLWithPath: "courseOffline", relativeTo: FileManager.documentoryDirecotryURL).appendingPathExtension("json")
+	
+	init() {
+		/*for testing only*/
+		/*let testURL = URL(string: "myfolder/test1.json", relativeTo: docsUrl)!
+		do {
+			print(testURL.path)
+			let str = "blablabla"
+			var isDirectory = ObjCBool(true)
+			if FileManager.default.fileExists(atPath: docsUrl!.path+"/myfolder", isDirectory: &isDirectory) == false {
+				try FileManager.default.createDirectory(atPath: docsUrl!.path+"/myfolder", withIntermediateDirectories: true)
+				try str.write(to: testURL, atomically: true, encoding: String.Encoding.utf8)
+			} else {
+				print("myfolder directory exists.")
+				try FileManager.default.removeItem(atPath: docsUrl!.path+"/myfolder")
+			}
+			
+		} catch {
+			print("\(error)")
+				// failed to write file – bad permissions, bad filename, missing permissions, or more likely it can't be converted to the encoding
+		}*/
+	}
 
 	/*func testPublisherTrigger(caller: String) async {
 		print("testPublisherTrigger is called from \(caller)")
@@ -213,5 +235,43 @@ class DownloadManager: ObservableObject {
 		
 	}
 	
+	func buildDownloadListFromJSON(allCourses:[Course]) {
+		var courseOfflineList:[CourseOfflineItem] = []
+		if FileManager.default.fileExists(atPath: courseOfflineURL.path) {
+			do {
+				if let jsonData = try String(contentsOfFile: courseOfflineURL.path).data(using: .utf8) {
+					courseOfflineList = try JSONDecoder().decode([CourseOfflineItem].self, from: jsonData)
+				}
+			} catch {
+				print(error)
+			}
+		}
+		
+		if !courseOfflineList.isEmpty {
+			var newDownloadList:[DownloadItem] = []
+			
+			for courseItem in courseOfflineList {
+				let findCourseTarget = allCourses.first(where: {$0.id == courseItem.courseID}) ?? Course()
+				if findCourseTarget.id > 0 {
+					for lesson in findCourseTarget.lessons {
+						let courseURL = URL(string: "course\(courseItem.courseID)", relativeTo: docsUrl)!
+						let videoURL = URL(fileURLWithPath: lesson.videoMP4, relativeTo: courseURL).appendingPathExtension("mp4")
+						var videoStatus = DownloadStatus.inQueue
+						if FileManager.default.fileExists(atPath: videoURL.path) {
+							videoStatus = DownloadStatus.downloaded
+						}
+						let xmlURL = URL(fileURLWithPath: lesson.scoreViewer, relativeTo: courseURL).appendingPathExtension("xml")
+						var xmlStatus = DownloadStatus.inQueue
+						if FileManager.default.fileExists(atPath: xmlURL.path) {
+							xmlStatus = DownloadStatus.downloaded
+						}
+						newDownloadList.append(DownloadItem(courseID: findCourseTarget.id, lessonID: lesson.id, videoDownloadStatus: videoStatus.rawValue, xmlDownloadStatus: xmlStatus.rawValue))
+					}
+				}
+			}
+			
+			downloadList = newDownloadList
+		}
+	}
 	
 }
