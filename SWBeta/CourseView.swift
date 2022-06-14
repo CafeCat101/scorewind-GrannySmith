@@ -128,6 +128,9 @@ struct CourseView: View {
 		} else if getStatus == DownloadStatus.downloaded.rawValue {
 			Image(systemName: "arrow.down.square.fill")
 				.foregroundColor(Color.green)
+		} else if getStatus == DownloadStatus.failed.rawValue {
+			Image(systemName: "exclamationmark.square")
+				.foregroundColor(Color.gray)
 		}
 	}
 	
@@ -147,6 +150,9 @@ struct CourseView: View {
 					.foregroundColor(.blue)
 			} else if getStatus == DownloadStatus.downloaded {
 				Image(systemName: "arrow.down.square.fill")
+					.foregroundColor(Color.green)
+			} else if getStatus == DownloadStatus.failed {
+				Image(systemName: "exclamationmark.square")
 					.foregroundColor(Color.green)
 			}
 			

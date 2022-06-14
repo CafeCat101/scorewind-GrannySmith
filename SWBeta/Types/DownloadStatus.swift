@@ -12,4 +12,5 @@ enum DownloadStatus:Int {
 	case inQueue = 1
 	case downloading = 2
 	case downloaded = 3
+	case failed = 4
 }
