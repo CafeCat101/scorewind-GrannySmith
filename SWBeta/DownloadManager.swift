@@ -13,6 +13,10 @@ class DownloadManager: ObservableObject {
 	var callForDownloadPublisher = PassthroughSubject<Bool, Never>()
 	let docsUrl = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first
 	let courseOfflineURL = URL(fileURLWithPath: "courseOffline", relativeTo: FileManager.documentoryDirecotryURL).appendingPathExtension("json")
+	private var swVideoDownloadTask: Task<URL?,Error>?
+	private var swXMLDownloadTask: Task<URL?, Error>?
+	var updateDownloadListPublisher = PassthroughSubject<String, Never>()
+	var downloadTaskPublisher = PassthroughSubject<[DownloadItem], Never>()
 	
 	init() {
 		/*for testing only*/
@@ -214,42 +218,53 @@ class DownloadManager: ObservableObject {
 		}
 	}
 	
-	func newDownloadVideos() async throws {
-		for (index, item) in newDownloadList.enumerated() {
-			if canceled == true {
-				break
-			}
-			if item.downloadStatus == 1 {
-				let findLesson = testVideos.first(where:{$0.id == item.lessonID})
-				if findLesson != nil {
-					print("newDownloadVideos, lesson.videoMP4 = \(findLesson!.videoMP4)")
-					let url = URL(string: decodeVideoURL(videoURL: findLesson!.videoMP4))!
-					
-					newDownloadList[index].downloadStatus = 2
-					print("newDownloadVideos, newDownloadList[\(index)].downloadStatus \(newDownloadList[index].downloadStatus)")
+	func downloadVideoXML(allCourses: [Course]) async throws{
+		let downloadTargets = downloadList
+		for item in downloadTargets {
+			if item.xmlDownloadStatus == 1 || item.videoDownloadStatus == 1{
+				let getCourse = allCourses.first(where: {$0.id == item.courseID})
+				let getLesson = getCourse?.lessons.first(where: {$0.id == item.lessonID})
+				print("[downlaodVideoXML] lessonID:\(getLesson?.id ?? 0)")
+				
+				let destCourseURL = URL(string: "course\(item.courseID)", relativeTo: docsUrl)!
+				do {
+					print("[downlaodVideoXML] destCourseURL:\(destCourseURL.path)")
+					var isDirectory = ObjCBool(true)
+					if FileManager.default.fileExists(atPath: destCourseURL.path, isDirectory: &isDirectory) == false {
+						try FileManager.default.createDirectory(atPath: destCourseURL.path, withIntermediateDirectories: true)
+					}
+				} catch {
+					print("\(error)")
+				}
+				
+				var isDirectory = ObjCBool(true)
+				if item.xmlDownloadStatus == 1 && FileManager.default.fileExists(atPath: destCourseURL.path, isDirectory: &isDirectory) == true {
+					let downloadableXMLURL = URL(string: getLesson!.scoreViewer.addingPercentEncoding(withAllowedCharacters: .urlFragmentAllowed)!)!//=>want to provide a local blank xml url in the future if the server url is not valid.
+					print("[downlaodVideoXML] downloadableXMLURL:\(downloadableXMLURL.path)")
+					swXMLDownloadTask = Task { () -> URL? in
+						let (fileURL, _) = try await URLSession.shared.download(from: downloadableXMLURL)
+						return fileURL
+					}
 					
 					do {
+						let getXMLFileURL = try await swXMLDownloadTask!.value!
+						try FileManager.default.moveItem(at: getXMLFileURL, to: destCourseURL.appendingPathComponent(downloadableXMLURL.lastPathComponent))
+						print("[downlaodVideoXML] getXMLFileURL:\(getXMLFileURL.path)")
+						print("[downlaodVideoXML] destXMLFileURL:\(destCourseURL.appendingPathComponent(downloadableXMLURL.lastPathComponent).path)")
 						DispatchQueue.main.async {
-							self.newDownloadList[index].downloadStatus = 2
-							print("newDownloadVideos, newDownloadList[\(index)].downloadStatus \(self.newDownloadList[index].downloadStatus)")
+							self.updateDownloadListPublisher.send("\(getLesson?.id ?? 0):XML:\(DownloadStatus.downloaded.rawValue)")
 						}
-						let newStatus = try await newDownload(url, lessonID: item.lessonID)
-						if canceled == true {
-							DispatchQueue.main.async {
-								self.newDownloadList[index].downloadStatus = 1
-							}
-							break
-						}
-						DispatchQueue.main.async {
-							self.newDownloadList[index].downloadStatus = newStatus
-							print("newDownloadVideos, newDownloadList[\(index)].downloadStatus \(self.newDownloadList[index].downloadStatus)")
-						}
+						
 					} catch {
-						print("newDownloadVideos, catch,\(error)")
+						print("\(error)")
 					}
 				}
 			}
 		}
+		DispatchQueue.main.async {
+			self.downloadTaskPublisher.send(downloadTargets)
+		}
+		
 	}
 	
 }

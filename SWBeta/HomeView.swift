@@ -55,6 +55,12 @@ struct HomeView: View {
 					print("app is in the background")
 				}
 			})
+			.onReceive(downloadManager.updateDownloadListPublisher, perform: { value in
+				print("HomeView,onRecieve, updateDownlaodListPublisher:\(value)")
+			})
+			.onReceive(downloadManager.downloadTaskPublisher, perform: { value in
+				print("HomeView,onRecieve, downloadTaskPublisher:\(value.count)")
+			})
 			/*.onReceive(downloadManager.callForDownloadPublisher, perform: { value in
 			 if value == true {
 			 Task {
