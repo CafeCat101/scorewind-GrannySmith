@@ -7,16 +7,16 @@
 
 import Foundation
 import Combine
+import SwiftUI
 
 class DownloadManager: ObservableObject {
 	@Published var downloadList:[DownloadItem] = []
-	var callForDownloadPublisher = PassthroughSubject<Bool, Never>()
-	let docsUrl = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first
-	let courseOfflineURL = URL(fileURLWithPath: "courseOffline", relativeTo: FileManager.documentoryDirecotryURL).appendingPathExtension("json")
+	private let docsUrl = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first
+	private let courseOfflineURL = URL(fileURLWithPath: "courseOffline", relativeTo: FileManager.documentoryDirecotryURL).appendingPathExtension("json")
 	private var swVideoDownloadTask: Task<URL?,Error>?
 	private var swXMLDownloadTask: Task<URL?, Error>?
-	var updateDownloadListPublisher = PassthroughSubject<String, Never>()
 	var downloadTaskPublisher = PassthroughSubject<[DownloadItem], Never>()
+	var appState:ScenePhase?
 	
 	init() {
 		/*for testing only*/
@@ -168,6 +168,7 @@ class DownloadManager: ObservableObject {
 	}
 	
 	func buildDownloadListFromJSON(allCourses:[Course]) {
+		print("[debug] DownloadManager, buildDownloadListFromJSON")
 		var courseOfflineList:[CourseOfflineItem] = []
 		if FileManager.default.fileExists(atPath: courseOfflineURL.path) {
 			do {
@@ -185,17 +186,22 @@ class DownloadManager: ObservableObject {
 			for courseItem in courseOfflineList {
 				let findCourseTarget = allCourses.first(where: {$0.id == courseItem.courseID}) ?? Course()
 				if findCourseTarget.id > 0 {
+					let courseURL = URL(string: "course\(courseItem.courseID)", relativeTo: docsUrl)!
+					
 					for lesson in findCourseTarget.lessons {
-						let courseURL = URL(string: "course\(courseItem.courseID)", relativeTo: docsUrl)!
-						let videoURL = URL(fileURLWithPath: lesson.videoMP4, relativeTo: courseURL).appendingPathExtension("mp4")
+						let videoURL = URL(string: lesson.videoMP4.addingPercentEncoding(withAllowedCharacters: .urlFragmentAllowed)!)!
 						var videoStatus = DownloadStatus.inQueue
-						if FileManager.default.fileExists(atPath: videoURL.path) {
+						if FileManager.default.fileExists(atPath: courseURL.appendingPathComponent(videoURL.lastPathComponent).path) {
 							videoStatus = DownloadStatus.downloaded
+						} else {
+							print("[debug] DownloadManager, buildDownloadListFromJSON, video(\(videoURL.path) is not found.")
 						}
-						let xmlURL = URL(fileURLWithPath: lesson.scoreViewer, relativeTo: courseURL).appendingPathExtension("xml")
+						let xmlURL = URL(string: lesson.scoreViewer.addingPercentEncoding(withAllowedCharacters: .urlFragmentAllowed)!)!
 						var xmlStatus = DownloadStatus.inQueue
-						if FileManager.default.fileExists(atPath: xmlURL.path) {
+						if FileManager.default.fileExists(atPath: courseURL.appendingPathComponent(xmlURL.lastPathComponent).path) {
 							xmlStatus = DownloadStatus.downloaded
+						} else {
+							print("[debug] DownloadManager, buildDownloadListFromJSON, video(\(xmlURL.path) is not found.")
 						}
 						newDownloadList.append(DownloadItem(courseID: findCourseTarget.id, lessonID: lesson.id, videoDownloadStatus: videoStatus.rawValue, xmlDownloadStatus: xmlStatus.rawValue))
 					}
