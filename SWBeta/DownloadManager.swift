@@ -135,6 +135,11 @@ class DownloadManager: ObservableObject {
 			if !findExistingCourseItem.isEmpty {
 				print("[deubg] remove course(id:\(courseID) from courseOffline.json")
 				courseOfflineList.removeAll(where: {$0.courseID == courseID})
+				do {
+					try FileManager.default.removeItem(atPath: URL(string: "course\(courseID)", relativeTo: docsUrl)!.path)
+				} catch {
+					print("[debug] remove course/all downloaded file, catch,\(error)")
+				}
 			} else {
 				print("[debug] courseOffline.json has this courseID item.")
 			}

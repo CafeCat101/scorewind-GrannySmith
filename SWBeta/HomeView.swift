@@ -50,15 +50,7 @@ struct HomeView: View {
 					print("app is active")
 					if downloadManager.appState == .background {
 						print("[debug] HomeView, tabview, downloadManager.appState=background")
-						downloadManager.buildDownloadListFromJSON(allCourses: scorewindData.allCourses)
-						Task {
-							print("[debug] HomeView, downloadVideoXML")
-							do {
-								try await downloadManager.downloadVideoXML(allCourses: scorewindData.allCourses)
-							} catch {
-								print("[debug] HomeView, downloadVideoXML, catch, \(error)")
-							}
-						}
+						activateDownloadVideoXML()
 					}
 					downloadManager.appState = .active
 				} else if newPhase == .inactive {
@@ -79,15 +71,7 @@ struct HomeView: View {
 							print("app is active")
 							if downloadManager.appState == .background {
 								print("[debug] HomeView, tabview, downloadManager.appState=background")
-								downloadManager.buildDownloadListFromJSON(allCourses: scorewindData.allCourses)
-								Task {
-									print("[debug] HomeView, downloadVideoXML")
-									do {
-										try await downloadManager.downloadVideoXML(allCourses: scorewindData.allCourses)
-									} catch {
-										print("[debug] HomeView, downloadVideoXML, catch, \(error)")
-									}
-								}
+								activateDownloadVideoXML()
 							}
 							downloadManager.appState = .active
 						} else if newPhase == .inactive {
@@ -101,6 +85,17 @@ struct HomeView: View {
 		}
 	}
 		
+	private func activateDownloadVideoXML() {
+		downloadManager.buildDownloadListFromJSON(allCourses: scorewindData.allCourses)
+		Task {
+			print("[debug] HomeView, Task:downloadVideoXML")
+			do {
+				try await downloadManager.downloadVideoXML(allCourses: scorewindData.allCourses)
+			} catch {
+				print("[debug] HomeView, Task:downloadVideoXML, catch, \(error)")
+			}
+		}
+	}
 }
 
 
