@@ -48,7 +48,6 @@ struct HomeView: View {
 			.onChange(of: scenePhase, perform: { newPhase in
 				if newPhase == .active {
 					print("app is active")
-					downloadManager.buildDownloadListFromJSON(allCourses: scorewindData.allCourses)
 					if downloadManager.appState == .background {
 						print("[debug] HomeView, tabview, downloadManager.appState=background")
 						downloadManager.buildDownloadListFromJSON(allCourses: scorewindData.allCourses)
@@ -64,7 +63,6 @@ struct HomeView: View {
 					downloadManager.appState = .active
 				} else if newPhase == .inactive {
 					print("appp is inactive")
-					downloadManager.appState = .inactive
 				} else if newPhase == .background {
 					print("app is in the background")
 					downloadManager.appState = .background
@@ -79,9 +77,7 @@ struct HomeView: View {
 					.onChange(of: scenePhase, perform: { newPhase in
 						if newPhase == .active {
 							print("app is active")
-							downloadManager.buildDownloadListFromJSON(allCourses: scorewindData.allCourses)
-							
-							/*if downloadManager.appState == .background {
+							if downloadManager.appState == .background {
 								print("[debug] HomeView, tabview, downloadManager.appState=background")
 								downloadManager.buildDownloadListFromJSON(allCourses: scorewindData.allCourses)
 								Task {
@@ -92,11 +88,10 @@ struct HomeView: View {
 										print("[debug] HomeView, downloadVideoXML, catch, \(error)")
 									}
 								}
-							}*/
+							}
 							downloadManager.appState = .active
 						} else if newPhase == .inactive {
 							print("appp is inactive")
-							downloadManager.appState = .inactive
 						} else if newPhase == .background {
 							print("app is in the background")
 							downloadManager.appState = .background

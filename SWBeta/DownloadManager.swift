@@ -16,7 +16,7 @@ class DownloadManager: ObservableObject {
 	private var swVideoDownloadTask: Task<URL?,Error>?
 	private var swXMLDownloadTask: Task<URL?, Error>?
 	var downloadTaskPublisher = PassthroughSubject<[DownloadItem], Never>()
-	var appState:ScenePhase?
+	var appState:ScenePhase = .active
 	
 	init() {
 		/*for testing only*/
@@ -196,6 +196,7 @@ class DownloadManager: ObservableObject {
 						} else {
 							print("[debug] DownloadManager, buildDownloadListFromJSON, video(\(videoURL.path) is not found.")
 						}
+						
 						let xmlURL = URL(string: lesson.scoreViewer.addingPercentEncoding(withAllowedCharacters: .urlFragmentAllowed)!)!
 						var xmlStatus = DownloadStatus.inQueue
 						if FileManager.default.fileExists(atPath: courseURL.appendingPathComponent(xmlURL.lastPathComponent).path) {

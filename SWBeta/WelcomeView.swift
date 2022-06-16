@@ -170,6 +170,14 @@ extension WelcomeView {
 			}
 		}
 		downloadManager.buildDownloadListFromJSON(allCourses: scorewindData.allCourses)
+		Task {
+			print("[debug] WelcomeView, Task:downloadVideoXML")
+			do {
+				try await downloadManager.downloadVideoXML(allCourses: scorewindData.allCourses)
+			} catch {
+				print("[debug] WelcomeView, Task:downloadVideoXML, catch, \(error)")
+			}
+		}
 	}
 }
 
