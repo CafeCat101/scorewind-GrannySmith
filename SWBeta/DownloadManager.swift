@@ -17,6 +17,7 @@ class DownloadManager: ObservableObject {
 	private var swXMLDownloadTask: Task<URL?, Error>?
 	var downloadTaskPublisher = PassthroughSubject<[DownloadItem], Never>()
 	var appState:ScenePhase = .active
+	private var userDefaults = UserDefaults.standard
 	
 	init() {
 		/*for testing only*/
@@ -104,6 +105,10 @@ class DownloadManager: ObservableObject {
 	}
 	
 	func addOrRemoveCourseOffline(currentCourseDownloadStatus: DownloadStatus, courseID: Int, lessons:[Lesson]) {
+		var courseLfflineList = userDefaults.object(forKey: "courseOffline") as? [Int] ?? []
+		
+		
+		
 		var courseOfflineList:[CourseOfflineItem] = []
 		
 		if FileManager.default.fileExists(atPath: courseOfflineURL.path) {
