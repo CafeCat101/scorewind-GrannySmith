@@ -62,6 +62,9 @@ struct HomeView: View {
 			})
 			.onReceive(downloadManager.downloadTaskPublisher, perform: { clonedDownloadList in
 				print("[deubg] HomeView,onRecieve, downloadTaskPublisher:\(clonedDownloadList.count)")
+				for courseID in clonedDownloadList {
+					print("[debug] HomeView, onRecieve - \(courseID)")
+				}
 				if clonedDownloadList != downloadManager.downloadList {
 					print("[deubg] HomeView, onRecieve, cloned and original are different, call downloadXMLVideo")
 					Task {
