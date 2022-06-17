@@ -20,6 +20,15 @@ class DownloadManager: ObservableObject {
 	private var userDefaults = UserDefaults.standard
 	
 	init() {
+		let checkCourseOfflineList = userDefaults.object(forKey: "courseOffline") as? [Int] ?? []
+		if !checkCourseOfflineList.isEmpty {
+			for item in checkCourseOfflineList {
+				print("[debug] DownloadManager, UserDefault-key:courseOffline item:\(item)")
+			}
+		} else {
+			print("[deubg] DownloadManager, UserDefault-key:courseOffline is empty")
+		}
+		
 		/*for testing only*/
 		/*let testURL = URL(string: "myfolder/test1.json", relativeTo: docsUrl)!
 		 do {
@@ -105,48 +114,35 @@ class DownloadManager: ObservableObject {
 	}
 	
 	func addOrRemoveCourseOffline(currentCourseDownloadStatus: DownloadStatus, courseID: Int, lessons:[Lesson]) {
-		var courseLfflineList = userDefaults.object(forKey: "courseOffline") as? [Int] ?? []
-		
-		
-		
-		var courseOfflineList:[CourseOfflineItem] = []
-		
-		if FileManager.default.fileExists(atPath: courseOfflineURL.path) {
-			do {
-				if let jsonData = try String(contentsOfFile: courseOfflineURL.path).data(using: .utf8) {
-					courseOfflineList = try JSONDecoder().decode([CourseOfflineItem].self, from: jsonData)
-				}
-			} catch {
-				print(error)
-			}
-		}
-		
-		let findExistingCourseItem = courseOfflineList.filter({$0.courseID == courseID})
+		var courseOfflineList = userDefaults.object(forKey: "courseOffline") as? [Int] ?? []
+		let findExistingCourseItem = courseOfflineList.filter({$0 == courseID})
 		let findExistingLessonItems = downloadList.filter({$0.courseID == courseID})
+		
 		if currentCourseDownloadStatus == DownloadStatus.notInQueue {
 			if findExistingCourseItem.isEmpty == true {
-				print("[deubg] add course(id:\(courseID) to courseOffline.json")
-				courseOfflineList.append(CourseOfflineItem(courseID: courseID))
+				print("[deubg] add course(id:\(courseID) to UserDefault key:courseOffline")
+				courseOfflineList.append(courseID)
+				userDefaults.set(courseOfflineList, forKey: "courseOffline")
 			} else {
-				print("[debug] courseOffline.json has this courseID item.")
+				print("[debug] UserDefault key:courseOffline already have courseID\(courseID)")
 			}
 			if findExistingLessonItems.isEmpty == true {
 				for lesson in lessons {
 					downloadList.append(DownloadItem(courseID: courseID, lessonID: lesson.id, videoDownloadStatus: DownloadStatus.inQueue.rawValue, xmlDownloadStatus: DownloadStatus.inQueue.rawValue))
 				}
 			}
-			
 		} else {
 			if !findExistingCourseItem.isEmpty {
-				print("[deubg] remove course(id:\(courseID) from courseOffline.json")
-				courseOfflineList.removeAll(where: {$0.courseID == courseID})
+				print("[deubg] remove course(id:\(courseID) from UserDefault key:courseOffline")
+				courseOfflineList.removeAll(where: {$0 == courseID})
+				userDefaults.set(courseOfflineList, forKey: "courseOffline")
 				do {
 					try FileManager.default.removeItem(atPath: URL(string: "course\(courseID)", relativeTo: docsUrl)!.path)
 				} catch {
 					print("[debug] remove course/all downloaded file, catch,\(error)")
 				}
 			} else {
-				print("[debug] courseOffline.json has this courseID item.")
+				print("[debug] UserDefault key:courseOffline didn't have courseID\(courseID)")
 			}
 			if !findExistingLessonItems.isEmpty{
 				for lesson in lessons {
@@ -154,49 +150,19 @@ class DownloadManager: ObservableObject {
 				}
 			}
 		}
-		
-		if !courseOfflineList.isEmpty {
-			let encoder = JSONEncoder()
-			encoder.outputFormatting = .prettyPrinted
-			do {
-				let coursesOfflineData = try encoder.encode(courseOfflineList)
-				try coursesOfflineData.write(to: courseOfflineURL, options: .atomicWrite)
-			} catch let error {
-				print(error)
-			}
-		} else {
-			if FileManager.default.fileExists(atPath: courseOfflineURL.path) {
-				do {
-					try FileManager.default.removeItem(atPath: courseOfflineURL.path)
-				} catch {
-					print(error)
-				}
-			}
-		}
-		
-		
 	}
 	
 	func buildDownloadListFromJSON(allCourses:[Course]) {
 		print("[debug] DownloadManager, buildDownloadListFromJSON")
-		var courseOfflineList:[CourseOfflineItem] = []
-		if FileManager.default.fileExists(atPath: courseOfflineURL.path) {
-			do {
-				if let jsonData = try String(contentsOfFile: courseOfflineURL.path).data(using: .utf8) {
-					courseOfflineList = try JSONDecoder().decode([CourseOfflineItem].self, from: jsonData)
-				}
-			} catch {
-				print(error)
-			}
-		}
-		
+
+		let courseOfflineList = userDefaults.object(forKey: "courseOffline") as? [Int] ?? []
 		if !courseOfflineList.isEmpty {
 			var newDownloadList:[DownloadItem] = []
 			
 			for courseItem in courseOfflineList {
-				let findCourseTarget = allCourses.first(where: {$0.id == courseItem.courseID}) ?? Course()
+				let findCourseTarget = allCourses.first(where: {$0.id == courseItem}) ?? Course()
 				if findCourseTarget.id > 0 {
-					let courseURL = URL(string: "course\(courseItem.courseID)", relativeTo: docsUrl)!
+					let courseURL = URL(string: "course\(courseItem)", relativeTo: docsUrl)!
 					
 					for lesson in findCourseTarget.lessons {
 						let videoURL = URL(string: lesson.videoMP4.addingPercentEncoding(withAllowedCharacters: .urlFragmentAllowed)!)!
@@ -228,77 +194,58 @@ class DownloadManager: ObservableObject {
 			if item.xmlDownloadStatus == 1 || item.videoDownloadStatus == 1{
 				let getCourse = allCourses.first(where: {$0.id == item.courseID})
 				let getLesson = getCourse?.lessons.first(where: {$0.id == item.lessonID})
-				print("[downlaodVideoXML] lessonID:\(getLesson?.id ?? 0)")
+				print("[deubg] [downlaodVideoXML] lessonID:\(getLesson?.id ?? 0)")
 				
 				let destCourseURL = URL(string: "course\(item.courseID)", relativeTo: docsUrl)!
 				do {
-					print("[downlaodVideoXML] destCourseURL:\(destCourseURL.path)")
+					print("[deubg] [downlaodVideoXML] destCourseURL:\(destCourseURL.path)")
 					var isDirectory = ObjCBool(true)
 					if FileManager.default.fileExists(atPath: destCourseURL.path, isDirectory: &isDirectory) == false {
 						try FileManager.default.createDirectory(atPath: destCourseURL.path, withIntermediateDirectories: true)
 					}
 				} catch {
-					print("[downlaodVideoXML] check create destCourseURL, catch \(error)")
+					print("[deubg] [downlaodVideoXML] check create destCourseURL, catch \(error)")
 				}
 				
 				var isDirectory = ObjCBool(true)
 				if FileManager.default.fileExists(atPath: destCourseURL.path, isDirectory: &isDirectory) == true {
-					print("[downlaodVideoXML] scoreViewer:\(getLesson!.scoreViewer)")
+					print("[deubg] [downlaodVideoXML] scoreViewer:\(getLesson!.scoreViewer)")
 					let downloadableXMLURL = URL(string: getLesson!.scoreViewer.addingPercentEncoding(withAllowedCharacters: .urlFragmentAllowed)!)!//=>want to provide a local blank xml url in the future if the server url is not valid.
 					let downloadableVideoURL = URL(string: getLesson!.videoMP4.addingPercentEncoding(withAllowedCharacters: .urlFragmentAllowed)!)!
 					
 					if item.xmlDownloadStatus == 1 {
 						let getDownloadListIndex = self.downloadList.firstIndex(where: {$0.courseID == item.courseID && $0.lessonID == item.lessonID}) ?? -1
-						print("[downlaodVideoXML] getDownloadListIndex\(getDownloadListIndex))")
+						print("[deubg] [downlaodVideoXML] getDownloadListIndex\(getDownloadListIndex))")
 						
 						if getDownloadListIndex > -1 {
 							DispatchQueue.main.async {
-								//self.downloadList[getDownloadListIndex].xmlDownloadStatus = DownloadStatus.downloading.rawValue
 								self.downloadTaskUpdateStatus(fileType: "xml", status: DownloadStatus.downloading, tempCourseID: item.courseID, tempLessonID: item.lessonID)
 							}
 							
 							swXMLDownloadTask = Task { () -> URL? in
-								print("[downlaodVideoXML] swXMLDownloadTask begin(lessonID:\(item.lessonID)")
+								print("[deubg] [downlaodVideoXML] swXMLDownloadTask begin(lessonID:\(item.lessonID)")
 								let (fileURL, _) = try await URLSession.shared.download(from: downloadableXMLURL)
 								return fileURL
 							}
 							
 							do {
 								let getXMLFileURL = try await swXMLDownloadTask!.value!
-								print("[downlaodVideoXML] getXMLFileURL:\(getXMLFileURL.path)")
-								print("[downlaodVideoXML] destXMLFileURL:\(destCourseURL.appendingPathComponent(downloadableXMLURL.lastPathComponent).path)")
+								print("[deubg] [downlaodVideoXML] getXMLFileURL:\(getXMLFileURL.path)")
+								print("[deubg] [downlaodVideoXML] destXMLFileURL:\(destCourseURL.appendingPathComponent(downloadableXMLURL.lastPathComponent).path)")
 								if FileManager.default.fileExists(atPath: destCourseURL.appendingPathComponent(downloadableXMLURL.lastPathComponent).path) == false {
 									try FileManager.default.moveItem(at: getXMLFileURL, to: destCourseURL.appendingPathComponent(downloadableXMLURL.lastPathComponent))
 									DispatchQueue.main.async {
-										/*print("[downlaodVideoXML] item.CourseID\(item.courseID),courseIDitem.lessonID\(item.lessonID)")
-										let getDownloadListIndex = self.downloadList.firstIndex(where: {$0.courseID == item.courseID && $0.lessonID == item.lessonID}) ?? -1
-										print("[downlaodVideoXML] getDownloadListIndex\(getDownloadListIndex)")
-										if getDownloadListIndex > -1 {
-											self.downloadList[getDownloadListIndex].xmlDownloadStatus = DownloadStatus.downloaded.rawValue
-										}*/
 										self.downloadTaskUpdateStatus(fileType: "xml", status: DownloadStatus.downloaded, tempCourseID: item.courseID, tempLessonID: item.lessonID)
 									}
 								} else {
-									print("[downlaodVideoXML] FileManager, destXMLFileURL exists.")
+									print("[deubg] [downlaodVideoXML] FileManager, destXMLFileURL exists.")
 									DispatchQueue.main.async {
-										/*print("[downlaodVideoXML] item.CourseID\(item.courseID),courseIDitem.lessonID\(item.lessonID)")
-										let getDownloadListIndex = self.downloadList.firstIndex(where: {$0.courseID == item.courseID && $0.lessonID == item.lessonID}) ?? -1
-										print("[downlaodVideoXML] getDownloadListIndex\(getDownloadListIndex)")
-										if getDownloadListIndex > -1 {
-											self.downloadList[getDownloadListIndex].xmlDownloadStatus = DownloadStatus.downloaded.rawValue
-										}*/
 										self.downloadTaskUpdateStatus(fileType: "xml", status: DownloadStatus.downloaded, tempCourseID: item.courseID, tempLessonID: item.lessonID)
 									}
 								}
 							} catch {
-								print("[downlaodVideoXML] do await swXMLDownloadTask, catch \(error)")
+								print("[deubg] [downlaodVideoXML] do await swXMLDownloadTask, catch \(error)")
 								DispatchQueue.main.async {
-									/*print("[downlaodVideoXML] item.CourseID\(item.courseID),courseIDitem.lessonID\(item.lessonID)")
-									let getDownloadListIndex = self.downloadList.firstIndex(where: {$0.courseID == item.courseID && $0.lessonID == item.lessonID}) ?? -1
-									print("[downlaodVideoXML] getDownloadListIndex\(getDownloadListIndex)")
-									if getDownloadListIndex > -1 {
-										self.downloadList[getDownloadListIndex].xmlDownloadStatus = DownloadStatus.failed.rawValue
-									}*/
 									self.downloadTaskUpdateStatus(fileType: "xml", status: DownloadStatus.failed, tempCourseID: item.courseID, tempLessonID: item.lessonID)
 								}
 							}
@@ -314,47 +261,29 @@ class DownloadManager: ObservableObject {
 							}
 							
 							swVideoDownloadTask = Task { () -> URL? in
-								print("[downlaodVideoXML] swVideoDownloadTask begin(lessonID:\(item.lessonID)")
+								print("[deubg] [downlaodVideoXML] swVideoDownloadTask begin(lessonID:\(item.lessonID)")
 								let (fileURL, _) = try await URLSession.shared.download(from: downloadableVideoURL)
 								return fileURL
 							}
 							
 							do {
 								let getVideoFileURL = try await swVideoDownloadTask!.value!
-								print("[downlaodVideoXML] getVideoFileURL:\(getVideoFileURL.path)")
-								print("[downlaodVideoXML] destVideoFileURL:\(destCourseURL.appendingPathComponent(downloadableVideoURL.lastPathComponent).path)")
+								print("[deubg] [downlaodVideoXML] getVideoFileURL:\(getVideoFileURL.path)")
+								print("[deubg] [downlaodVideoXML] destVideoFileURL:\(destCourseURL.appendingPathComponent(downloadableVideoURL.lastPathComponent).path)")
 								if FileManager.default.fileExists(atPath: destCourseURL.appendingPathComponent(downloadableVideoURL.lastPathComponent).path) == false {
 									try FileManager.default.moveItem(at: getVideoFileURL, to: destCourseURL.appendingPathComponent(downloadableVideoURL.lastPathComponent))
 									DispatchQueue.main.async {
-										/*print("[downlaodVideoXML] item.CourseID\(item.courseID),courseIDitem.lessonID\(item.lessonID)")
-										let getDownloadListIndex = self.downloadList.firstIndex(where: {$0.courseID == item.courseID && $0.lessonID == item.lessonID}) ?? -1
-										print("[downlaodVideoXML] getDownloadListIndex\(getDownloadListIndex)")
-										if getDownloadListIndex > -1 {
-											self.downloadList[getDownloadListIndex].videoDownloadStatus = DownloadStatus.downloaded.rawValue
-										}*/
 										self.downloadTaskUpdateStatus(fileType: "mp4", status: DownloadStatus.downloaded, tempCourseID: item.courseID, tempLessonID: item.lessonID)
 									}
 								} else {
-									print("[downlaodVideoXML] FileManager, destXMLFileURL exists.")
+									print("[deubg] [downlaodVideoXML] FileManager, destXMLFileURL exists.")
 									DispatchQueue.main.async {
-										/*print("[downlaodVideoXML] item.CourseID\(item.courseID),courseIDitem.lessonID\(item.lessonID)")
-										let getDownloadListIndex = self.downloadList.firstIndex(where: {$0.courseID == item.courseID && $0.lessonID == item.lessonID}) ?? -1
-										print("[downlaodVideoXML] getDownloadListIndex\(getDownloadListIndex)")
-										if getDownloadListIndex > -1 {
-											self.downloadList[getDownloadListIndex].videoDownloadStatus = DownloadStatus.downloaded.rawValue
-										}*/
 										self.downloadTaskUpdateStatus(fileType: "mp4", status: DownloadStatus.downloaded, tempCourseID: item.courseID, tempLessonID: item.lessonID)
 									}
 								}
 							} catch {
-								print("[downlaodVideoXML] do await swXMLDownloadTask, catch \(error)")
+								print("[deubg] [downlaodVideoXML] do await swXMLDownloadTask, catch \(error)")
 								DispatchQueue.main.async {
-									/*print("[downlaodVideoXML] item.CourseID\(item.courseID),courseIDitem.lessonID\(item.lessonID)")
-									let getDownloadListIndex = self.downloadList.firstIndex(where: {$0.courseID == item.courseID && $0.lessonID == item.lessonID}) ?? -1
-									print("[downlaodVideoXML] getDownloadListIndex\(getDownloadListIndex)")
-									if getDownloadListIndex > -1 {
-										self.downloadList[getDownloadListIndex].videoDownloadStatus = DownloadStatus.failed.rawValue
-									}*/
 									self.downloadTaskUpdateStatus(fileType: "xml", status: DownloadStatus.failed, tempCourseID: item.courseID, tempLessonID: item.lessonID)
 								}
 							}
@@ -365,6 +294,7 @@ class DownloadManager: ObservableObject {
 			}
 		}
 		
+		
 		DispatchQueue.main.async {
 			self.downloadTaskPublisher.send(downloadTargets)
 		}
@@ -372,9 +302,9 @@ class DownloadManager: ObservableObject {
 	
 	private func downloadTaskUpdateStatus(fileType: String, status: DownloadStatus, tempCourseID: Int, tempLessonID: Int) {
 		//"temp" because these IDs are from array the loop uses, not the original downloadList
-		print("[downlaodVideoXML-downloadTaskUpdateStatus] item.CourseID\(tempCourseID),courseIDitem.lessonID\(tempLessonID)")
+		print("[deubg] [downlaodVideoXML-downloadTaskUpdateStatus] item.CourseID\(tempCourseID),courseIDitem.lessonID\(tempLessonID)")
 		let getDownloadListIndex = self.downloadList.firstIndex(where: {$0.courseID == tempCourseID && $0.lessonID == tempLessonID}) ?? -1
-		print("[downlaodVideoXML-downloadTaskUpdateStatus] getDownloadListIndex\(getDownloadListIndex)")
+		print("[deubg] [downlaodVideoXML-downloadTaskUpdateStatus] getDownloadListIndex\(getDownloadListIndex)")
 		if getDownloadListIndex > -1 {
 			if fileType == "xml" {
 				self.downloadList[getDownloadListIndex].xmlDownloadStatus = status.rawValue

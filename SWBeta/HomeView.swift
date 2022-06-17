@@ -47,37 +47,48 @@ struct HomeView: View {
 			.ignoresSafeArea()
 			.onChange(of: scenePhase, perform: { newPhase in
 				if newPhase == .active {
-					print("app is active")
+					print("[deubg] app is active")
 					if downloadManager.appState == .background {
 						print("[debug] HomeView, tabview, downloadManager.appState=background")
 						activateDownloadVideoXML()
 					}
 					downloadManager.appState = .active
 				} else if newPhase == .inactive {
-					print("appp is inactive")
+					print("[deubg] appp is inactive")
 				} else if newPhase == .background {
-					print("app is in the background")
+					print("[deubg] app is in the background")
 					downloadManager.appState = .background
 				}
 			})
-			.onReceive(downloadManager.downloadTaskPublisher, perform: { value in
-				print("HomeView,onRecieve, downloadTaskPublisher:\(value.count)")
+			.onReceive(downloadManager.downloadTaskPublisher, perform: { clonedDownloadList in
+				print("[deubg] HomeView,onRecieve, downloadTaskPublisher:\(clonedDownloadList.count)")
+				if clonedDownloadList != downloadManager.downloadList {
+					print("[deubg] HomeView, onRecieve, cloned and original are different, call downloadXMLVideo")
+					Task {
+						print("[debug] HomeView, onRecieve, Task:downloadVideoXML")
+						do {
+							try await downloadManager.downloadVideoXML(allCourses: scorewindData.allCourses)
+						} catch {
+							print("[debug] HomeView, onRecieve, Task:downloadVideoXML, catch, \(error)")
+						}
+					}
+				}
 			})
 		} else {
 			if scorewindData.currentView == Page.lessonFullScreen {
 				LessonView()
 					.onChange(of: scenePhase, perform: { newPhase in
 						if newPhase == .active {
-							print("app is active")
+							print("[debug] app is active")
 							if downloadManager.appState == .background {
 								print("[debug] HomeView, tabview, downloadManager.appState=background")
 								activateDownloadVideoXML()
 							}
 							downloadManager.appState = .active
 						} else if newPhase == .inactive {
-							print("appp is inactive")
+							print("[debug] appp is inactive")
 						} else if newPhase == .background {
-							print("app is in the background")
+							print("[debug] app is in the background")
 							downloadManager.appState = .background
 						}
 					})
