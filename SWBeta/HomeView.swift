@@ -65,7 +65,7 @@ struct HomeView: View {
 				for courseID in clonedDownloadList {
 					print("[debug] HomeView, onRecieve - \(courseID)")
 				}
-				if clonedDownloadList != downloadManager.downloadList {
+				if downloadManager.compareDownloadList(downloadTargets: clonedDownloadList) == false {
 					print("[deubg] HomeView, onRecieve, cloned and original are different, call downloadXMLVideo")
 					Task {
 						print("[debug] HomeView, onRecieve, Task:downloadVideoXML")
@@ -93,6 +93,23 @@ struct HomeView: View {
 						} else if newPhase == .background {
 							print("[debug] app is in the background")
 							downloadManager.appState = .background
+						}
+					})
+					.onReceive(downloadManager.downloadTaskPublisher, perform: { clonedDownloadList in
+						print("[deubg] HomeView,onRecieve, downloadTaskPublisher:\(clonedDownloadList.count)")
+						for courseID in clonedDownloadList {
+							print("[debug] HomeView, onRecieve - \(courseID)")
+						}
+						if downloadManager.compareDownloadList(downloadTargets: clonedDownloadList) == false {
+							print("[deubg] HomeView, onRecieve, cloned and original are different, call downloadXMLVideo")
+							Task {
+								print("[debug] HomeView, onRecieve, Task:downloadVideoXML")
+								do {
+									try await downloadManager.downloadVideoXML(allCourses: scorewindData.allCourses)
+								} catch {
+									print("[debug] HomeView, onRecieve, Task:downloadVideoXML, catch, \(error)")
+								}
+							}
 						}
 					})
 			}

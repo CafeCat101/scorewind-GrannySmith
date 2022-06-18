@@ -172,15 +172,20 @@ struct CourseView: View {
 					print("[debug] CourseView, alert ok.")
 					showDownloadAlert = false
 					downloadManager.addOrRemoveCourseOffline(currentCourseDownloadStatus: getStatus, courseID: scorewindData.currentCourse.id, lessons: scorewindData.currentCourse.lessons)
-					Task {
-						print("[debug] download all Task")
-						do {
-							try await downloadManager.downloadVideoXML(allCourses: scorewindData.allCourses)
-						} catch {
-							print("[debug] download all, catch, \(error)")
+					if downloadManager.downloadingCourse == 0 && getStatus == DownloadStatus.notInQueue {
+						Task {
+							print("[debug] download all Task")
+							do {
+								try await downloadManager.downloadVideoXML(allCourses: scorewindData.allCourses)
+							} catch {
+								print("[debug] download all, catch, \(error)")
+							}
+							
 						}
-						
+					} else {
+						print("[debug] downloadVideoXML task is running.")
 					}
+					
 				})
 				Button("Cancel", role:.cancel, action:{
 					showDownloadAlert = false
