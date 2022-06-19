@@ -29,34 +29,7 @@ class DownloadManager: ObservableObject {
 		} else {
 			print("[deubg] DownloadManager, UserDefault-key:courseOffline is empty")
 		}
-		
-		/*for testing only*/
-		/*let testURL = URL(string: "myfolder/test1.json", relativeTo: docsUrl)!
-		 do {
-		 print(testURL.path)
-		 let str = "blablabla"
-		 var isDirectory = ObjCBool(true)
-		 if FileManager.default.fileExists(atPath: docsUrl!.path+"/myfolder", isDirectory: &isDirectory) == false {
-		 try FileManager.default.createDirectory(atPath: docsUrl!.path+"/myfolder", withIntermediateDirectories: true)
-		 try str.write(to: testURL, atomically: true, encoding: String.Encoding.utf8)
-		 } else {
-		 print("myfolder directory exists.")
-		 try FileManager.default.removeItem(atPath: docsUrl!.path+"/myfolder")
-		 }
-		 
-		 } catch {
-		 print("\(error)")
-		 // failed to write file – bad permissions, bad filename, missing permissions, or more likely it can't be converted to the encoding
-		 }*/
 	}
-	
-	/*func testPublisherTrigger(caller: String) async {
-	 print("testPublisherTrigger is called from \(caller)")
-	 callForDownloadPublisher.send(true)
-	 
-	 }
-	 }*/
-	
 	
 	func checkDownloadStatus(lessonID:Int) -> Int {
 		var finalDownloadStatus = DownloadStatus.notInQueue.rawValue
@@ -143,7 +116,7 @@ class DownloadManager: ObservableObject {
 				courseOfflineList.removeAll(where: {$0 == courseID})
 				userDefaults.set(courseOfflineList, forKey: "courseOffline")
 				do {
-					try FileManager.default.removeItem(atPath: URL(string: "course\(courseID)", relativeTo: docsUrl)!.path)
+					try FileManager.default.removeItem(atPath: URL(string: "www/course\(courseID)", relativeTo: docsUrl)!.path)
 				} catch {
 					print("[debug] remove course/all downloaded file, catch,\(error)")
 				}
@@ -168,7 +141,7 @@ class DownloadManager: ObservableObject {
 			for courseItem in courseOfflineList {
 				let findCourseTarget = allCourses.first(where: {$0.id == courseItem}) ?? Course()
 				if findCourseTarget.id > 0 {
-					let courseURL = URL(string: "course\(courseItem)", relativeTo: docsUrl)!
+					let courseURL = URL(string: "www/course\(courseItem)", relativeTo: docsUrl)!
 					
 					for lesson in findCourseTarget.lessons {
 						let videoURL = URL(string: lesson.videoMP4.addingPercentEncoding(withAllowedCharacters: .urlFragmentAllowed)!)!
@@ -202,7 +175,7 @@ class DownloadManager: ObservableObject {
 				let getLesson = getCourse?.lessons.first(where: {$0.id == item.lessonID})
 				print("[deubg] [downlaodVideoXML] lessonID:\(getLesson?.id ?? 0)")
 				
-				let destCourseURL = URL(string: "course\(item.courseID)", relativeTo: docsUrl)!
+				let destCourseURL = URL(string: "www/course\(item.courseID)", relativeTo: docsUrl)!
 				do {
 					print("[deubg] [downlaodVideoXML] destCourseURL:\(destCourseURL.path)")
 					var isDirectory = ObjCBool(true)

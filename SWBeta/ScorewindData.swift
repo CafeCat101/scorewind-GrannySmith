@@ -56,6 +56,15 @@ class ScorewindData: ObservableObject {
 		}
 	}
 	
+	public func setupWWW() {
+		do {
+			print("[debug] ScorewindData, move www from bundle to documents")
+			try FileManager.default.copyItem(atPath: Bundle.main.resourceURL!.appendingPathComponent("www").path, toPath: docsUrl!.appendingPathComponent("www").path)
+		} catch {
+			print("[debug] ScorewindData, copyItem catch \(error)")
+		}
+	}
+	
 	public func downloadJson(fromURLString urlString: String, completion: @escaping(Result<Data, Error>) -> Void) {
 		if let url = URL(string: urlString) {
 			let urlSession = URLSession(configuration: .default).dataTask(with: url) { (data, response, error) in
