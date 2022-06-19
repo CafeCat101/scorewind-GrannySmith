@@ -11,8 +11,8 @@ import SwiftUI
 
 class DownloadManager: ObservableObject {
 	@Published var downloadList:[DownloadItem] = []
-	private let docsUrl = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first
-	private let courseOfflineURL = URL(fileURLWithPath: "courseOffline", relativeTo: FileManager.documentoryDirecotryURL).appendingPathExtension("json")
+	let docsUrl = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first
+	//private let courseOfflineURL = URL(fileURLWithPath: "courseOffline", relativeTo: FileManager.documentoryDirecotryURL).appendingPathExtension("json")
 	private var swVideoDownloadTask: Task<URL?,Error>?
 	private var swXMLDownloadTask: Task<URL?, Error>?
 	var downloadTaskPublisher = PassthroughSubject<[DownloadItem], Never>()

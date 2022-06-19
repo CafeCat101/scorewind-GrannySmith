@@ -37,7 +37,7 @@ struct HomeView: View {
 				}
 				
 				if scorewindData.currentLesson.id > 0 {
-					LessonView()
+					LessonView(downloadManager: downloadManager)
 						.tabItem {
 							Image(systemName: "note")
 							Text("Lesson")
@@ -79,7 +79,7 @@ struct HomeView: View {
 			})
 		} else {
 			if scorewindData.currentView == Page.lessonFullScreen {
-				LessonView()
+				LessonView(downloadManager: downloadManager)
 					.onChange(of: scenePhase, perform: { newPhase in
 						if newPhase == .active {
 							print("[debug] app is active")

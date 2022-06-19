@@ -18,6 +18,7 @@ struct LessonView: View {
 	@State private var isSwipping = true
 	@GestureState var magnifyBy = 1.0
 	@State private var magnifyStep = 1
+	@ObservedObject var downloadManager:DownloadManager
 	
 	var body: some View {
 		VStack {
@@ -148,7 +149,7 @@ struct LessonView: View {
 		}
 		.onAppear(perform: {
 			print("[debug] LessonView onAppear")
-			viewModel.score = scorewindData.currentLesson.scoreViewer
+			//viewModel.score = scorewindData.currentLesson.scoreViewer
 			setupPlayer()
 			if scorewindData.lastViewAtScore == true {
 				if scorewindData.currentLesson.scoreViewer.isEmpty {
@@ -163,7 +164,7 @@ struct LessonView: View {
 		.sheet(isPresented: $showLessonSheet, onDismiss: {
 			print("[debug] lastPlaybackTime\(scorewindData.lastPlaybackTime)")
 			if scorewindData.lastPlaybackTime == 0.0 {
-				viewModel.score = scorewindData.currentLesson.scoreViewer
+				//viewModel.score = scorewindData.currentLesson.scoreViewer
 				//viewModel.highlightBar = 1
 				magnifyStep = 1
 				viewModel.videoPlayer?.pause()
@@ -226,8 +227,17 @@ struct LessonView: View {
 	
 	private func setupPlayer(){
 		watchTime = ""
+		let courseURL = URL(string: "course\(scorewindData.currentCourse.id)", relativeTo: downloadManager.docsUrl)!
+		let mp4VideoURL = URL(string: scorewindData.currentLesson.videoMP4.addingPercentEncoding(withAllowedCharacters: .urlFragmentAllowed)!)!
+		print("[debug] LessonView, setupPlayer, destVideoURL:\(courseURL.appendingPathComponent(mp4VideoURL.lastPathComponent).path)")
+		if FileManager.default.fileExists(atPath: courseURL.appendingPathComponent(mp4VideoURL.lastPathComponent).path) {
+			print("[debug] LessonView, setupPlayer, play \(courseURL.appendingPathComponent(mp4VideoURL.lastPathComponent).path)")
+			viewModel.videoPlayer = AVPlayer(url: courseURL.appendingPathComponent(mp4VideoURL.lastPathComponent))
+		} else {
+			print("[debug] LessonView, setupPlayer, play \(decodeVideoURL(videoURL: scorewindData.currentLesson.video))")
+			viewModel.videoPlayer = AVPlayer(url: URL(string: decodeVideoURL(videoURL: scorewindData.currentLesson.video))!)
+		}
 		
-		viewModel.videoPlayer = AVPlayer(url: URL(string: decodeVideoURL(videoURL: scorewindData.currentLesson.video))!)
 		viewModel.videoPlayer!.addPeriodicTimeObserver(forInterval: CMTime(value: 1, timescale: 3), queue: .main, using: { time in
 			let catchTime = time.seconds
 			scorewindData.lastPlaybackTime = catchTime
@@ -259,6 +269,6 @@ struct LessonView: View {
 
 struct LessonView_Previews: PreviewProvider {
 	static var previews: some View {
-		LessonView().environmentObject(ScorewindData())
+		LessonView(downloadManager: DownloadManager()).environmentObject(ScorewindData())
 	}
 }

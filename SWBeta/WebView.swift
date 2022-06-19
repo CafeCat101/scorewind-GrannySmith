@@ -72,10 +72,12 @@ struct WebView: UIViewRepresentable, WebViewHandlerDelegate {
 		if url == .localUrl {
 			// Load local website
 			print("Load local file")
-			if let url = Bundle.main.url(forResource: "score", withExtension: "html", subdirectory: "www") {
-				print("Load local file 2")
+			//if let url = Bundle.main.url(forResource: "score", withExtension: "html", subdirectory: "www") {
+			let url = URL(string: "www/score.html", relativeTo: scorewindData.docsUrl)!
+			print("[debug] WebView, Load local file \(url)")
+			print("[debug] WebView, allowingReadAccessTo\(url.deletingLastPathComponent())")
 				webView.loadFileURL(url, allowingReadAccessTo: url.deletingLastPathComponent())
-			}
+			//}
 		} else if url == .publicUrl {
 			// Load a public website, for example I used here google.com
 			if let url = URL(string: "https://www.google.com") {
@@ -121,7 +123,7 @@ struct WebView: UIViewRepresentable, WebViewHandlerDelegate {
 				self.parent.viewModel.showWebTitle.send(title)
 			}*/
 			
-			print("didFinish")
+			print("[debug] WebView, didFinish")
 			
 			let encoder = JSONEncoder()
 			do{
@@ -129,30 +131,26 @@ struct WebView: UIViewRepresentable, WebViewHandlerDelegate {
 				let dataJson = String(data: data, encoding: .utf8)!
 				let replacedString = dataJson.replacingOccurrences(of: "\"", with: #"\""#)
 				let javascriptFunction2 = "loadTimestamps(\"\(replacedString)\");"
-				print(javascriptFunction2)
 				webView.evaluateJavaScript(javascriptFunction2) { (response, error) in
 					if let error = error {
-						print("Error calling javascript:loadTimestamps()")
-						print(error.localizedDescription)
+						print("[debug] WebView, evaluateJavascript, loadTimestamps() error \(error)")
 					} else {
-						print("Called javascript:loadTimestamps()[webView]")
+						print("[debug] WebView, \(javascriptFunction2)")
 					}
 				}
 			}catch let error{
 				print(error)
 			}
 			
-			print("parent.viewModel.score: "+parent.viewModel.score)
+			//print("parent.viewModel.score: "+parent.viewModel.score)
 			//print("parent.score:" + parent.score)
-			print("parent scorewindData scoreViewer:" + parent.scorewindData.currentLesson.scoreViewer)
+			print("[debug] WebView, parent.scorewindData, scoreViewer:\(parent.scorewindData.currentLesson.scoreViewer)")
 			let javascriptFunction = "load_score_view(\"\(parent.scorewindData.currentLesson.scoreViewer)\");"
-			print(javascriptFunction)
 			webView.evaluateJavaScript(javascriptFunction) { (response, error) in
 				if let error = error {
-					print("Error calling javascript:load_score_view()")
-					print(error.localizedDescription)
+					print("[debug] WebView, load_score_view() error, \(error)")
 				} else {
-					print("Called javascript:load_score_view()")
+					print("[debug] WebView, \(javascriptFunction)")
 				}
 			}
 			

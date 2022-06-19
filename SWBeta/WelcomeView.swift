@@ -164,6 +164,13 @@ extension WelcomeView {
 	func setupDataObjects(){
 		scorewindData.initiateTimestampsFromLocal()
 		scorewindData.initiateCoursesFromLocal()
+		do {
+			print("[debug] WelcomeView, move www from bundle to documents")
+			try FileManager.default.copyItem(atPath: Bundle.main.resourceURL!.appendingPathComponent("www").path, toPath: downloadManager.docsUrl!.appendingPathComponent("www").path)
+		} catch {
+			print("[debug] WelcomeView, copyItem catch \(error)")
+		}
+		
 		DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
 			withAnimation{
 				showWelcome = false
