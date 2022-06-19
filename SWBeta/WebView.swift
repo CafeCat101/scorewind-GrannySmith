@@ -58,6 +58,7 @@ struct WebView: UIViewRepresentable, WebViewHandlerDelegate {
 		configuration.allowsInlineMediaPlayback = true
 		// Here "iOSNative" is our delegate name that we pushed to the website that is being loaded
 		configuration.userContentController.add(self.makeCoordinator(), name: "iOSNative")
+		configuration.setValue(true, forKey: "allowUniversalAccessFromFileURLs")
 		configuration.preferences = preferences
 		
 		let webView = WKWebView(frame: CGRect.zero, configuration: configuration)
@@ -145,7 +146,14 @@ struct WebView: UIViewRepresentable, WebViewHandlerDelegate {
 			//print("parent.viewModel.score: "+parent.viewModel.score)
 			//print("parent.score:" + parent.score)
 			print("[debug] WebView, parent.scorewindData, scoreViewer:\(parent.scorewindData.currentLesson.scoreViewer)")
-			let javascriptFunction = "load_score_view(\"\(parent.scorewindData.currentLesson.scoreViewer)\");"
+			var javascriptFunction = "load_score_view(\"\(parent.scorewindData.currentLesson.scoreViewer)\");"
+			let destCourseURL = URL(string: "www/course\(parent.scorewindData.currentCourse.id)", relativeTo: parent.scorewindData.docsUrl)!
+			let downloadableXMLURL = URL(string: parent.scorewindData.currentLesson.scoreViewer.addingPercentEncoding(withAllowedCharacters: .urlFragmentAllowed)!)!
+			if FileManager.default.fileExists(atPath: destCourseURL.appendingPathComponent(downloadableXMLURL.lastPathComponent).path) == true {
+				let xmlPathForJavascript = "course\(parent.scorewindData.currentCourse.id)/\(downloadableXMLURL.lastPathComponent)"
+				javascriptFunction = "load_score_view(\"\(xmlPathForJavascript)\");"
+				//javascriptFunction = "load_score_view();"
+			}
 			webView.evaluateJavaScript(javascriptFunction) { (response, error) in
 				if let error = error {
 					print("[debug] WebView, load_score_view() error, \(error)")
