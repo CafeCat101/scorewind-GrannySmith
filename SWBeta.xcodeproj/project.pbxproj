@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		C82DD60F283A03F700EF74E2 /* www in Resources */ = {isa = PBXBuildFile; fileRef = C82DD60E283A03F700EF74E2 /* www */; };
 		C82DD611283BF55000EF74E2 /* WebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C82DD610283BF55000EF74E2 /* WebView.swift */; };
 		C82DD6132840919900EF74E2 /* MyTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = C82DD6122840919900EF74E2 /* MyTheme.swift */; };
 		C82DD6172847330F00EF74E2 /* DownloadItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = C82DD6162847330F00EF74E2 /* DownloadItem.swift */; };
@@ -44,6 +43,7 @@
 		C8E786D827FF405A007817BB /* iCloudKeyValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8E786D627FF405A007817BB /* iCloudKeyValue.swift */; };
 		C8E786DA280008B1007817BB /* InstrumentType.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8E786D9280008B1007817BB /* InstrumentType.swift */; };
 		C8F3939528559BC000210EA5 /* CourseOfflineItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8F3939428559BC000210EA5 /* CourseOfflineItem.swift */; };
+		C8F39397286021F300210EA5 /* www in Resources */ = {isa = PBXBuildFile; fileRef = C8F39396286021F300210EA5 /* www */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -57,7 +57,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		C82DD60E283A03F700EF74E2 /* www */ = {isa = PBXFileReference; lastKnownFileType = folder; path = www; sourceTree = "<group>"; };
 		C82DD610283BF55000EF74E2 /* WebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebView.swift; sourceTree = "<group>"; };
 		C82DD6122840919900EF74E2 /* MyTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyTheme.swift; sourceTree = "<group>"; };
 		C82DD6162847330F00EF74E2 /* DownloadItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadItem.swift; sourceTree = "<group>"; };
@@ -97,6 +96,7 @@
 		C8E786D627FF405A007817BB /* iCloudKeyValue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iCloudKeyValue.swift; sourceTree = "<group>"; };
 		C8E786D9280008B1007817BB /* InstrumentType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstrumentType.swift; sourceTree = "<group>"; };
 		C8F3939428559BC000210EA5 /* CourseOfflineItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseOfflineItem.swift; sourceTree = "<group>"; };
+		C8F39396286021F300210EA5 /* www */ = {isa = PBXFileReference; lastKnownFileType = folder; path = www; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -152,8 +152,8 @@
 		C87F6AFA27CA04420009DCA0 /* SWBeta */ = {
 			isa = PBXGroup;
 			children = (
+				C8F39396286021F300210EA5 /* www */,
 				C82DD61C2847338800EF74E2 /* Types */,
-				C82DD60E283A03F700EF74E2 /* www */,
 				C8448A28281BA3DF00597A6F /* courses_ios.json */,
 				C8448A26281BA3CD00597A6F /* timestamps_ios.json */,
 				C8448A202818F70400597A6F /* data_version.json */,
@@ -293,7 +293,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C82DD60F283A03F700EF74E2 /* www in Resources */,
+				C8F39397286021F300210EA5 /* www in Resources */,
 				C8448A27281BA3CD00597A6F /* timestamps_ios.json in Resources */,
 				C87F6B0327CA04420009DCA0 /* Preview Assets.xcassets in Resources */,
 				C87F6B0027CA04420009DCA0 /* Assets.xcassets in Resources */,
