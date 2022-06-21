@@ -13,8 +13,16 @@ struct WizardView: View {
 	
 	var body: some View {
 		VStack {
+			/*HStack {
+				Spacer()
+				Label("Scorewind", systemImage: "music.note")
+						.labelStyle(.titleAndIcon)
+				Spacer()
+			}
+			.padding()
+			.background(Color("ScreenTitleBg"))*/
 			Label("Scorewind", systemImage: "music.note")
-					.labelStyle(.titleAndIcon)
+				.labelStyle(.titleAndIcon)
 			List {
 				Section(header: Text("All")) {
 					ForEach(scorewindData.allCourses) { course in
@@ -37,7 +45,7 @@ struct WizardView: View {
 				}
 			}
 			.listStyle(GroupedListStyle())
-		}
+		}.background(Color("ScreenTitleBg"))
 		
 	}
 }

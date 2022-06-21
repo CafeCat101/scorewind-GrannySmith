@@ -18,7 +18,7 @@ struct MyCoursesView: View {
 				Label("Scorewind", systemImage: "music.note")
 						.labelStyle(.titleAndIcon)
 				Spacer()
-			}
+			}.padding().background(Color("ScreenTitleBg"))
 			Spacer()
 			Text("My Courses View")
 			Spacer()

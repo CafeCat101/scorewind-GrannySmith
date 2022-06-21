@@ -16,7 +16,7 @@ class DownloadManager: ObservableObject {
 	private var swVideoDownloadTask: Task<URL?,Error>?
 	private var swXMLDownloadTask: Task<URL?, Error>?
 	var downloadTaskPublisher = PassthroughSubject<[DownloadItem], Never>()
-	var appState:ScenePhase = .active
+	var appState:ScenePhase = .background
 	private var userDefaults = UserDefaults.standard
 	var downloadingCourse = 0
 	

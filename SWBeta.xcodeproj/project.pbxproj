@@ -22,7 +22,6 @@
 		C8448A75283003EE00597A6F /* LessonScoreView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8448A74283003EE00597A6F /* LessonScoreView.swift */; };
 		C8448A792830200600597A6F /* LessonTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8448A782830200600597A6F /* LessonTextView.swift */; };
 		C87F6AFC27CA04420009DCA0 /* SWBetaApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C87F6AFB27CA04420009DCA0 /* SWBetaApp.swift */; };
-		C87F6AFE27CA04420009DCA0 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C87F6AFD27CA04420009DCA0 /* ContentView.swift */; };
 		C87F6B0027CA04420009DCA0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C87F6AFF27CA04420009DCA0 /* Assets.xcassets */; };
 		C87F6B0327CA04420009DCA0 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C87F6B0227CA04420009DCA0 /* Preview Assets.xcassets */; };
 		C87F6B6127CCE7600009DCA0 /* ScorewindData.swift in Sources */ = {isa = PBXBuildFile; fileRef = C87F6B6027CCE7600009DCA0 /* ScorewindData.swift */; };
@@ -45,7 +44,7 @@
 		C8F3939528559BC000210EA5 /* CourseOfflineItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8F3939428559BC000210EA5 /* CourseOfflineItem.swift */; };
 		C8F39397286021F300210EA5 /* www in Resources */ = {isa = PBXBuildFile; fileRef = C8F39396286021F300210EA5 /* www */; };
 		C8F39399286022F200210EA5 /* scorewind_ios_xml.zip in Resources */ = {isa = PBXBuildFile; fileRef = C8F39398286022F200210EA5 /* scorewind_ios_xml.zip */; };
-		C8F3939B2860237D00210EA5 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C8F3939A2860237D00210EA5 /* LaunchScreen.storyboard */; };
+		C8F3939D2861671900210EA5 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C8F3939C2861671900210EA5 /* LaunchScreen.storyboard */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -75,7 +74,6 @@
 		C8448A782830200600597A6F /* LessonTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LessonTextView.swift; sourceTree = "<group>"; };
 		C87F6AF827CA04420009DCA0 /* SWBeta.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SWBeta.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C87F6AFB27CA04420009DCA0 /* SWBetaApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SWBetaApp.swift; sourceTree = "<group>"; };
-		C87F6AFD27CA04420009DCA0 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		C87F6AFF27CA04420009DCA0 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		C87F6B0227CA04420009DCA0 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		C87F6B6027CCE7600009DCA0 /* ScorewindData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScorewindData.swift; sourceTree = "<group>"; };
@@ -100,7 +98,7 @@
 		C8F3939428559BC000210EA5 /* CourseOfflineItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseOfflineItem.swift; sourceTree = "<group>"; };
 		C8F39396286021F300210EA5 /* www */ = {isa = PBXFileReference; lastKnownFileType = folder; path = www; sourceTree = "<group>"; };
 		C8F39398286022F200210EA5 /* scorewind_ios_xml.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = scorewind_ios_xml.zip; sourceTree = "<group>"; };
-		C8F3939A2860237D00210EA5 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
+		C8F3939C2861671900210EA5 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -137,6 +135,7 @@
 		C87F6AEF27CA04420009DCA0 = {
 			isa = PBXGroup;
 			children = (
+				C8F3939C2861671900210EA5 /* LaunchScreen.storyboard */,
 				C87F6AFA27CA04420009DCA0 /* SWBeta */,
 				C8E786CE27FAFB70007817BB /* SWBetaTests */,
 				C87F6AF927CA04420009DCA0 /* Products */,
@@ -164,7 +163,6 @@
 				C8448A202818F70400597A6F /* data_version.json */,
 				C87F6BD827E97F100009DCA0 /* SWBeta.entitlements */,
 				C87F6AFB27CA04420009DCA0 /* SWBetaApp.swift */,
-				C87F6AFD27CA04420009DCA0 /* ContentView.swift */,
 				C87F6AFF27CA04420009DCA0 /* Assets.xcassets */,
 				C87F6B0127CA04420009DCA0 /* Preview Content */,
 				C87F6B6227CCE82C0009DCA0 /* WelcomeView.swift */,
@@ -188,7 +186,6 @@
 				C82DD6122840919900EF74E2 /* MyTheme.swift */,
 				C82DD61D284B5E8600EF74E2 /* DownloadManager.swift */,
 				C8F3939428559BC000210EA5 /* CourseOfflineItem.swift */,
-				C8F3939A2860237D00210EA5 /* LaunchScreen.storyboard */,
 			);
 			path = SWBeta;
 			sourceTree = "<group>";
@@ -300,7 +297,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C8F39397286021F300210EA5 /* www in Resources */,
-				C8F3939B2860237D00210EA5 /* LaunchScreen.storyboard in Resources */,
+				C8F3939D2861671900210EA5 /* LaunchScreen.storyboard in Resources */,
 				C8448A27281BA3CD00597A6F /* timestamps_ios.json in Resources */,
 				C87F6B0327CA04420009DCA0 /* Preview Assets.xcassets in Resources */,
 				C87F6B0027CA04420009DCA0 /* Assets.xcassets in Resources */,
@@ -328,7 +325,6 @@
 				C87F6B8127DD9FE20009DCA0 /* ScorewindTimestamp.swift in Sources */,
 				C87F6B7527D1BF780009DCA0 /* MyCoursesView.swift in Sources */,
 				C82DD61B2847337B00EF74E2 /* DownloadStatus.swift in Sources */,
-				C87F6AFE27CA04420009DCA0 /* ContentView.swift in Sources */,
 				C87F6B8327DE05BF0009DCA0 /* FileManager.swift in Sources */,
 				C87F6B6F27D1BDCA0009DCA0 /* LessonView.swift in Sources */,
 				C87F6B7727D1C25A0009DCA0 /* ScorewindCourse.swift in Sources */,

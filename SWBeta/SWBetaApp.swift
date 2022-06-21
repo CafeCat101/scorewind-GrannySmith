@@ -14,7 +14,7 @@ struct SWBetaApp: App {
 	
 	var body: some Scene {
 		WindowGroup {
-			WelcomeView(downloadManager: downloadManager)
+			HomeView(downloadManager: downloadManager)
 				.environmentObject(scorewindData)
 		}
 	}

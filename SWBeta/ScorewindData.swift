@@ -57,12 +57,18 @@ class ScorewindData: ObservableObject {
 	}
 	
 	public func setupWWW() {
-		do {
-			print("[debug] ScorewindData, move www from bundle to documents")
-			try FileManager.default.copyItem(atPath: Bundle.main.resourceURL!.appendingPathComponent("www").path, toPath: docsUrl!.appendingPathComponent("www").path)
-		} catch {
-			print("[debug] ScorewindData, copyItem catch \(error)")
+		var isDirectory = ObjCBool(true)
+		if FileManager.default.fileExists(atPath: Bundle.main.resourceURL!.appendingPathComponent("www").path, isDirectory: &isDirectory) == false {
+			do {
+				print("[debug] ScorewindData, move www from bundle to documents")
+				try FileManager.default.copyItem(atPath: Bundle.main.resourceURL!.appendingPathComponent("www").path, toPath: docsUrl!.appendingPathComponent("www").path)
+			} catch {
+				print("[debug] ScorewindData, copyItem catch \(error)")
+			}
+		} else {
+			print("[debug] ScorewindData, documents/www exists")
 		}
+		
 	}
 	
 	public func downloadJson(fromURLString urlString: String, completion: @escaping(Result<Data, Error>) -> Void) {

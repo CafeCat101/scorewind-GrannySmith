@@ -45,18 +45,30 @@ struct HomeView: View {
 				}
 			}
 			.ignoresSafeArea()
+			.onAppear{
+				//==>>>> app is launched...
+				print("[debug] HomeView, onAppear")
+				if downloadManager.appState == .background {
+					//hide codes here so it won't be triggered when switching full lesson screen view to tab view
+					print("[debug] HomeView, tabview, downloadManager.appState=background")
+					setupDataObjects()
+					activateDownloadVideoXML()
+				}
+				downloadManager.appState = .active
+				//<<<<==
+			}
 			.onChange(of: scenePhase, perform: { newPhase in
 				if newPhase == .active {
-					print("[deubg] app is active")
+					print("[deubg] HomeView, app is active")
 					if downloadManager.appState == .background {
 						print("[debug] HomeView, tabview, downloadManager.appState=background")
 						activateDownloadVideoXML()
 					}
 					downloadManager.appState = .active
 				} else if newPhase == .inactive {
-					print("[deubg] appp is inactive")
+					print("[debug] HomeView, appp is inactive")
 				} else if newPhase == .background {
-					print("[deubg] app is in the background")
+					print("[debug] HomeView, app is in the background")
 					downloadManager.appState = .background
 				}
 			})
@@ -82,32 +94,32 @@ struct HomeView: View {
 				LessonView(downloadManager: downloadManager)
 					.onChange(of: scenePhase, perform: { newPhase in
 						if newPhase == .active {
-							print("[debug] app is active")
+							print("[debug] LessonView, app is active")
 							if downloadManager.appState == .background {
-								print("[debug] HomeView, tabview, downloadManager.appState=background")
+								print("[debug] LessonView, tabview, downloadManager.appState=background")
 								activateDownloadVideoXML()
 							}
 							downloadManager.appState = .active
 						} else if newPhase == .inactive {
-							print("[debug] appp is inactive")
+							print("[debug] LessonView, appp is inactive")
 						} else if newPhase == .background {
-							print("[debug] app is in the background")
+							print("[debug] LessonView, app is in the background")
 							downloadManager.appState = .background
 						}
 					})
 					.onReceive(downloadManager.downloadTaskPublisher, perform: { clonedDownloadList in
-						print("[deubg] HomeView,onRecieve, downloadTaskPublisher:\(clonedDownloadList.count)")
+						print("[deubg] LessonView, onRecieve, downloadTaskPublisher:\(clonedDownloadList.count)")
 						for courseID in clonedDownloadList {
-							print("[debug] HomeView, onRecieve - \(courseID)")
+							print("[debug] LessonView, onRecieve - \(courseID)")
 						}
 						if downloadManager.compareDownloadList(downloadTargets: clonedDownloadList) == false {
-							print("[deubg] HomeView, onRecieve, cloned and original are different, call downloadXMLVideo")
+							print("[deubg] LessonView, onRecieve, cloned and original are different, call downloadXMLVideo")
 							Task {
-								print("[debug] HomeView, onRecieve, Task:downloadVideoXML")
+								print("[debug] LessonView, onRecieve, Task:downloadVideoXML")
 								do {
 									try await downloadManager.downloadVideoXML(allCourses: scorewindData.allCourses)
 								} catch {
-									print("[debug] HomeView, onRecieve, Task:downloadVideoXML, catch, \(error)")
+									print("[debug] LessonView, onRecieve, Task:downloadVideoXML, catch, \(error)")
 								}
 							}
 						}
@@ -126,6 +138,12 @@ struct HomeView: View {
 				print("[debug] HomeView, Task:downloadVideoXML, catch, \(error)")
 			}
 		}
+	}
+	
+	private func setupDataObjects(){
+		scorewindData.initiateTimestampsFromLocal()
+		scorewindData.initiateCoursesFromLocal()
+		scorewindData.setupWWW()
 	}
 }
 
