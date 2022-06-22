@@ -51,6 +51,7 @@ struct HomeView: View {
 				if downloadManager.appState == .background {
 					//hide codes here so it won't be triggered when switching full lesson screen view to tab view
 					print("[debug] HomeView, tabview, downloadManager.appState=background")
+					scorewindData.firstLaunch()
 					setupDataObjects()
 					activateDownloadVideoXML()
 				}

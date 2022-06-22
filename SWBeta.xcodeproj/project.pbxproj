@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C8125A952861C49C00D7F447 /* scorewind_ios_xml.zip in Resources */ = {isa = PBXBuildFile; fileRef = C8125A942861C49C00D7F447 /* scorewind_ios_xml.zip */; };
 		C82DD611283BF55000EF74E2 /* WebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C82DD610283BF55000EF74E2 /* WebView.swift */; };
 		C82DD6132840919900EF74E2 /* MyTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = C82DD6122840919900EF74E2 /* MyTheme.swift */; };
 		C82DD6172847330F00EF74E2 /* DownloadItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = C82DD6162847330F00EF74E2 /* DownloadItem.swift */; };
@@ -41,9 +42,7 @@
 		C8E786D027FAFB70007817BB /* SWBetaTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8E786CF27FAFB70007817BB /* SWBetaTests.swift */; };
 		C8E786D827FF405A007817BB /* iCloudKeyValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8E786D627FF405A007817BB /* iCloudKeyValue.swift */; };
 		C8E786DA280008B1007817BB /* InstrumentType.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8E786D9280008B1007817BB /* InstrumentType.swift */; };
-		C8F3939528559BC000210EA5 /* CourseOfflineItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8F3939428559BC000210EA5 /* CourseOfflineItem.swift */; };
 		C8F39397286021F300210EA5 /* www in Resources */ = {isa = PBXBuildFile; fileRef = C8F39396286021F300210EA5 /* www */; };
-		C8F39399286022F200210EA5 /* scorewind_ios_xml.zip in Resources */ = {isa = PBXBuildFile; fileRef = C8F39398286022F200210EA5 /* scorewind_ios_xml.zip */; };
 		C8F3939D2861671900210EA5 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C8F3939C2861671900210EA5 /* LaunchScreen.storyboard */; };
 /* End PBXBuildFile section */
 
@@ -58,6 +57,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		C8125A942861C49C00D7F447 /* scorewind_ios_xml.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = scorewind_ios_xml.zip; sourceTree = "<group>"; };
 		C82DD610283BF55000EF74E2 /* WebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebView.swift; sourceTree = "<group>"; };
 		C82DD6122840919900EF74E2 /* MyTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyTheme.swift; sourceTree = "<group>"; };
 		C82DD6162847330F00EF74E2 /* DownloadItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadItem.swift; sourceTree = "<group>"; };
@@ -95,9 +95,7 @@
 		C8E786CF27FAFB70007817BB /* SWBetaTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SWBetaTests.swift; sourceTree = "<group>"; };
 		C8E786D627FF405A007817BB /* iCloudKeyValue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iCloudKeyValue.swift; sourceTree = "<group>"; };
 		C8E786D9280008B1007817BB /* InstrumentType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstrumentType.swift; sourceTree = "<group>"; };
-		C8F3939428559BC000210EA5 /* CourseOfflineItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseOfflineItem.swift; sourceTree = "<group>"; };
 		C8F39396286021F300210EA5 /* www */ = {isa = PBXFileReference; lastKnownFileType = folder; path = www; sourceTree = "<group>"; };
-		C8F39398286022F200210EA5 /* scorewind_ios_xml.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = scorewind_ios_xml.zip; sourceTree = "<group>"; };
 		C8F3939C2861671900210EA5 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -155,7 +153,7 @@
 		C87F6AFA27CA04420009DCA0 /* SWBeta */ = {
 			isa = PBXGroup;
 			children = (
-				C8F39398286022F200210EA5 /* scorewind_ios_xml.zip */,
+				C8125A942861C49C00D7F447 /* scorewind_ios_xml.zip */,
 				C8F39396286021F300210EA5 /* www */,
 				C82DD61C2847338800EF74E2 /* Types */,
 				C8448A28281BA3DF00597A6F /* courses_ios.json */,
@@ -185,7 +183,6 @@
 				C82DD6162847330F00EF74E2 /* DownloadItem.swift */,
 				C82DD6122840919900EF74E2 /* MyTheme.swift */,
 				C82DD61D284B5E8600EF74E2 /* DownloadManager.swift */,
-				C8F3939428559BC000210EA5 /* CourseOfflineItem.swift */,
 			);
 			path = SWBeta;
 			sourceTree = "<group>";
@@ -302,8 +299,8 @@
 				C87F6B0327CA04420009DCA0 /* Preview Assets.xcassets in Resources */,
 				C87F6B0027CA04420009DCA0 /* Assets.xcassets in Resources */,
 				C8448A212818F70400597A6F /* data_version.json in Resources */,
+				C8125A952861C49C00D7F447 /* scorewind_ios_xml.zip in Resources */,
 				C8448A29281BA3DF00597A6F /* courses_ios.json in Resources */,
-				C8F39399286022F200210EA5 /* scorewind_ios_xml.zip in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -345,7 +342,6 @@
 				C8448A792830200600597A6F /* LessonTextView.swift in Sources */,
 				C87F6B6327CCE82C0009DCA0 /* WelcomeView.swift in Sources */,
 				C87F6B6727CCE9E50009DCA0 /* CourseType.swift in Sources */,
-				C8F3939528559BC000210EA5 /* CourseOfflineItem.swift in Sources */,
 				C87F6B6527CCE9B60009DCA0 /* Page.swift in Sources */,
 				C8E786C527FAC023007817BB /* StudentData.swift in Sources */,
 			);

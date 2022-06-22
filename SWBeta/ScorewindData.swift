@@ -26,6 +26,7 @@ class ScorewindData: ObservableObject {
 	var lastPlaybackTime = 0.0
 	@Published var lastViewAtScore = false
 	let docsUrl = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first
+	private var userDefaults = UserDefaults.standard
 	
 	init() {
 		print(courseURL.path)
@@ -56,7 +57,7 @@ class ScorewindData: ObservableObject {
 		}
 	}
 	
-	public func setupWWW() {
+	func setupWWW() {
 		var isDirectory = ObjCBool(true)
 		if FileManager.default.fileExists(atPath: Bundle.main.resourceURL!.appendingPathComponent("www").path, isDirectory: &isDirectory) == false {
 			do {
@@ -67,6 +68,21 @@ class ScorewindData: ObservableObject {
 			}
 		} else {
 			print("[debug] ScorewindData, documents/www exists")
+		}
+	}
+	
+	func launchSetup(syncData: Bool) {
+		let courseIOSURL = URL(fileURLWithPath: "courses_ios", relativeTo: docsUrl).appendingPathExtension("json")
+		let timestampIOSURL = URL(fileURLWithPath: "timestamps_ios", relativeTo: docsUrl).appendingPathExtension("json")
+		let courseXMLJS = URL(fileURLWithPath: "course_xml", relativeTo: docsUrl?.appendingPathComponent("www/js")).appendingPathExtension("js")
+		
+		let dataVersion = userDefaults.object(forKey: "dataVersion") as? Int ?? 0
+		if dataVersion == 0 || syncData == true {
+			//it is first launch
+			//delete original content in documents if they exist.
+			//unzip and move courseIOS, timestampIOS to documents
+			//move www to documents
+			//move course_xml.js to www/js
 		}
 		
 	}

@@ -13,12 +13,14 @@ struct MyCoursesView: View {
 	
 	var body: some View {
 		VStack {
-			HStack {
+			/*HStack {
 				Spacer()
 				Label("Scorewind", systemImage: "music.note")
 						.labelStyle(.titleAndIcon)
 				Spacer()
-			}.padding().background(Color("ScreenTitleBg"))
+			}.padding().background(Color("ScreenTitleBg"))*/
+			Label("Scorewind", systemImage: "music.note")
+					.labelStyle(.titleAndIcon)
 			Spacer()
 			Text("My Courses View")
 			Spacer()
