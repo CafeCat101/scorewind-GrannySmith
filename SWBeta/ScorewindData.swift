@@ -14,23 +14,28 @@ class ScorewindData: ObservableObject {
 	@Published var previousCourse:Course = Course()
 	@Published var nextCourse:Course = Course()
 	@Published var currentTimestampRecs:[TimestampRec] = []
-	var allCourses:[Course] = []
-	private var allTimestamps:[Timestamp] = []
+	@Published var studentData: StudentData
+	@Published var currentView = Page.wizard
+	@Published var lastViewAtScore = false
 	let courseURL = URL(fileURLWithPath: "courses_ios", relativeTo: FileManager.documentoryDirecotryURL).appendingPathExtension("json")
 	let timestampURL = URL(fileURLWithPath: "timestamps_ios", relativeTo: FileManager.documentoryDirecotryURL).appendingPathExtension("json")
 	let courseWPURL = "https://scorewind.com/courses_ios.json"
 	let timestampWPURL = "https://scorewind.com/timestamps_ios.json"
 	let dataVersionWPURL = "https://scorewind.com/data_version.json"
-	@Published var studentData: StudentData
-	@Published var currentView = Page.wizard
-	var lastPlaybackTime = 0.0
-	@Published var lastViewAtScore = false
 	let docsUrl = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first
+	var lastPlaybackTime = 0.0
+	var allCourses:[Course] = []
+	private var allTimestamps:[Timestamp] = []
 	private var userDefaults = UserDefaults.standard
+	var dataVersion = 0
 	
 	init() {
-		print(courseURL.path)
+		print(docsUrl!.path)
 		studentData = StudentData()
+		dataVersion = userDefaults.object(forKey: "dataVersion") as? Int ?? 0
+		print("[debug] ScoreWindData, userDefaults.dataversion \(dataVersion)")
+		//========
+		print("[debug] ScorewindData, fileExist-www:\(FileManager.default.fileExists(atPath: (docsUrl?.appendingPathComponent("www").path)!))")
 	}
 	
 	public func initiateCoursesFromLocal(){
@@ -59,7 +64,7 @@ class ScorewindData: ObservableObject {
 	
 	func setupWWW() {
 		var isDirectory = ObjCBool(true)
-		if FileManager.default.fileExists(atPath: Bundle.main.resourceURL!.appendingPathComponent("www").path, isDirectory: &isDirectory) == false {
+		if FileManager.default.fileExists(atPath: docsUrl!.appendingPathComponent("www").path) == false {
 			do {
 				print("[debug] ScorewindData, move www from bundle to documents")
 				try FileManager.default.copyItem(atPath: Bundle.main.resourceURL!.appendingPathComponent("www").path, toPath: docsUrl!.appendingPathComponent("www").path)
@@ -76,14 +81,15 @@ class ScorewindData: ObservableObject {
 		let timestampIOSURL = URL(fileURLWithPath: "timestamps_ios", relativeTo: docsUrl).appendingPathExtension("json")
 		let courseXMLJS = URL(fileURLWithPath: "course_xml", relativeTo: docsUrl?.appendingPathComponent("www/js")).appendingPathExtension("js")
 		
-		let dataVersion = userDefaults.object(forKey: "dataVersion") as? Int ?? 0
-		if dataVersion == 0 || syncData == true {
-			//it is first launch
-			//delete original content in documents if they exist.
-			//unzip and move courseIOS, timestampIOS to documents
-			//move www to documents
-			//move course_xml.js to www/js
-		}
+		/**
+		 data version check is another independant task whenever the app is launched or brought to foreground(if there has download task in process, don't check)
+		 isFirstLaunch when syncData=false
+		 */
+		//it is first launch or new data is aravilable
+		//delete original content in documents if they exist.
+		//unzip and move courseIOS, timestampIOS to documents(first luanch:use zip in the bundle, new data available: use zip in the documents)
+		//move www to documents
+		//move course_xml.js to www/js
 		
 	}
 	
