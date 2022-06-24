@@ -63,7 +63,6 @@ class ScorewindData: ObservableObject {
 	}
 	
 	func setupWWW() {
-		var isDirectory = ObjCBool(true)
 		if FileManager.default.fileExists(atPath: docsUrl!.appendingPathComponent("www").path) == false {
 			do {
 				print("[debug] ScorewindData, move www from bundle to documents")
@@ -86,10 +85,19 @@ class ScorewindData: ObservableObject {
 		 isFirstLaunch when syncData=false
 		 */
 		//it is first launch or new data is aravilable
-		//delete original content in documents if they exist.
-		//unzip and move courseIOS, timestampIOS to documents(first luanch:use zip in the bundle, new data available: use zip in the documents)
-		//move www to documents
-		//move course_xml.js to www/js
+		//process the zip
+		//setup proper file structure
+		if syncData == false {
+			if dataVersion == 0 {
+				//unzip from bundle
+			}
+		} else {
+			//delete course_ios.json,timestamps_ios.json,documents/www/course_xml
+			//unzip from documents
+			//move course_xml to /documents/www/course_xml
+		}
+		
+		
 		
 	}
 	

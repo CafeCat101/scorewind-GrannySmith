@@ -1,0 +1,6 @@
+framework module Pods_SWBeta {
+  umbrella header "Pods-SWBeta-umbrella.h"
+
+  export *
+  module * { export * }
+}
