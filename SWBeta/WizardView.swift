@@ -45,7 +45,7 @@ struct WizardView: View {
 				}
 			}
 			.listStyle(GroupedListStyle())
-		}.background(Color("ScreenTitleBg"))
+		}//.background(Color("ScreenTitleBg"))
 		
 	}
 }

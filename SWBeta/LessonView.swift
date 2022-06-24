@@ -217,7 +217,7 @@ struct LessonView: View {
 			print("endTimestamp "+String(endTimestamp))
 			print("<--")
 			if videoTime >= theTime.timestamp && videoTime < Double(endTimestamp) {
-				getMeasure = theTime.measure
+				getMeasure = index//theTime.measure
 				break
 			}
 		}

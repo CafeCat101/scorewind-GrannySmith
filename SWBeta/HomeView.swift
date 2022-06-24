@@ -51,7 +51,6 @@ struct HomeView: View {
 				if downloadManager.appState == .background {
 					//hide codes here so it won't be triggered when switching full lesson screen view to tab view
 					print("[debug] HomeView, tabview, downloadManager.appState=background")
-					scorewindData.firstLaunch()
 					setupDataObjects()
 					activateDownloadVideoXML()
 				}
@@ -142,9 +141,10 @@ struct HomeView: View {
 	}
 	
 	private func setupDataObjects(){
+		print("[debug] HomeView, setupDataObject()")
+		scorewindData.launchSetup(syncData: false)
 		scorewindData.initiateTimestampsFromLocal()
 		scorewindData.initiateCoursesFromLocal()
-		scorewindData.setupWWW()
 	}
 }
 

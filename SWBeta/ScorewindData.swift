@@ -7,6 +7,7 @@
 
 import Foundation
 import SwiftUI
+import ZIPFoundation
 
 class ScorewindData: ObservableObject {
 	@Published var currentCourse = Course()
@@ -76,9 +77,9 @@ class ScorewindData: ObservableObject {
 	}
 	
 	func launchSetup(syncData: Bool) {
-		let courseIOSURL = URL(fileURLWithPath: "courses_ios", relativeTo: docsUrl).appendingPathExtension("json")
-		let timestampIOSURL = URL(fileURLWithPath: "timestamps_ios", relativeTo: docsUrl).appendingPathExtension("json")
-		let courseXMLJS = URL(fileURLWithPath: "course_xml", relativeTo: docsUrl?.appendingPathComponent("www/js")).appendingPathExtension("js")
+		//let courseIOSURL = URL(fileURLWithPath: "courses_ios", relativeTo: docsUrl).appendingPathExtension("json")
+		//let timestampIOSURL = URL(fileURLWithPath: "timestamps_ios", relativeTo: docsUrl).appendingPathExtension("json")
+		//let courseXMLJS = URL(fileURLWithPath: "course_xml", relativeTo: docsUrl?.appendingPathComponent("www/js")).appendingPathExtension("js")
 		
 		/**
 		 data version check is another independant task whenever the app is launched or brought to foreground(if there has download task in process, don't check)
@@ -87,14 +88,27 @@ class ScorewindData: ObservableObject {
 		//it is first launch or new data is aravilable
 		//process the zip
 		//setup proper file structure
-		if syncData == false {
-			if dataVersion == 0 {
-				//unzip from bundle
+		if syncData == false && dataVersion == 0 {
+			//unzip from bundle
+			do {
+				try FileManager.default.unzipItem(at: Bundle.main.resourceURL!.appendingPathComponent("scorewind_ios_xml.zip"), to: docsUrl!)
+				try FileManager.default.copyItem(atPath: Bundle.main.resourceURL!.appendingPathComponent("www").path, toPath: docsUrl!.appendingPathComponent("www").path)
+				try FileManager.default.moveItem(at: docsUrl!.appendingPathComponent("course_xml.js"), to: docsUrl!.appendingPathComponent("www/course_xml.js"))
+			} catch {
+				print("[debug] ScorewindData, unzip, move www and course_xml catch \(error)")
 			}
 		} else {
 			//delete course_ios.json,timestamps_ios.json,documents/www/course_xml
 			//unzip from documents
 			//move course_xml to /documents/www/course_xml
+			do {
+				try FileManager.default.removeItem(at: docsUrl!.appendingPathComponent("courses_ios.json"))
+				try FileManager.default.removeItem(at: docsUrl!.appendingPathComponent("timestamps_ios.json"))
+				try FileManager.default.removeItem(at: docsUrl!.appendingPathComponent("course_xml.js"))
+				try FileManager.default.removeItem(at: docsUrl!.appendingPathComponent("www"))
+			} catch {
+				
+			}
 		}
 		
 		
