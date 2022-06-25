@@ -33,36 +33,39 @@ struct LessonView: View {
 				}
 			}
 			
-			if scorewindData.currentView == Page.lesson {
-				VideoPlayer(player: viewModel.videoPlayer)
-					.frame(height: screenSize.height*0.35)
-					.onAppear(perform: {
-						//VideoPlayer onAppear when comeing from anohter tab view, not when the sheet disappears
-						print("[debug] VideoPlayer onAppear")
-					})
-					.onDisappear(perform: {
-						//VideoPlayer disappears when go to another tab view, not when sheet appears
-						print("[debug] VideoPlayer onDisappear")
-						viewModel.videoPlayer!.pause()
-						viewModel.videoPlayer!.replaceCurrentItem(with: nil)
-					})
-					.background(.black)
-			} else {
-				VideoPlayer(player: viewModel.videoPlayer)
-					.frame(height: screenSize.height*0.35)
-					.onAppear(perform: {
-						//VideoPlayer onAppear when comeing from anohter tab view, not when the sheet disappears
-						print("[debug] VideoPlayer onAppear")
-					})
-					.onDisappear(perform: {
-						//VideoPlayer disappears when go to another tab view, not when sheet appears
-						print("[debug] VideoPlayer onDisappear")
-						viewModel.videoPlayer!.pause()
-						viewModel.videoPlayer!.replaceCurrentItem(with: nil)
-					})
-					.background(.black)
-					.overlay(titleOverlay, alignment: .topLeading)
+			if scorewindData.currentLesson.videoMP4.isEmpty == false {
+				if scorewindData.currentView == Page.lesson {
+					VideoPlayer(player: viewModel.videoPlayer)
+						.frame(height: screenSize.height*0.35)
+						.onAppear(perform: {
+							//VideoPlayer onAppear when comeing from anohter tab view, not when the sheet disappears
+							print("[debug] VideoPlayer onAppear")
+						})
+						.onDisappear(perform: {
+							//VideoPlayer disappears when go to another tab view, not when sheet appears
+							print("[debug] VideoPlayer onDisappear")
+							viewModel.videoPlayer!.pause()
+							viewModel.videoPlayer!.replaceCurrentItem(with: nil)
+						})
+						.background(.black)
+				} else {
+					VideoPlayer(player: viewModel.videoPlayer)
+						.frame(height: screenSize.height*0.35)
+						.onAppear(perform: {
+							//VideoPlayer onAppear when comeing from anohter tab view, not when the sheet disappears
+							print("[debug] VideoPlayer onAppear")
+						})
+						.onDisappear(perform: {
+							//VideoPlayer disappears when go to another tab view, not when sheet appears
+							print("[debug] VideoPlayer onDisappear")
+							viewModel.videoPlayer!.pause()
+							viewModel.videoPlayer!.replaceCurrentItem(with: nil)
+						})
+						.background(.black)
+						.overlay(titleOverlay, alignment: .topLeading)
+				}
 			}
+			
 			
 			VStack {
 				if scorewindData.lastViewAtScore == false {
@@ -150,15 +153,18 @@ struct LessonView: View {
 		.onAppear(perform: {
 			print("[debug] LessonView onAppear")
 			//viewModel.score = scorewindData.currentLesson.scoreViewer
-			setupPlayer()
 			if scorewindData.lastViewAtScore == true {
 				if scorewindData.currentLesson.scoreViewer.isEmpty {
 					scorewindData.lastViewAtScore = false
 				}
 			}
-			if scorewindData.lastPlaybackTime > 0.0 {
-				print("[debug] LessonView, call viewModel.playerGoTo")
-				viewModel.playerGoTo(timestamp: scorewindData.lastPlaybackTime)
+			
+			if scorewindData.currentLesson.videoMP4.isEmpty == false {
+				setupPlayer()
+				if scorewindData.lastPlaybackTime > 0.0 {
+					print("[debug] LessonView, call viewModel.playerGoTo")
+					viewModel.playerGoTo(timestamp: scorewindData.lastPlaybackTime)
+				}
 			}
 		})
 		.sheet(isPresented: $showLessonSheet, onDismiss: {
@@ -167,16 +173,20 @@ struct LessonView: View {
 				//viewModel.score = scorewindData.currentLesson.scoreViewer
 				//viewModel.highlightBar = 1
 				magnifyStep = 1
-				viewModel.videoPlayer?.pause()
-				viewModel.videoPlayer?.replaceCurrentItem(with: nil)
+				
+				if scorewindData.currentLesson.videoMP4.isEmpty == false {
+					viewModel.videoPlayer?.pause()
+					viewModel.videoPlayer?.replaceCurrentItem(with: nil)
+				}
 				
 				if scorewindData.lastViewAtScore == true {
 					if scorewindData.currentLesson.scoreViewer.isEmpty {
 						scorewindData.lastViewAtScore = false
 					}
 				}
-				
-				setupPlayer()
+				if scorewindData.currentLesson.videoMP4.isEmpty == false {
+					setupPlayer()
+				}
 			}
 		}){
 			LessonSheetView(isPresented: self.$showLessonSheet)
@@ -226,31 +236,34 @@ struct LessonView: View {
 	}
 	
 	private func setupPlayer(){
-		watchTime = ""
-		let courseURL = URL(string: "course\(scorewindData.currentCourse.id)", relativeTo: downloadManager.docsUrl)!
-		let mp4VideoURL = URL(string: scorewindData.currentLesson.videoMP4.addingPercentEncoding(withAllowedCharacters: .urlFragmentAllowed)!)!
-		print("[debug] LessonView, setupPlayer, destVideoURL:\(courseURL.appendingPathComponent(mp4VideoURL.lastPathComponent).path)")
-		if FileManager.default.fileExists(atPath: courseURL.appendingPathComponent(mp4VideoURL.lastPathComponent).path) {
-			print("[debug] LessonView, setupPlayer, play \(courseURL.appendingPathComponent(mp4VideoURL.lastPathComponent).path)")
-			viewModel.videoPlayer = AVPlayer(url: courseURL.appendingPathComponent(mp4VideoURL.lastPathComponent))
-		} else {
-			print("[debug] LessonView, setupPlayer, play \(decodeVideoURL(videoURL: scorewindData.currentLesson.video))")
-			viewModel.videoPlayer = AVPlayer(url: URL(string: decodeVideoURL(videoURL: scorewindData.currentLesson.video))!)
+		if !scorewindData.currentLesson.videoMP4.isEmpty {
+			watchTime = ""
+			let courseURL = URL(string: "course\(scorewindData.currentCourse.id)", relativeTo: downloadManager.docsUrl)!
+			let mp4VideoURL = URL(string: scorewindData.currentLesson.videoMP4.addingPercentEncoding(withAllowedCharacters: .urlFragmentAllowed)!)!
+			print("[debug] LessonView, setupPlayer, destVideoURL:\(courseURL.appendingPathComponent(mp4VideoURL.lastPathComponent).path)")
+			if FileManager.default.fileExists(atPath: courseURL.appendingPathComponent(mp4VideoURL.lastPathComponent).path) {
+				print("[debug] LessonView, setupPlayer, play \(courseURL.appendingPathComponent(mp4VideoURL.lastPathComponent).path)")
+				viewModel.videoPlayer = AVPlayer(url: courseURL.appendingPathComponent(mp4VideoURL.lastPathComponent))
+			} else {
+				print("[debug] LessonView, setupPlayer, play \(decodeVideoURL(videoURL: scorewindData.currentLesson.video))")
+				viewModel.videoPlayer = AVPlayer(url: URL(string: decodeVideoURL(videoURL: scorewindData.currentLesson.video))!)
+			}
+			
+			viewModel.videoPlayer!.addPeriodicTimeObserver(forInterval: CMTime(value: 1, timescale: 3), queue: .main, using: { time in
+				let catchTime = time.seconds
+				scorewindData.lastPlaybackTime = catchTime
+				
+				if scorewindData.currentTimestampRecs.count > 0 {
+					let atMeasure = findMesaureByTimestamp(videoTime: catchTime)
+					self.viewModel.valuePublisher.send(String(atMeasure))
+					print("find measure:"+String(atMeasure))
+				}
+				//self.viewModel.highlightBar = atMeasure
+				watchTime = String(format: "%.3f", Float(catchTime))//createTimeString(time: Float(time.seconds))
+				
+			})
 		}
 		
-		viewModel.videoPlayer!.addPeriodicTimeObserver(forInterval: CMTime(value: 1, timescale: 3), queue: .main, using: { time in
-			let catchTime = time.seconds
-			scorewindData.lastPlaybackTime = catchTime
-			
-			if scorewindData.currentTimestampRecs.count > 0 {
-				let atMeasure = findMesaureByTimestamp(videoTime: catchTime)
-				self.viewModel.valuePublisher.send(String(atMeasure))
-				print("find measure:"+String(atMeasure))
-			}
-			//self.viewModel.highlightBar = atMeasure
-			watchTime = String(format: "%.3f", Float(catchTime))//createTimeString(time: Float(time.seconds))
-			
-		})
 	}
 	
 	private var titleOverlay: some View {

@@ -175,7 +175,7 @@ extension WelcomeView {
 		Task {
 			print("[debug] WelcomeView, Task:downloadVideoXML")
 			do {
-				try await downloadManager.downloadVideoXML(allCourses: scorewindData.allCourses)
+				try await downloadManager.downloadVideos(allCourses: scorewindData.allCourses)
 			} catch {
 				print("[debug] WelcomeView, Task:downloadVideoXML, catch, \(error)")
 			}

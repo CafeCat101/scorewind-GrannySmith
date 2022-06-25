@@ -146,9 +146,9 @@ struct WebView: UIViewRepresentable, WebViewHandlerDelegate {
 			//print("parent.viewModel.score: "+parent.viewModel.score)
 			//print("parent.score:" + parent.score)
 			print("[debug] WebView, parent.scorewindData, scoreViewer:\(parent.scorewindData.currentLesson.scoreViewer)")
-			let javascriptFunction = "load_score_view(\"\(parent.scorewindData.currentLesson.scoreViewer)\");"
-			//let scoreViewerArr = parent.scorewindData.currentLesson.scoreViewer.components(separatedBy: "/")
-			//let javascriptFunction = "load_score_view(xml_array[\"\(scoreViewerArr[scoreViewerArr.count-1])\"])"
+			//let javascriptFunction = "load_score_view(\"\(parent.scorewindData.currentLesson.scoreViewer)\");"
+			let scoreViewerArr = parent.scorewindData.currentLesson.scoreViewer.components(separatedBy: "/")
+			let javascriptFunction = "load_score_view(xml_array[\"\(scoreViewerArr[scoreViewerArr.count-1])\"])"
 			webView.evaluateJavaScript(javascriptFunction) { (response, error) in
 				if let error = error {
 					print("[debug] WebView, \(javascriptFunction)")

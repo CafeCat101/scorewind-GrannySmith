@@ -82,7 +82,7 @@ struct HomeView: View {
 					Task {
 						print("[debug] HomeView, onRecieve, Task:downloadVideoXML")
 						do {
-							try await downloadManager.downloadVideoXML(allCourses: scorewindData.allCourses)
+							try await downloadManager.downloadVideos(allCourses: scorewindData.allCourses)
 						} catch {
 							print("[debug] HomeView, onRecieve, Task:downloadVideoXML, catch, \(error)")
 						}
@@ -117,7 +117,7 @@ struct HomeView: View {
 							Task {
 								print("[debug] LessonView, onRecieve, Task:downloadVideoXML")
 								do {
-									try await downloadManager.downloadVideoXML(allCourses: scorewindData.allCourses)
+									try await downloadManager.downloadVideos(allCourses: scorewindData.allCourses)
 								} catch {
 									print("[debug] LessonView, onRecieve, Task:downloadVideoXML, catch, \(error)")
 								}
@@ -133,7 +133,7 @@ struct HomeView: View {
 		Task {
 			print("[debug] HomeView, Task:downloadVideoXML")
 			do {
-				try await downloadManager.downloadVideoXML(allCourses: scorewindData.allCourses)
+				try await downloadManager.downloadVideos(allCourses: scorewindData.allCourses)
 			} catch {
 				print("[debug] HomeView, Task:downloadVideoXML, catch, \(error)")
 			}

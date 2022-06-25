@@ -11,5 +11,4 @@ struct DownloadItem: Hashable, Codable {
 	var courseID = 0
 	var lessonID = 0
 	var videoDownloadStatus = 0
-	var xmlDownloadStatus = 0
 }

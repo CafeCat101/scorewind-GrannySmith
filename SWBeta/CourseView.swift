@@ -176,7 +176,7 @@ struct CourseView: View {
 						Task {
 							print("[debug] download all Task")
 							do {
-								try await downloadManager.downloadVideoXML(allCourses: scorewindData.allCourses)
+								try await downloadManager.downloadVideos(allCourses: scorewindData.allCourses)
 							} catch {
 								print("[debug] download all, catch, \(error)")
 							}
