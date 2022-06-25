@@ -53,6 +53,10 @@ struct WizardView: View {
 struct WizardView_Previews: PreviewProvider {
 	@State static var tab = "TMyCourses"
 	static var previews: some View {
-		WizardView(selectedTab: $tab).environmentObject(ScorewindData())
+		Group {
+			WizardView(selectedTab: $tab).environmentObject(ScorewindData())
+			WizardView(selectedTab: $tab).environmentObject(ScorewindData()).environment(\.colorScheme, .dark)
+		}
+		
 	}
 }

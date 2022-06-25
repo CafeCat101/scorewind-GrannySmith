@@ -127,7 +127,7 @@ struct HomeView: View {
 			}
 		}
 	}
-		
+	
 	private func activateDownloadVideoXML() {
 		downloadManager.buildDownloadListFromJSON(allCourses: scorewindData.allCourses)
 		Task {
