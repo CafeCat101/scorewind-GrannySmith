@@ -76,43 +76,86 @@ class ScorewindData: ObservableObject {
 		}
 	}
 	
-	func launchSetup(syncData: Bool) {
-		//let courseIOSURL = URL(fileURLWithPath: "courses_ios", relativeTo: docsUrl).appendingPathExtension("json")
-		//let timestampIOSURL = URL(fileURLWithPath: "timestamps_ios", relativeTo: docsUrl).appendingPathExtension("json")
-		//let courseXMLJS = URL(fileURLWithPath: "course_xml", relativeTo: docsUrl?.appendingPathComponent("www/js")).appendingPathExtension("js")
-		
+	func launchSetup(syncData: Bool, dataVersionFromWeb: Int? = 0) {
 		/**
-		 data version check is another independant task whenever the app is launched or brought to foreground(if there has download task in process, don't check)
-		 isFirstLaunch when syncData=false
+		 -data version check is another independant task whenever the app is launched or brought to foreground(if there has download task in process, don't check)
+		 -isFirstLaunch when syncData=false
 		 */
-		//it is first launch or new data is aravilable
-		//process the zip
-		//setup proper file structure
-		if syncData == false && dataVersion == 0 {
+		if syncData == false {
 			//unzip from bundle
-			do {
-				try FileManager.default.unzipItem(at: Bundle.main.resourceURL!.appendingPathComponent("scorewind_ios_xml.zip"), to: docsUrl!)
-				try FileManager.default.copyItem(atPath: Bundle.main.resourceURL!.appendingPathComponent("www").path, toPath: docsUrl!.appendingPathComponent("www").path)
-				try FileManager.default.moveItem(at: docsUrl!.appendingPathComponent("course_xml.js"), to: docsUrl!.appendingPathComponent("www/course_xml.js"))
-			} catch {
-				print("[debug] ScorewindData, unzip, move www and course_xml catch \(error)")
+			if dataVersion == 0 {
+				//first time install app
+				do {
+					try FileManager.default.unzipItem(at: Bundle.main.resourceURL!.appendingPathComponent("scorewind_ios_xml.zip"), to: docsUrl!)
+					try FileManager.default.copyItem(atPath: Bundle.main.resourceURL!.appendingPathComponent("www").path, toPath: docsUrl!.appendingPathComponent("www").path)
+					try FileManager.default.moveItem(at: docsUrl!.appendingPathComponent("course_xml.js"), to: docsUrl!.appendingPathComponent("www/course_xml.js"))
+					dataVersion = readBundleDataVersion()
+					userDefaults.set(dataVersion,forKey: "dataVersion")
+					print("[debug] ScorewindData, firstLaunch, updated, final dataVersion \(dataVersion)")
+				} catch {
+					if FileManager.default.fileExists(atPath: docsUrl!.appendingPathComponent("course_xml.js").path) {
+						do {
+							try FileManager.default.removeItem(at: docsUrl!.appendingPathComponent("course_xml.js"))
+							print("[debug] ScorewindData, firstLaunch, documents/course_xml.js is found, uncessary, deleted.")
+						} catch {
+							print("[debug] ScorewindData, firstLaunch, documents/course_xml.js is found, uncessary, should delete it. catch \(error)")
+						}
+					}
+					if FileManager.default.fileExists(atPath: docsUrl!.appendingPathComponent("www").path) && FileManager.default.fileExists(atPath: docsUrl!.appendingPathComponent("courses_ios.json").path) && FileManager.default.fileExists(atPath: docsUrl!.appendingPathComponent("timestamps_ios.json").path) && FileManager.default.fileExists(atPath: docsUrl!.appendingPathComponent("www/course_xml.js").path) {
+						dataVersion = readBundleDataVersion()
+						userDefaults.set(dataVersion,forKey: "dataVersion")
+						print("[debug] ScorewindData, firstLaunch, no changes, final dataVersion \(dataVersion)")
+					}
+					print("[debug] ScorewindData, unzip, move www and course_xml catch \(error)")
+				}
+			} else {
+				//when app gets new version
+				if readBundleDataVersion() > dataVersion {
+					do {
+						try FileManager.default.removeItem(at: docsUrl!.appendingPathComponent("www"))
+						try FileManager.default.removeItem(at: docsUrl!.appendingPathComponent("courses_ios.json"))
+						try FileManager.default.removeItem(at: docsUrl!.appendingPathComponent("timestamps_ios.json"))
+					} catch {
+						print("[debug] ScorewindData, app update, delete original data, catch \(error)")
+					}
+					
+					do {
+						try FileManager.default.unzipItem(at: Bundle.main.resourceURL!.appendingPathComponent("scorewind_ios_xml.zip"), to: docsUrl!)
+						try FileManager.default.copyItem(atPath: Bundle.main.resourceURL!.appendingPathComponent("www").path, toPath: docsUrl!.appendingPathComponent("www").path)
+						try FileManager.default.moveItem(at: docsUrl!.appendingPathComponent("course_xml.js"), to: docsUrl!.appendingPathComponent("www/course_xml.js"))
+						dataVersion = readBundleDataVersion()
+						userDefaults.set(dataVersion,forKey: "dataVersion")
+					} catch {
+						if dataVersion != readBundleDataVersion() {
+							print("[debug] ScorewindData, warning! app data update failed probably.")
+						}
+						print("[debug] ScorewindData, unzip, move www and course_xml catch \(error)")
+					}
+				}
 			}
 		} else {
-			//delete course_ios.json,timestamps_ios.json,documents/www/course_xml
-			//unzip from documents
-			//move course_xml to /documents/www/course_xml
-			do {
-				try FileManager.default.removeItem(at: docsUrl!.appendingPathComponent("courses_ios.json"))
-				try FileManager.default.removeItem(at: docsUrl!.appendingPathComponent("timestamps_ios.json"))
-				try FileManager.default.removeItem(at: docsUrl!.appendingPathComponent("course_xml.js"))
-				try FileManager.default.removeItem(at: docsUrl!.appendingPathComponent("www"))
-			} catch {
+			if dataVersionFromWeb! > 0 {
+				do {
+					try FileManager.default.removeItem(at: docsUrl!.appendingPathComponent("courses_ios.json"))
+					try FileManager.default.removeItem(at: docsUrl!.appendingPathComponent("timestamps_ios.json"))
+					try FileManager.default.removeItem(at: docsUrl!.appendingPathComponent("www/course_xml.js"))
+				} catch {
+					print("[debug] ScorewindData, app update, delete original data from zip, catch \(error)")
+				}
 				
+				do {
+					try FileManager.default.unzipItem(at: docsUrl!.appendingPathComponent("scorewind_ios_xml.zip"), to: docsUrl!)
+					try FileManager.default.moveItem(at: docsUrl!.appendingPathComponent("course_xml.js"), to: docsUrl!.appendingPathComponent("www/course_xml.js"))
+					dataVersion = dataVersionFromWeb!
+					userDefaults.set(dataVersion,forKey: "dataVersion")
+					print("[debug] ScorewindData, update data, final dataVersion \(dataVersion)")
+				} catch {
+					if dataVersion != readBundleDataVersion() {
+						print("[debug] ScorewindData, warning! new data update failed probably.")
+					}
+				}
 			}
 		}
-		
-		
-		
 	}
 	
 	public func downloadJson(fromURLString urlString: String, completion: @escaping(Result<Data, Error>) -> Void) {
@@ -158,6 +201,16 @@ class ScorewindData: ObservableObject {
 		}
 	}
 	
+	private func readBundleDataVersion() -> Int {
+		let dataVersionURL = URL(fileURLWithPath: "data_version", relativeTo: Bundle.main.resourceURL).appendingPathExtension("json")
+		do {
+			let jsonData = try String(contentsOfFile: dataVersionURL.path).data(using: .utf8)
+			let dataVersionDic = try JSONSerialization.jsonObject(with: jsonData!, options: .mutableContainers) as? [String:Any]
+			return dataVersionDic!["version"] as? Int ?? 0
+		} catch {
+			return 0
+		}
+	}
 	
 	func needToCheckVersion() -> Int{
 		//check version from web is last check is a week old.

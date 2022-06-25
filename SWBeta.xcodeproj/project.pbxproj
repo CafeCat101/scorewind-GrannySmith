@@ -9,15 +9,12 @@
 /* Begin PBXBuildFile section */
 		102232095811B22296E9B677 /* Pods_SWBeta.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0F001C942490FEB87150D5DB /* Pods_SWBeta.framework */; };
 		8F86DAB23174C8CB90609DD6 /* Pods_SWBetaTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B26CC3AE41C8FC3B38295CC5 /* Pods_SWBetaTests.framework */; };
-		C8125A952861C49C00D7F447 /* scorewind_ios_xml.zip in Resources */ = {isa = PBXBuildFile; fileRef = C8125A942861C49C00D7F447 /* scorewind_ios_xml.zip */; };
 		C82DD611283BF55000EF74E2 /* WebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C82DD610283BF55000EF74E2 /* WebView.swift */; };
 		C82DD6132840919900EF74E2 /* MyTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = C82DD6122840919900EF74E2 /* MyTheme.swift */; };
 		C82DD6172847330F00EF74E2 /* DownloadItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = C82DD6162847330F00EF74E2 /* DownloadItem.swift */; };
 		C82DD61B2847337B00EF74E2 /* DownloadStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = C82DD61A2847337B00EF74E2 /* DownloadStatus.swift */; };
 		C82DD61E284B5E8600EF74E2 /* DownloadManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C82DD61D284B5E8600EF74E2 /* DownloadManager.swift */; };
 		C8448A212818F70400597A6F /* data_version.json in Resources */ = {isa = PBXBuildFile; fileRef = C8448A202818F70400597A6F /* data_version.json */; };
-		C8448A27281BA3CD00597A6F /* timestamps_ios.json in Resources */ = {isa = PBXBuildFile; fileRef = C8448A26281BA3CD00597A6F /* timestamps_ios.json */; };
-		C8448A29281BA3DF00597A6F /* courses_ios.json in Resources */ = {isa = PBXBuildFile; fileRef = C8448A28281BA3DF00597A6F /* courses_ios.json */; };
 		C8448A67282BFA7F00597A6F /* HTMLString.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8448A66282BFA7F00597A6F /* HTMLString.swift */; };
 		C8448A69282E111400597A6F /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8448A68282E111400597A6F /* HomeView.swift */; };
 		C8448A6D282EC15000597A6F /* LessonSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8448A6C282EC15000597A6F /* LessonSheetView.swift */; };
@@ -46,6 +43,7 @@
 		C8E786DA280008B1007817BB /* InstrumentType.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8E786D9280008B1007817BB /* InstrumentType.swift */; };
 		C8F39397286021F300210EA5 /* www in Resources */ = {isa = PBXBuildFile; fileRef = C8F39396286021F300210EA5 /* www */; };
 		C8F3939D2861671900210EA5 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C8F3939C2861671900210EA5 /* LaunchScreen.storyboard */; };
+		C8F393A32866CBA700210EA5 /* scorewind_ios_xml.zip in Resources */ = {isa = PBXBuildFile; fileRef = C8F393A22866CBA700210EA5 /* scorewind_ios_xml.zip */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -63,15 +61,12 @@
 		0F001C942490FEB87150D5DB /* Pods_SWBeta.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SWBeta.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		73B4E74B515776D6EB84948F /* Pods-SWBeta.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SWBeta.debug.xcconfig"; path = "Target Support Files/Pods-SWBeta/Pods-SWBeta.debug.xcconfig"; sourceTree = "<group>"; };
 		B26CC3AE41C8FC3B38295CC5 /* Pods_SWBetaTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SWBetaTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		C8125A942861C49C00D7F447 /* scorewind_ios_xml.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = scorewind_ios_xml.zip; sourceTree = "<group>"; };
 		C82DD610283BF55000EF74E2 /* WebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebView.swift; sourceTree = "<group>"; };
 		C82DD6122840919900EF74E2 /* MyTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyTheme.swift; sourceTree = "<group>"; };
 		C82DD6162847330F00EF74E2 /* DownloadItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadItem.swift; sourceTree = "<group>"; };
 		C82DD61A2847337B00EF74E2 /* DownloadStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadStatus.swift; sourceTree = "<group>"; };
 		C82DD61D284B5E8600EF74E2 /* DownloadManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadManager.swift; sourceTree = "<group>"; };
 		C8448A202818F70400597A6F /* data_version.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = data_version.json; sourceTree = "<group>"; };
-		C8448A26281BA3CD00597A6F /* timestamps_ios.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = timestamps_ios.json; sourceTree = "<group>"; };
-		C8448A28281BA3DF00597A6F /* courses_ios.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = courses_ios.json; sourceTree = "<group>"; };
 		C8448A66282BFA7F00597A6F /* HTMLString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTMLString.swift; sourceTree = "<group>"; };
 		C8448A68282E111400597A6F /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		C8448A6C282EC15000597A6F /* LessonSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LessonSheetView.swift; sourceTree = "<group>"; };
@@ -103,6 +98,7 @@
 		C8E786D9280008B1007817BB /* InstrumentType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstrumentType.swift; sourceTree = "<group>"; };
 		C8F39396286021F300210EA5 /* www */ = {isa = PBXFileReference; lastKnownFileType = folder; path = www; sourceTree = "<group>"; };
 		C8F3939C2861671900210EA5 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
+		C8F393A22866CBA700210EA5 /* scorewind_ios_xml.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = scorewind_ios_xml.zip; sourceTree = "<group>"; };
 		C9CA0F8E8DA0BE5F5F4EAF47 /* Pods-SWBetaTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SWBetaTests.release.xcconfig"; path = "Target Support Files/Pods-SWBetaTests/Pods-SWBetaTests.release.xcconfig"; sourceTree = "<group>"; };
 		DD005948FAAE234903A3B81F /* Pods-SWBeta.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SWBeta.release.xcconfig"; path = "Target Support Files/Pods-SWBeta/Pods-SWBeta.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -164,12 +160,10 @@
 		C87F6AFA27CA04420009DCA0 /* SWBeta */ = {
 			isa = PBXGroup;
 			children = (
-				C8125A942861C49C00D7F447 /* scorewind_ios_xml.zip */,
+				C8F393A22866CBA700210EA5 /* scorewind_ios_xml.zip */,
+				C8448A202818F70400597A6F /* data_version.json */,
 				C8F39396286021F300210EA5 /* www */,
 				C82DD61C2847338800EF74E2 /* Types */,
-				C8448A28281BA3DF00597A6F /* courses_ios.json */,
-				C8448A26281BA3CD00597A6F /* timestamps_ios.json */,
-				C8448A202818F70400597A6F /* data_version.json */,
 				C87F6BD827E97F100009DCA0 /* SWBeta.entitlements */,
 				C87F6AFB27CA04420009DCA0 /* SWBetaApp.swift */,
 				C87F6AFF27CA04420009DCA0 /* Assets.xcassets */,
@@ -233,7 +227,6 @@
 				0D1DE97B1F30637850BCF481 /* Pods-SWBetaTests.debug.xcconfig */,
 				C9CA0F8E8DA0BE5F5F4EAF47 /* Pods-SWBetaTests.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -323,12 +316,10 @@
 			files = (
 				C8F39397286021F300210EA5 /* www in Resources */,
 				C8F3939D2861671900210EA5 /* LaunchScreen.storyboard in Resources */,
-				C8448A27281BA3CD00597A6F /* timestamps_ios.json in Resources */,
 				C87F6B0327CA04420009DCA0 /* Preview Assets.xcassets in Resources */,
 				C87F6B0027CA04420009DCA0 /* Assets.xcassets in Resources */,
 				C8448A212818F70400597A6F /* data_version.json in Resources */,
-				C8125A952861C49C00D7F447 /* scorewind_ios_xml.zip in Resources */,
-				C8448A29281BA3DF00597A6F /* courses_ios.json in Resources */,
+				C8F393A32866CBA700210EA5 /* scorewind_ios_xml.zip in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
