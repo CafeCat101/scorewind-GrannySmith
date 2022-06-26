@@ -91,7 +91,7 @@ class ScorewindData: ObservableObject {
 					try FileManager.default.moveItem(at: docsUrl!.appendingPathComponent("course_xml.js"), to: docsUrl!.appendingPathComponent("www/course_xml.js"))
 					dataVersion = readBundleDataVersion()
 					userDefaults.set(dataVersion,forKey: "dataVersion")
-					print("[debug] ScorewindData, firstLaunch, updated, final dataVersion \(dataVersion)")
+					print("[debug] ScorewindData, firstLaunch, final dataVersion \(dataVersion)")
 				} catch {
 					if FileManager.default.fileExists(atPath: docsUrl!.appendingPathComponent("course_xml.js").path) {
 						do {
@@ -125,6 +125,7 @@ class ScorewindData: ObservableObject {
 						try FileManager.default.moveItem(at: docsUrl!.appendingPathComponent("course_xml.js"), to: docsUrl!.appendingPathComponent("www/course_xml.js"))
 						dataVersion = readBundleDataVersion()
 						userDefaults.set(dataVersion,forKey: "dataVersion")
+						print("[debug] ScorewindData, firstLaunch, app updated, final dataVersion \(dataVersion)")
 					} catch {
 						if dataVersion != readBundleDataVersion() {
 							print("[debug] ScorewindData, warning! app data update failed probably.")
@@ -148,7 +149,7 @@ class ScorewindData: ObservableObject {
 					try FileManager.default.moveItem(at: docsUrl!.appendingPathComponent("course_xml.js"), to: docsUrl!.appendingPathComponent("www/course_xml.js"))
 					dataVersion = dataVersionFromWeb!
 					userDefaults.set(dataVersion,forKey: "dataVersion")
-					print("[debug] ScorewindData, update data, final dataVersion \(dataVersion)")
+					print("[debug] ScorewindData, new data is updated, final dataVersion \(dataVersion)")
 				} catch {
 					if dataVersion != readBundleDataVersion() {
 						print("[debug] ScorewindData, warning! new data update failed probably.")
